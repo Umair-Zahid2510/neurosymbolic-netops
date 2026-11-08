@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".venv", "venv", "runtime", ".claude"}
 EXCLUDE_FILES = {".env"}
-EXCLUDE_SUFFIX = {".pkl", ".pyc"}
+EXCLUDE_SUFFIX = {".pyc"}  # trained models (models/*.pkl) are part of the submission
 SECRET = re.compile(r"(AIza[0-9A-Za-z_\-]{30,}|gsk_[0-9A-Za-z]{30,}|sk-[0-9A-Za-z_\-]{30,}|xai-[0-9A-Za-z]{30,})")
 
 

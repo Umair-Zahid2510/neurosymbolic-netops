@@ -10,6 +10,7 @@ Status values: **IMPLEMENTED** · **PARTIALLY IMPLEMENTED** · **SIMULATED** · 
 | Tier 1 | Telemetry source | SIMULATED | generated from simulated state (`core/telemetry/generator.py`) |
 | Tier 1 | Edge detection: TF-IDF+LR syslog classifier, robust z-score counters, probe loss | IMPLEMENTED (classical ML; not an SLM) | `models/syslog_classifier_metrics.json` |
 | Tier 1 | Topology graph from metadata + configs; evidence-based candidate ranking | IMPLEMENTED | demos; benchmark top-1/top-3 |
+| Tier 1 | Learned root-cause ranker (gradient-boosted trees on digest features; trained on dev, tested on held-out) | IMPLEMENTED; evaluated stand-alone, not yet used by the agents | `results/ranker_results.json` |
 | Tier 1 | Causal discovery (PC algorithm) | PARTIALLY IMPLEMENTED (synthetic SCM only; not used for localisation) | `benchmark/results/causal_discovery_pc.json` |
 | Tier 2 | Five agents, typed contracts, state machine, incident record | IMPLEMENTED | `tests/agents/` |
 | Tier 2 | Rule-based diagnosis/planning baseline (generic, no incident IDs) | IMPLEMENTED | CI test forbids incident-ID strings in `agent/` and `core/` |

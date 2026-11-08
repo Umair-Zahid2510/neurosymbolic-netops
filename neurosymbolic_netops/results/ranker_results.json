@@ -1,0 +1,124 @@
+{
+  "model": "HistGradientBoostingClassifier (200 iters, lr 0.05, 15 leaves)",
+  "features": [
+    "heuristic_score",
+    "heuristic_rank",
+    "heuristic_score_share",
+    "on_link_down",
+    "on_interface_errors",
+    "on_bgp_session_down",
+    "on_bgp_session_flap",
+    "on_bgp_auth_failure",
+    "on_bgp_peer_mismatch",
+    "on_acl_drops",
+    "on_probe_failure",
+    "on_route_missing",
+    "on_resource_pressure",
+    "on_log_anomaly",
+    "peer_link_down",
+    "peer_interface_errors",
+    "peer_bgp_session_down",
+    "peer_bgp_session_flap",
+    "peer_bgp_auth_failure",
+    "peer_bgp_peer_mismatch",
+    "peer_acl_drops",
+    "peer_probe_failure",
+    "peer_route_missing",
+    "peer_resource_pressure",
+    "peer_log_anomaly",
+    "named_as_bgp_peer",
+    "on_failed_flow_path",
+    "is_spine",
+    "degree",
+    "n_anomalies_total"
+  ],
+  "train_incidents": 440,
+  "train_rows": 1760,
+  "model_bytes": 356372,
+  "splits": {
+    "test": {
+      "heuristic": {
+        "n": 114,
+        "top1": 0.6053,
+        "top3": 0.9474,
+        "mrr": 0.7851,
+        "recall_at_2": 0.7851
+      },
+      "learned": {
+        "n": 114,
+        "top1": 0.6404,
+        "top3": 0.9474,
+        "mrr": 0.807,
+        "recall_at_2": 0.8158
+      },
+      "top1_difference_learned_minus_heuristic_ci95": [
+        -0.0614,
+        0.1404
+      ],
+      "random_top1_expected": 0.3947
+    },
+    "legacy": {
+      "heuristic": {
+        "n": 25,
+        "top1": 0.6,
+        "top3": 0.96,
+        "mrr": 0.7767,
+        "recall_at_2": 0.7867
+      },
+      "learned": {
+        "n": 25,
+        "top1": 0.72,
+        "top3": 1.0,
+        "mrr": 0.8533,
+        "recall_at_2": 0.8667
+      },
+      "top1_difference_learned_minus_heuristic_ci95": [
+        -0.16,
+        0.4
+      ],
+      "random_top1_expected": 0.33
+    }
+  },
+  "permutation_importance_test_auc": [
+    [
+      "heuristic_score",
+      0.0862
+    ],
+    [
+      "on_failed_flow_path",
+      0.0577
+    ],
+    [
+      "heuristic_score_share",
+      0.0509
+    ],
+    [
+      "on_bgp_auth_failure",
+      0.0098
+    ],
+    [
+      "is_spine",
+      0.0085
+    ],
+    [
+      "on_interface_errors",
+      0.0075
+    ],
+    [
+      "named_as_bgp_peer",
+      0.0065
+    ],
+    [
+      "peer_interface_errors",
+      0.0046
+    ],
+    [
+      "peer_acl_drops",
+      0.0041
+    ],
+    [
+      "on_route_missing",
+      0.0009
+    ]
+  ]
+}

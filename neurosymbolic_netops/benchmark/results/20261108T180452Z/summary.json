@@ -103,28 +103,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 68.21,
-      "median": 61.38
+      "mean": 76.37,
+      "median": 70.81
     },
     "detection_ms": {
-      "mean": 42.11,
-      "median": 38.36
+      "mean": 46.27,
+      "median": 44.92
     },
     "diagnose_ms": {
-      "mean": 26.59,
-      "median": 23.73
+      "mean": 30.2,
+      "median": 28.84
     },
     "plan_ms": {
       "mean": 0.15,
-      "median": 0.11
+      "median": 0.1
     },
     "verify_ms": {
-      "mean": 13.2,
-      "median": 12.3
+      "mean": 14.51,
+      "median": 13.47
     },
     "execute_ms": {
-      "mean": 25.45,
-      "median": 21.07
+      "mean": 26.25,
+      "median": 22.82
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -237,28 +237,28 @@
       "median": 0
     },
     "total_ms": {
-      "mean": 67.08,
-      "median": 61.4
+      "mean": 73.62,
+      "median": 71.53
     },
     "detection_ms": {
-      "mean": 42.97,
-      "median": 33.89
+      "mean": 41.87,
+      "median": 39.95
     },
     "diagnose_ms": {
-      "mean": 25.01,
-      "median": 23.63
+      "mean": 30.07,
+      "median": 28.32
     },
     "plan_ms": {
-      "mean": 0.12,
+      "mean": 0.13,
       "median": 0.1
     },
     "verify_ms": {
-      "mean": 17.28,
-      "median": 12.21
+      "mean": 14.58,
+      "median": 13.37
     },
     "execute_ms": {
-      "mean": 21.84,
-      "median": 21.97
+      "mean": 25.69,
+      "median": 25.54
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -374,28 +374,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 62.04,
-      "median": 58.57
+      "mean": 80.4,
+      "median": 73.2
     },
     "detection_ms": {
-      "mean": 32.37,
-      "median": 32.89
+      "mean": 38.64,
+      "median": 36.2
     },
     "diagnose_ms": {
-      "mean": 26.92,
-      "median": 24.05
+      "mean": 31.55,
+      "median": 30.83
     },
     "plan_ms": {
-      "mean": 0.15,
-      "median": 0.12
+      "mean": 0.19,
+      "median": 0.13
     },
     "verify_ms": {
-      "mean": 10.71,
-      "median": 10.68
+      "mean": 13.4,
+      "median": 12.77
     },
     "execute_ms": {
-      "mean": 21.21,
-      "median": 20.81
+      "mean": 29.36,
+      "median": 23.29
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -511,28 +511,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 186.49,
-      "median": 146.75
+      "mean": 131.17,
+      "median": 122.34
     },
     "detection_ms": {
-      "mean": 69.35,
-      "median": 51.94
+      "mean": 48.42,
+      "median": 43.41
     },
     "diagnose_ms": {
-      "mean": 38.59,
-      "median": 29.81
+      "mean": 30.23,
+      "median": 28.66
     },
     "plan_ms": {
-      "mean": 0.17,
-      "median": 0.12
+      "mean": 0.14,
+      "median": 0.1
     },
     "verify_ms": {
-      "mean": 76.23,
-      "median": 62.34
+      "mean": 53.68,
+      "median": 47.66
     },
     "execute_ms": {
-      "mean": 66.91,
-      "median": 49.32
+      "mean": 43.82,
+      "median": 39.76
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -644,28 +644,28 @@
       "median": 0
     },
     "total_ms": {
-      "mean": 180.0,
-      "median": 117.12
+      "mean": 126.68,
+      "median": 121.52
     },
     "detection_ms": {
-      "mean": 70.72,
-      "median": 60.69
+      "mean": 47.02,
+      "median": 43.1
     },
     "diagnose_ms": {
-      "mean": 34.06,
-      "median": 27.75
+      "mean": 30.15,
+      "median": 28.59
     },
     "plan_ms": {
-      "mean": 0.16,
-      "median": 0.11
+      "mean": 0.13,
+      "median": 0.1
     },
     "verify_ms": {
-      "mean": 82.1,
-      "median": 47.31
+      "mean": 52.16,
+      "median": 48.12
     },
     "execute_ms": {
-      "mean": 59.96,
-      "median": 45.32
+      "mean": 41.18,
+      "median": 41.7
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -781,28 +781,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 117.28,
-      "median": 105.65
+      "mean": 143.2,
+      "median": 138.16
     },
     "detection_ms": {
-      "mean": 36.6,
-      "median": 35.69
+      "mean": 49.97,
+      "median": 43.39
     },
     "diagnose_ms": {
-      "mean": 28.29,
-      "median": 26.52
+      "mean": 37.53,
+      "median": 34.22
     },
     "plan_ms": {
-      "mean": 0.18,
-      "median": 0.14
+      "mean": 0.25,
+      "median": 0.19
     },
     "verify_ms": {
-      "mean": 48.86,
-      "median": 39.38
+      "mean": 57.91,
+      "median": 52.33
     },
     "execute_ms": {
-      "mean": 36.67,
-      "median": 36.14
+      "mean": 43.59,
+      "median": 43.0
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -919,28 +919,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 105.66,
-      "median": 92.22
+      "mean": 123.31,
+      "median": 112.56
     },
     "detection_ms": {
-      "mean": 44.91,
-      "median": 37.25
+      "mean": 48.29,
+      "median": 43.33
     },
     "diagnose_ms": {
-      "mean": 24.76,
-      "median": 23.25
+      "mean": 30.02,
+      "median": 29.12
     },
     "plan_ms": {
-      "mean": 0.12,
-      "median": 0.08
+      "mean": 0.14,
+      "median": 0.11
     },
     "verify_ms": {
-      "mean": 47.13,
-      "median": 39.53
+      "mean": 56.99,
+      "median": 48.7
     },
     "execute_ms": {
-      "mean": 30.83,
-      "median": 24.08
+      "mean": 33.03,
+      "median": 26.84
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -1053,28 +1053,28 @@
       "median": 0
     },
     "total_ms": {
-      "mean": 117.76,
-      "median": 95.29
+      "mean": 116.07,
+      "median": 110.76
     },
     "detection_ms": {
-      "mean": 41.46,
-      "median": 37.98
+      "mean": 48.82,
+      "median": 42.85
     },
     "diagnose_ms": {
-      "mean": 26.88,
-      "median": 24.97
+      "mean": 30.24,
+      "median": 29.59
     },
     "plan_ms": {
-      "mean": 0.15,
+      "mean": 0.13,
       "median": 0.11
     },
     "verify_ms": {
-      "mean": 60.2,
-      "median": 40.0
+      "mean": 48.4,
+      "median": 46.07
     },
     "execute_ms": {
-      "mean": 27.6,
-      "median": 26.02
+      "mean": 33.97,
+      "median": 26.67
     },
     "llm_latency_ms": {
       "mean": 0.0,
@@ -1191,28 +1191,28 @@
       "median": 0.0
     },
     "total_ms": {
-      "mean": 103.58,
-      "median": 98.14
+      "mean": 123.22,
+      "median": 118.41
     },
     "detection_ms": {
-      "mean": 44.74,
-      "median": 37.3
+      "mean": 45.68,
+      "median": 41.52
     },
     "diagnose_ms": {
-      "mean": 28.41,
-      "median": 25.42
+      "mean": 34.69,
+      "median": 31.75
     },
     "plan_ms": {
-      "mean": 0.19,
-      "median": 0.14
+      "mean": 0.23,
+      "median": 0.16
     },
     "verify_ms": {
-      "mean": 45.24,
-      "median": 42.3
+      "mean": 54.64,
+      "median": 48.05
     },
     "execute_ms": {
-      "mean": 26.31,
-      "median": 21.24
+      "mean": 29.83,
+      "median": 28.01
     },
     "llm_latency_ms": {
       "mean": 0.0,

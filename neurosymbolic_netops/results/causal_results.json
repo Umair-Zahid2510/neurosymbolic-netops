@@ -1,0 +1,32 @@
+{
+  "confounder_hidden": {
+    "n_samples": 600.0,
+    "n_variables": 14.0,
+    "true_edges": 12.0,
+    "pc_skeleton_precision": 0.526,
+    "pc_skeleton_recall": 0.65,
+    "pc_directed_edges": 5.2,
+    "pc_directed_correct": 3.4,
+    "pc_undirected_edges": 9.6,
+    "shd_skeleton": 11.2,
+    "correlation_edges": 24.4,
+    "correlation_precision": 0.492,
+    "spurious_cpu_associations_by_correlation": 6.0,
+    "spurious_cpu_edges_by_pc": 6.0
+  },
+  "confounder_observed": {
+    "n_samples": 600.0,
+    "n_variables": 15.0,
+    "true_edges": 16.0,
+    "pc_skeleton_precision": 0.922,
+    "pc_skeleton_recall": 0.738,
+    "pc_directed_edges": 5.2,
+    "pc_directed_correct": 3.4,
+    "pc_undirected_edges": 7.6,
+    "shd_skeleton": 5.2,
+    "correlation_edges": 28.4,
+    "correlation_precision": 0.564,
+    "spurious_cpu_associations_by_correlation": 6.0,
+    "spurious_cpu_edges_by_pc": 0.0
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "model": "TF-IDF (word 1-2 grams over masked tokens) + multinomial logistic regression",
+  "train_lines": 1200,
+  "train_seconds": 0.116,
+  "model_bytes": 26388,
+  "cv5_on_training_phrasings": {
+    "accuracy_mean": 1.0,
+    "accuracy_std": 0.0,
+    "macro_f1_mean": 1.0
+  },
+  "test_heldout_phrasing": {
+    "n": 1200,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "latency_us_per_line": 45.29
+  },
+  "test_heldout_phrasing_message_only": {
+    "n": 1200,
+    "accuracy": 0.75,
+    "macro_f1": 0.71,
+    "latency_us_per_line": 34.63
+  },
+  "test_on_heldout_incident_telemetry": {
+    "n": 4100,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "latency_us_per_line": 50.75
+  },
+  "per_class_heldout": {
+    "benign": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 360.0
+    },
+    "link": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 300.0
+    },
+    "bgp": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 360.0
+    },
+    "acl": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 60.0
+    },
+    "routing": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 60.0
+    },
+    "resource": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 60.0
+    }
+  },
+  "confusion_matrix_heldout": {
+    "labels": [
+      "benign",
+      "link",
+      "bgp",
+      "acl",
+      "routing",
+      "resource"
+    ],
+    "matrix": [
+      [
+        360,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        300,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        360,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        60,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        60,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        60
+      ]
+    ]
+  }
+}

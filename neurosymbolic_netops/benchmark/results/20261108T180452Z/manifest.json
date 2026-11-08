@@ -1,6 +1,6 @@
 {
-  "run_id": "20261108T164134Z",
-  "git_sha": "fa1b2cb9c9e720d41e9084a2c9235e0a23d9a455",
+  "run_id": "20261108T180452Z",
+  "git_sha": "9a4be419a39bce18d4338a18f7312fd9581f7bca",
   "conditions": [
     "C1",
     "C1b",
@@ -14,5 +14,5 @@
   "python": "3.12.4",
   "llm": null,
   "errors": 0,
-  "wall_seconds": 140.4
+  "wall_seconds": 137.7
 }

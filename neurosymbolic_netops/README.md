@@ -79,6 +79,12 @@ The roles are `read`, `verify` and `operator`, and the server speaks MCP over st
 ### Testbed
 The testbed is configuration-level only: four IOS configs plus `configs/testbed_metadata.json` and `configs/intents.yaml`. The FRR emulator is planned (see `LIMITATIONS.md`).
 
+## Train and evaluate
+```bash
+python scripts/train_and_evaluate.py
+```
+This trains the edge syslog classifier and the learned root-cause ranker, runs the closed-loop benchmark and the causal-discovery evaluation, and writes `results/RESULTS.md` plus figures. It takes about 5 minutes. See `SUBMISSION.md`.
+
 ## Run
 
 ```bash
