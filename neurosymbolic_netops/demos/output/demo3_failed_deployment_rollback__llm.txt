@@ -1,0 +1,83 @@
+
+====================================================================================================
+INCIDENT DEMO3-ROLLBACK
+====================================================================================================
+Components: {"diagnosis": "llm:gemini/gemini-3.1-flash-lite (no tools)", "planning": "llm:gemini/gemini-3.1-flash-lite", "verifier": "local_symbolic+ir_static", "actuation": "inmemory/SIMULATED", "approval": "auto_policy", "telemetry": "local_simulation"}
+Injected ground truth (hidden from the agents):
+   - [LINK] Spine-2 eth1 administratively shut down
+
+====================================================================================================
+TIER 1  Telemetry -> edge detection -> anomaly digest
+====================================================================================================
+raw telemetry 143164 bytes -> digest 3040 bytes; detection 5006.57 ms
+   A01 link_down          dev=Leaf-1 intf=eth2 peer=None x10 via syslog_classifier+counter_state: [link] %LINK-3-UPDOWN: Interface GigabitEthernet0/2, changed state to down
+   A02 link_down          dev=Spine-2 intf=eth1 peer=None x9 via syslog_classifier+counter_state: [link] %LINK-5-CHANGED: Interface GigabitEthernet0/1 changed state to administra
+   A03 bgp_session_down   dev=Leaf-1 intf=None peer=10.0.3.1 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.1 Down Interface flap
+   A04 bgp_session_down   dev=Spine-2 intf=None peer=10.0.3.2 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down - Interface flap
+   A05 route_missing      dev=Leaf-1 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.0.3.0/30 removed from RIB (no v
+   A06 route_missing      dev=Spine-2 intf=None peer=None x10 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+Topology-ranked candidates: [('Leaf-1', 3.48), ('Spine-2', 3.48)]
+Intents violated at detection: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+
+====================================================================================================
+TIER 2  Diagnosis (read-only skills)
+====================================================================================================
+[llm:gemini/gemini-3.1-flash-lite (no tools)] The anomaly logs show that the link between Leaf-1 (eth2) and Spine-2 (eth1) is down. Inspection of the running configuration for Spine-2 reveals that interface GigabitEthernet0/1 is explicitly configured with the 'shutdown' command. This administrative shutdown is the root cause of the link failure, which subsequently triggered the BGP session down event (A03, A04) and the resulting route withdrawals (A05, A06).
+   H1: Spine-2 interface_admin_down @ eth1 :: The interface eth1 on Spine-2 is administratively down, causing the link to Leaf-1 (eth2) to fail and the BGP session to drop.  evidence=['A02', 'A01', 'A04']
+skill calls: 0; first five: 
+
+====================================================================================================
+TIER 2/3  Planning <-> symbolic verification (reflection loop)
+====================================================================================================
+Attempt 1 [llm:gemini/gemini-3.1-flash-lite] -> ACCEPTED  (verifier: ['local_symbolic', 'ir_static'], 27.53 ms)
+      op: Spine-2 eth1: no shutdown
+Final verified plan: ['Spine-2 eth1: no shutdown'] | final verification: {'passed': True, 'backends': ['local_symbolic', 'ir_static'], 'violated': [], 'fingerprint': 'c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b'}
+Approval: auto-approved: verification passed | token for plan baa3553d5072
+
+====================================================================================================
+TIER 4  Transactional actuation
+====================================================================================================
+TX0001-baa3553d adapter=inmemory/SIMULATED status=ROLLED_BACK failure=post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+   OK  capture                  fingerprint 58ece6dacbad
+   OK  build_candidate          1 ops on ['Spine-2']
+   OK  syntax_check             render/parse round-trip OK
+   OK  symbolic_verification    backends=['local_symbolic', 'ir_static'] violated=[]
+   OK  prepare                  devices to change: ['Spine-2']
+   OK  authorize                token from auto_policy (auto_policy)
+   OK  apply:Spine-2            
+   ERR post_check               observed state violated=['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-l
+   OK  rollback:Spine-2         restored captured configuration
+   OK  restore_verification     all touched devices match captured config
+Configuration diff (IOS rendering):
+      --- Spine-2 (before)
+      +++ Spine-2 (after)
+      @@ -11,3 +11,3 @@
+        duplex full
+      - shutdown
+      + no shutdown
+       !
+
+====================================================================================================
+OUTCOME: rolled_back   final state: FAILED
+====================================================================================================
+State path: DETECTED -> DIAGNOSING -> ROOT_CAUSE_IDENTIFIED -> PLANNING -> VERIFYING -> APPROVED -> EXECUTING -> POST_CHECK -> ROLLBACK -> FAILED
+Timings (ms): {'diagnose': 2364.08, 'plan': 1205.5, 'verify': 64.66, 'execute': 141.5, 'total': 3782.02}; audit chain verified: True (12 entries)
+LLM usage: {'provider': 'gemini', 'model': 'gemini-3.1-flash-lite', 'calls': 2, 'prompt_tokens': 9205, 'completion_tokens': 400, 'total_tokens': 9605, 'latency_ms': 3532.7, 'invalid_responses': 0, 'retries': 0, 'source': 'provider_reported'}
+
+====================================================================================================
+AUDIT RECORD (HMAC-SHA256 chained)
+====================================================================================================
+   #00 execution_agent  tx.begin                     {'adapter': 'inmemory', 'adapter_label': 'SIMULATED', 'ops': ['Spine-2  mac=9ece2a0910ae
+   #01 execution_agent  tx.capture                   {'detail': 'fingerprint 58ece6dacbad', 'ok': True, 'tx_id': 'TX0001-ba  mac=a195453b1468
+   #02 execution_agent  tx.build_candidate           {'detail': "1 ops on ['Spine-2']", 'ok': True, 'tx_id': 'TX0001-baa355  mac=787c20b7162a
+   #03 execution_agent  tx.syntax_check              {'detail': 'render/parse round-trip OK', 'ok': True, 'tx_id': 'TX0001-  mac=9b2a386391c4
+   #04 execution_agent  tx.symbolic_verification     {'detail': "backends=['local_symbolic', 'ir_static'] violated=[]", 'ok  mac=80ae99d2877c
+   #05 execution_agent  tx.prepare                   {'detail': "devices to change: ['Spine-2']", 'ok': True, 'tx_id': 'TX0  mac=3c754ff65b1b
+   #06 execution_agent  tx.authorize                 {'detail': 'token from auto_policy (auto_policy)', 'ok': True, 'tx_id'  mac=c15d07545895
+   #07 execution_agent  tx.apply:Spine-2             {'detail': '', 'ok': True, 'tx_id': 'TX0001-baa3553d'}  mac=9dfbf9107446
+   #08 execution_agent  tx.post_check                {'detail': "observed state violated=['bgp-all-sessions', 'redundancy-l  mac=b38347606d2a
+   #09 execution_agent  tx.rollback:Spine-2          {'detail': 'restored captured configuration', 'ok': True, 'tx_id': 'TX  mac=8fd38df085d4
+   #10 execution_agent  tx.restore_verification      {'detail': 'all touched devices match captured config', 'ok': True, 't  mac=2316c6ba893a
+   #11 execution_agent  tx.end                       {'applied': ['Spine-2'], 'failure': "post-check failed: ['bgp-all-sess  mac=0752e7cd603b
+chain verification: (True, None)
+record saved to demos/output/demo3_failed_deployment_rollback__llm.json

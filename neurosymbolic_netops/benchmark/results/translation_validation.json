@@ -1,0 +1,197 @@
+{
+ "arista_eos/base": {
+  "target": "arista_eos",
+  "equivalent_on_intents": true,
+  "ios_violated": [],
+  "target_violated": [],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "ACL 'log' keyword not translated",
+   "duplex is folded into 'speed forced'"
+  ]
+ },
+ "arista_eos/remote_as": {
+  "target": "arista_eos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "ACL 'log' keyword not translated",
+   "duplex is folded into 'speed forced'"
+  ]
+ },
+ "arista_eos/acl_deny_lan": {
+  "target": "arista_eos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "reach-lan10-lan20",
+   "redundancy-lan10-lan20",
+   "svc-http-lan10-lan20",
+   "svc-https-lan10-lan20"
+  ],
+  "target_violated": [
+   "reach-lan10-lan20",
+   "redundancy-lan10-lan20",
+   "svc-http-lan10-lan20",
+   "svc-https-lan10-lan20"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "ACL 'log' keyword not translated",
+   "duplex is folded into 'speed forced'"
+  ]
+ },
+ "arista_eos/shutdown": {
+  "target": "arista_eos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "ACL 'log' keyword not translated",
+   "duplex is folded into 'speed forced'"
+  ]
+ },
+ "arista_eos/route_map_drop": {
+  "target": "arista_eos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "ACL 'log' keyword not translated",
+   "duplex is folded into 'speed forced'"
+  ]
+ },
+ "juniper_junos/base": {
+  "target": "juniper_junos",
+  "equivalent_on_intents": true,
+  "ios_violated": [],
+  "target_violated": [],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+   "speed/duplex statements are platform dependent",
+   "IOS implicit BGP re-advertisement is modelled with an explicit export policy"
+  ]
+ },
+ "juniper_junos/remote_as": {
+  "target": "juniper_junos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+   "speed/duplex statements are platform dependent",
+   "IOS implicit BGP re-advertisement is modelled with an explicit export policy"
+  ]
+ },
+ "juniper_junos/acl_deny_lan": {
+  "target": "juniper_junos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "reach-lan10-lan20",
+   "redundancy-lan10-lan20",
+   "svc-http-lan10-lan20",
+   "svc-https-lan10-lan20"
+  ],
+  "target_violated": [
+   "reach-lan10-lan20",
+   "redundancy-lan10-lan20",
+   "svc-http-lan10-lan20",
+   "svc-https-lan10-lan20"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+   "speed/duplex statements are platform dependent",
+   "IOS implicit BGP re-advertisement is modelled with an explicit export policy"
+  ]
+ },
+ "juniper_junos/shutdown": {
+  "target": "juniper_junos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+   "speed/duplex statements are platform dependent",
+   "IOS implicit BGP re-advertisement is modelled with an explicit export policy"
+  ]
+ },
+ "juniper_junos/route_map_drop": {
+  "target": "juniper_junos",
+  "equivalent_on_intents": true,
+  "ios_violated": [
+   "redundancy-lan20-lan10"
+  ],
+  "target_violated": [
+   "redundancy-lan20-lan10"
+  ],
+  "differences": {},
+  "target_parse_issues": [],
+  "target_parse_warnings": [],
+  "unsupported_notes": [
+   "IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+   "speed/duplex statements are platform dependent",
+   "IOS implicit BGP re-advertisement is modelled with an explicit export policy"
+  ]
+ }
+}

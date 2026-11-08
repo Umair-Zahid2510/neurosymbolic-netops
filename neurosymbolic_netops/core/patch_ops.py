@@ -282,6 +282,30 @@ class SetRouteMapEntry(_Op):
         return f"{self.device} route-map {self.route_map} {self.action} {self.seq}"
 
 
+class SetPrefixListEntry(_Op):
+    """Create or replace one prefix-list entry; action=None deletes it."""
+    op: Literal["set_prefix_list_entry"] = "set_prefix_list_entry"
+    prefix_list: str
+    seq: int = Field(ge=1)
+    action: Optional[Literal["permit", "deny"]] = None
+    prefix: Optional[str] = None
+
+    def apply(self, net: Network) -> None:
+        from core.config_ir import PrefixList, PrefixListEntry
+        dev = self._dev(net)
+        pl = dev.prefix_lists.setdefault(self.prefix_list, PrefixList(name=self.prefix_list))
+        pl.entries = [e for e in pl.entries if e.seq != self.seq]
+        if self.action is None:
+            return
+        if not self.prefix:
+            raise PatchError("prefix required")
+        pl.entries.append(PrefixListEntry(seq=self.seq, action=self.action, prefix=self.prefix))
+        pl.entries.sort(key=lambda e: e.seq)
+
+    def describe(self) -> str:
+        return f"{self.device} prefix-list {self.prefix_list} seq {self.seq}: {self.action} {self.prefix}"
+
+
 class SetBgpNetwork(_Op):
     op: Literal["set_bgp_network"] = "set_bgp_network"
     prefix: str
@@ -309,7 +333,7 @@ class SetBgpNetwork(_Op):
 PatchOp = Annotated[Union[
     SetInterfaceEnabled, SetInterfaceMtu, SetInterfaceSpeedDuplex, BindAcl, CreateAcl, RemoveAclRule,
     InsertAclRule, SetBgpNeighborRemoteAs, SetBgpNeighborPassword, SetBgpNeighborActivated,
-    SetBgpNeighborRouteMap, SetRouteMapEntry, SetBgpNetwork,
+    SetBgpNeighborRouteMap, SetRouteMapEntry, SetPrefixListEntry, SetBgpNetwork,
 ], Field(discriminator="op")]
 
 

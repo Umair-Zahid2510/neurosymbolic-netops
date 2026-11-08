@@ -1,0 +1,63 @@
+
+====================================================================================================
+INCIDENT DEMO1-BGP
+====================================================================================================
+Components: {"diagnosis": "rule_based", "planning": "rule_based", "verifier": "local_symbolic+ir_static", "actuation": "inmemory/SIMULATED", "approval": "auto_policy", "telemetry": "local_simulation"}
+Injected ground truth (hidden from the agents):
+   - [BGP] Leaf-1 neighbor 10.0.1.1 remote-as 65099
+
+====================================================================================================
+TIER 1  Telemetry -> edge detection -> anomaly digest
+====================================================================================================
+raw telemetry 147788 bytes -> digest 2211 bytes; detection 25910.05 ms
+   A01 bgp_peer_mismatch  dev=Leaf-1 intf=None peer=10.0.1.1 x1 via syslog_classifier: [bgp] %BGP-3-NOTIFICATION: sent to neighbor 10.0.1.1 2/2 (bad remote AS) FDE8
+   A02 bgp_peer_mismatch  dev=Spine-1 intf=None peer=10.0.1.2 x1 via syslog_classifier: [bgp] %BGP-3-NOTIFICATION: received from neighbor 10.0.1.2 2/2 (peer in wrong AS
+   A03 bgp_session_down   dev=Leaf-1 intf=None peer=10.0.1.1 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down - BGP Notification
+   A04 bgp_session_down   dev=Spine-1 intf=None peer=10.0.1.2 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.1.2 Down BGP Notification
+   A05 route_missing      dev=Spine-1 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.1.10.0/24 removed from RIB (no 
+Topology-ranked candidates: [('Spine-1', 3.57), ('Leaf-1', 2.97)]
+Intents violated at detection: ['bgp-all-sessions', 'bgp-peer-consistency', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+
+====================================================================================================
+TIER 2  Diagnosis (read-only skills)
+====================================================================================================
+[rule_based] 1 rule-matched hypotheses over 4 candidate devices
+   H1: Leaf-1 bgp_remote_as_mismatch @ 10.0.1.1 :: Leaf-1 neighbor 10.0.1.1 remote-as 65099 but Spine-1 is AS 65000  evidence=['E-ec939a2f', 'E-d01b3355']
+skill calls: 28; first five: C001:check_link(device=Leaf-1,interface=eth1), C002:check_link(device=Leaf-1,interface=eth2), C003:check_link(device=Leaf-2,interface=eth1), C004:check_link(device=Leaf-2,interface=eth2), C005:bgp_summary(device=Leaf-1)
+
+====================================================================================================
+TIER 2/3  Planning <-> symbolic verification (reflection loop)
+====================================================================================================
+Attempt 1 [rule_based] -> ACCEPTED  (verifier: ['local_symbolic', 'ir_static'], 24.97 ms)
+      op: Leaf-1 BGP neighbor 10.0.1.1: remote-as 65000
+Final verified plan: ['Leaf-1 BGP neighbor 10.0.1.1: remote-as 65000'] | final verification: {'passed': True, 'backends': ['local_symbolic', 'ir_static'], 'violated': [], 'fingerprint': 'c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b'}
+Approval: auto-approved: verification passed | token for plan 93e24c5a0040
+
+====================================================================================================
+TIER 4  Transactional actuation
+====================================================================================================
+TX0001-93e24c5a adapter=inmemory/SIMULATED status=COMMITTED failure=None
+   OK  capture                  fingerprint 3565d04207ac
+   OK  build_candidate          1 ops on ['Leaf-1']
+   OK  syntax_check             render/parse round-trip OK
+   OK  symbolic_verification    backends=['local_symbolic', 'ir_static'] violated=[]
+   OK  prepare                  devices to change: ['Leaf-1']
+   OK  authorize                token from auto_policy (auto_policy)
+   OK  apply:Leaf-1             
+   OK  post_check               observed state violated=[]
+   OK  commit                   change confirmed
+Configuration diff (IOS rendering):
+      --- Leaf-1 (before)
+      +++ Leaf-1 (after)
+      @@ -37,3 +37,3 @@
+        no bgp default ipv4-unicast
+      - neighbor 10.0.1.1 remote-as 65099
+      + neighbor 10.0.1.1 remote-as 65000
+        neighbor 10.0.1.1 description Spine-1
+
+====================================================================================================
+OUTCOME: repaired   final state: COMPLETED
+====================================================================================================
+State path: DETECTED -> DIAGNOSING -> ROOT_CAUSE_IDENTIFIED -> PLANNING -> VERIFYING -> APPROVED -> EXECUTING -> POST_CHECK -> COMPLETED
+Timings (ms): {'diagnose': 42.21, 'plan': 0.49, 'verify': 69.37, 'execute': 50.74, 'total': 170.94}; audit chain verified: True (11 entries)
+record saved to demos/output/demo1_bgp_single_fault__rule_based.json

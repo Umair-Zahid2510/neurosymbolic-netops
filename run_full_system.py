@@ -1,13 +1,9 @@
-"""Root-level launcher for the Neurosymbolic NetOps master benchmark suite."""
-
+"""Root-level launcher. See neurosymbolic_netops/run_full_system.py."""
+import runpy
 import sys
 from pathlib import Path
 
-# Add neurosymbolic_netops to path
-sub_dir = Path(__file__).resolve().parent / "neurosymbolic_netops"
-sys.path.insert(0, str(sub_dir))
-
-from run_full_system import run_master_suite
-
-if __name__ == "__main__":
-    run_master_suite()
+sub = Path(__file__).resolve().parent / "neurosymbolic_netops"
+sys.path.insert(0, str(sub))
+sys.argv[0] = str(sub / "run_full_system.py")
+runpy.run_path(str(sub / "run_full_system.py"), run_name="__main__")

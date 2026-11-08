@@ -1,132 +1,81 @@
-"""Multi-Vendor Configuration Dialect Translator (ConfigTrans Paradigm).
+"""Multi-vendor configuration translation via the IR, with behavioural validation in Batfish.
 
-Translates declarative patches and configuration directives across Cisco IOS,
-Juniper Junos (set-format), and Arista EOS with formal semantic equivalence checking.
+translate(ios_text, target) : parse IOS -> IR -> render target dialect (cisco_ios | juniper_junos | arista_eos)
+validate_behaviour(...)     : render a whole network in a target dialect, load it into Batfish,
+                              evaluate the same intents and BGP session table, and compare with the
+                              IOS rendering of the same IR. Equivalence is claimed ONLY for networks
+                              where this comparison passes (no SMT proof; see LIMITATIONS.md).
+
+Replaces the pre-audit regex translator, whose token-overlap "equivalence check" accepted a
+wrong MTU and rejected its own output (IMPLEMENTATION_AUDIT.md section 3.8).
 """
 
-import re
-from typing import Dict, Any, List, Optional, Tuple
+from __future__ import annotations
+
+from typing import Dict, Literal
+
+from core.config_ir import Network
+from core.parsers.ios import parse_ios
+from core.renderers.ios import render_ios
+from core.renderers.ios import ios_interface_name
+from core.renderers.vendors import eos_ifname, junos_ifname, render_eos, render_junos
+
+Dialect = Literal["cisco_ios", "juniper_junos", "arista_eos"]
+RENDER = {"cisco_ios": render_ios, "juniper_junos": render_junos, "arista_eos": render_eos}
+UNSUPPORTED = {
+    "juniper_junos": ["IOS 'log' keyword on ACL entries is not translated (Junos uses 'then syslog')",
+                      "speed/duplex statements are platform dependent",
+                      "IOS implicit BGP re-advertisement is modelled with an explicit export policy"],
+    "arista_eos": ["ACL 'log' keyword not translated", "duplex is folded into 'speed forced'"],
+}
 
 
-class VendorTranslator:
-    """Translates configuration blocks across Cisco IOS, Juniper Junos, and Arista EOS."""
+class TranslationError(ValueError):
+    pass
 
-    DIALECTS = ["cisco_ios", "juniper_junos", "arista_eos"]
 
-    @staticmethod
-    def cisco_to_junos(cisco_cmd: str, context: Optional[Dict[str, Any]] = None) -> List[str]:
-        """Translates a Cisco IOS command block to Junos set-format syntax."""
-        ctx = context or {}
-        intf = ctx.get("interface", "ge-0/0/0")
-        lines = [c.strip() for c in cisco_cmd.splitlines() if c.strip() and not c.strip().startswith("!")]
-        junos_cmds = []
+def translate(ios_text: str, target: Dialect, hostname_hint: str = None) -> str:
+    dev = parse_ios(ios_text, hostname_hint)
+    if dev.unsupported_lines:
+        raise TranslationError(f"source has lines outside the IR, refusing to translate: {dev.unsupported_lines[:5]}")
+    return RENDER[target](dev)
 
-        for line in lines:
-            # Interface enable/disable
-            if line == "no shutdown":
-                junos_cmds.append(f"delete interfaces {intf} disable")
-            elif line == "shutdown":
-                junos_cmds.append(f"set interfaces {intf} disable")
 
-            # MTU
-            m_mtu = re.match(r"^mtu\s+(\d+)", line)
-            if m_mtu:
-                junos_cmds.append(f"set interfaces {intf} mtu {m_mtu.group(1)}")
+def validate_behaviour(network: Network, target: Dialect, topology, intents, host: str = "localhost") -> Dict:
+    """Compare Batfish's view of the IOS rendering with its view of the ``target`` rendering."""
+    from core.verification.batfish_backend import BatfishBackend
 
-            # Speed / Duplex
-            m_speed = re.match(r"^speed\s+(\S+)", line)
-            if m_speed:
-                junos_cmds.append(f"set interfaces {intf} speed {m_speed.group(1)}m")
-            m_duplex = re.match(r"^duplex\s+(\S+)", line)
-            if m_duplex:
-                junos_cmds.append(f"set interfaces {intf} link-mode {m_duplex.group(1)}-duplex")
+    class _Rendered(BatfishBackend):
+        def __init__(self, render, tag, ifname):
+            super().__init__(topology, host=host, network_name=f"netops-xlate-{tag}")
+            self._render, self._tag, self.ifname = render, tag, ifname
 
-            # BGP remote-as
-            m_bgp = re.match(r"^neighbor\s+(\S+)\s+remote-as\s+(\d+)", line)
-            if m_bgp:
-                peer, asn = m_bgp.group(1), m_bgp.group(2)
-                junos_cmds.append(f"set protocols bgp group underlay neighbor {peer} peer-as {asn}")
+        def load_snapshot(self, net):
+            import tempfile
+            from pathlib import Path
+            import hashlib
+            bf = self._session()
+            texts = {dev: self._render(cfg) for dev, cfg in sorted(net.items())}
+            name = f"{self._tag}_" + hashlib.sha256(repr(sorted(texts.items())).encode()).hexdigest()[:12]
+            if name not in bf.list_snapshots():
+                d = Path(tempfile.gettempdir()) / "netops_xlate" / name / "configs"
+                d.mkdir(parents=True, exist_ok=True)
+                for dev, text in texts.items():
+                    (d / f"{dev}.cfg").write_text(text, encoding="utf-8")
+                bf.init_snapshot(str(d.parent), name=name, overwrite=True)
+            else:
+                bf.set_snapshot(name)
+            return name
 
-            # BGP activate / deactivate
-            m_act = re.match(r"^neighbor\s+(\S+)\s+activate", line)
-            if m_act:
-                junos_cmds.append(f"delete protocols bgp group underlay neighbor {m_act.group(1)} passive")
-
-            # BGP route-map
-            m_rm = re.match(r"^neighbor\s+(\S+)\s+route-map\s+(\S+)\s+(in|out)", line)
-            if m_rm:
-                peer, policy, direction = m_rm.group(1), m_rm.group(2), "import" if m_rm.group(3) == "in" else "export"
-                junos_cmds.append(f"set protocols bgp group underlay neighbor {peer} {direction} {policy}")
-            elif line.startswith("no neighbor") and "route-map" in line:
-                m_del_rm = re.search(r"no neighbor\s+(\S+)\s+route-map\s+(\S+)\s+(in|out)", line)
-                if m_del_rm:
-                    peer, policy, direction = m_del_rm.group(1), m_del_rm.group(2), "import" if m_del_rm.group(3) == "in" else "export"
-                    junos_cmds.append(f"delete protocols bgp group underlay neighbor {peer} {direction} {policy}")
-
-            # ACL binding
-            m_acl = re.match(r"^ip access-group\s+(\S+)\s+(in|out)", line)
-            if m_acl:
-                dir_str = "input" if m_acl.group(2) == "in" else "output"
-                junos_cmds.append(f"set interfaces {intf} unit 0 family inet filter {dir_str} {m_acl.group(1)}")
-            elif line.startswith("no ip access-group"):
-                junos_cmds.append(f"delete interfaces {intf} unit 0 family inet filter")
-
-            # ACL rule removal / permit
-            if line.startswith("no deny ip "):
-                rule = line.replace("no deny ip ", "").strip()
-                junos_cmds.append(f"delete firewall family inet filter PERIMETER term drop_{rule.split()[0].replace('.', '_')}")
-            elif line.startswith("deny ip "):
-                rule = line.replace("deny ip ", "").strip()
-                prefix = rule.split()[0]
-                junos_cmds.append(f"set firewall family inet filter PERIMETER term drop_{prefix.replace('.', '_')} from source-address {prefix}/24 then discard")
-
-            # Network statement
-            m_net = re.match(r"^network\s+(\S+)\s+mask\s+(\S+)", line)
-            if m_net:
-                junos_cmds.append(f"set policy-options policy-statement ADVERTISE term LAN from route-filter {m_net.group(1)}/24 exact then accept")
-
-        return junos_cmds
-
-    @staticmethod
-    def cisco_to_arista(cisco_cmd: str) -> List[str]:
-        """Translates Cisco IOS syntax to Arista EOS (high syntactic overlap)."""
-        lines = [c.strip() for c in cisco_cmd.splitlines() if c.strip()]
-        arista_cmds = []
-        for line in lines:
-            # EOS matches IOS for most interface, BGP, and ACL operations
-            arista_cmds.append(line)
-        return arista_cmds
-
-    @staticmethod
-    def verify_semantic_equivalence(cisco_cmd: str, junos_cmd: List[str]) -> Tuple[bool, Dict[str, Any]]:
-        """Formally verifies that the Junos translation retains identical intent semantics."""
-        tokens_cisco = set(re.findall(r"\b[A-Za-z0-9_./-]+\b", cisco_cmd))
-        junos_flat = " ".join(junos_cmd)
-        tokens_junos = set(re.findall(r"\b[A-Za-z0-9_./-]+\b", junos_flat))
-
-        # Check semantic invariants
-        checks = {}
-
-        # 1. Action equivalence (shutdown vs disable)
-        if "no shutdown" in cisco_cmd:
-            checks["admin_state"] = ("delete" in junos_flat and "disable" in junos_flat)
-        elif "shutdown" in cisco_cmd:
-            checks["admin_state"] = ("set" in junos_flat and "disable" in junos_flat)
-
-        # 2. IP / Subnet preservation
-        ips_cisco = set(re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", cisco_cmd))
-        ips_junos = set(re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", junos_flat))
-        checks["ip_preservation"] = (ips_cisco == ips_junos)
-
-        # 3. ASN preservation
-        asn_matches = re.findall(r"remote-as\s+(\d+)", cisco_cmd)
-        if asn_matches:
-            checks["asn_preservation"] = any(f"peer-as {a}" in junos_flat for a in asn_matches)
-
-        # 4. Filter / ACL name preservation
-        acl_matches = re.findall(r"access-group\s+(\S+)", cisco_cmd)
-        if acl_matches:
-            checks["acl_name_preservation"] = any(a in junos_flat for a in acl_matches)
-
-        passed = all(checks.values()) if checks else True
-        return passed, {"invariants_verified": checks, "cisco_tokens": len(tokens_cisco), "junos_commands": len(junos_cmd)}
+    ifnames = {"cisco_ios": ios_interface_name, "arista_eos": eos_ifname,
+               "juniper_junos": lambda n: junos_ifname(n) + ".0"}
+    ref = _Rendered(render_ios, "ios", ios_interface_name).verify(network, intents)
+    tgt_backend = _Rendered(RENDER[target], target.split("_")[-1], ifnames[target])
+    tgt = tgt_backend.verify(network, intents)
+    warnings = tgt_backend.parse_warnings() if not tgt.parse_issues else []
+    per_intent = {c.intent_id: c.passed for c in ref.checks}
+    diff = {c.intent_id: (per_intent.get(c.intent_id), c.passed) for c in tgt.checks if per_intent.get(c.intent_id) != c.passed}
+    return {"target": target, "equivalent_on_intents": not diff and not tgt.parse_issues,
+            "ios_violated": ref.violated(), "target_violated": tgt.violated(), "differences": diff,
+            "target_parse_issues": tgt.parse_issues, "target_parse_warnings": warnings[:20],
+            "unsupported_notes": UNSUPPORTED.get(target, [])}

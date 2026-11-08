@@ -1,0 +1,69 @@
+
+====================================================================================================
+INCIDENT DEMO2-MULTI
+====================================================================================================
+Components: {"diagnosis": "llm:gemini/gemini-3.5-flash-lite (no tools)", "planning": "llm:gemini/gemini-3.5-flash-lite", "verifier": "local_symbolic+ir_static", "actuation": "inmemory/SIMULATED", "approval": "auto_policy", "telemetry": "local_simulation"}
+Injected ground truth (hidden from the agents):
+   - [ACL] Leaf-2 eth2 inbound ACL blocks BGP (tcp/179 both directions)
+   - [ROUTING] Leaf-1 no longer advertises 10.1.10.0/24
+
+====================================================================================================
+TIER 1  Telemetry -> edge detection -> anomaly digest
+====================================================================================================
+raw telemetry 152266 bytes -> digest 3097 bytes; detection 5620.61 ms
+   A01 probe_failure      dev=Leaf-2 intf=None peer=None x8 via probe_loss: probe 10.1.20.10->10.1.10.10 loss up to 100%
+   A02 bgp_session_flap   dev=Leaf-2 intf=None peer=10.0.4.1 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Hold timer expired / connection t
+   A03 bgp_session_flap   dev=Spine-2 intf=None peer=10.0.4.2 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Hold timer expired / connection t
+   A04 route_missing      dev=Leaf-2 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.1.10.0/24 removed from RIB (no 
+   A05 route_missing      dev=Spine-1 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+   A06 route_missing      dev=Spine-2 intf=None peer=None x10 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+Topology-ranked candidates: [('Leaf-2', 3.25), ('Spine-2', 2.25), ('Spine-1', 0.9), ('Leaf-1', 0.3)]
+Intents violated at detection: ['bgp-all-sessions', 'reach-lan20-lan10', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+
+====================================================================================================
+TIER 2  Diagnosis (read-only skills)
+====================================================================================================
+[llm:gemini/gemini-3.5-flash-lite (no tools)] On Leaf-2, interface GigabitEthernet0/2 has an inbound access-list 'CTRL_PLANE_FILTER' applied via 'ip access-group CTRL_PLANE_FILTER in'. This ACL explicitly denies TCP traffic for port 179 in both directions ('deny tcp any any eq 179', 'deny tcp any eq 179 any'), which blocks BGP control plane traffic coming from Spine-2 (neighbor 10.0.4.1). As a result, the BGP session between Leaf-2 and Spine-2 went down due to hold timer expiration (A02, A03), and route 10.1.10.0/24 was withdrawn (A04, A05, A06), leading to probe failures (A01).
+   H1: Leaf-2 acl_blocks_control_plane @ CTRL_PLANE_FILTER#1 :: The ACL rule on Leaf-2 GigabitEthernet0/2 blocks BGP TCP port 179 control plane traffic.  evidence=['A01', 'A02', 'A03']
+skill calls: 1; first five: C001:inspect_acl(acl=CTRL_PLANE_FILTER,device=Leaf-2)
+
+====================================================================================================
+TIER 2/3  Planning <-> symbolic verification (reflection loop)
+====================================================================================================
+Attempt 1 [llm:gemini/gemini-3.5-flash-lite] -> REJECTED  (verifier: ['local_symbolic', 'ir_static'], 11.74 ms)
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 dport=179'
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 sport=179'
+      violated after: ['isolate-admin-lan20', 'reach-lan20-lan10', 'redundancy-lan20-lan10']   NEW violations: ['isolate-admin-lan20']
+      counterexample: [local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2
+      counterexample: [local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []
+      counterexample: [local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2
+Attempt 2 [llm:gemini/gemini-3.5-flash-lite] -> REJECTED  (verifier: ['local_symbolic', 'ir_static'], 13.14 ms)
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: insert 'permit tcp 0.0.0.0/0 0.0.0.0/0 dport=179' at 0
+      violated after: ['isolate-admin-lan20', 'reach-lan20-lan10', 'redundancy-lan20-lan10']   NEW violations: ['isolate-admin-lan20']
+      counterexample: [local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2
+      counterexample: [local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []
+      counterexample: [local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2
+Attempt 3 [llm:gemini/gemini-3.5-flash-lite] -> REJECTED  (verifier: ['local_symbolic', 'ir_static'], 11.4 ms)
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 dport=179'
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 sport=179'
+      violated after: ['isolate-admin-lan20', 'reach-lan20-lan10', 'redundancy-lan20-lan10']   NEW violations: ['isolate-admin-lan20']
+      counterexample: [local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2
+      counterexample: [local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []
+      counterexample: [local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2
+Attempt 4 [llm:gemini/gemini-3.5-flash-lite] -> ADOPTED_PARTIAL_PROGRESS  (verifier: ['local_symbolic', 'ir_static'], 12.73 ms)
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 dport=179'
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 sport=179'
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: insert 'deny ip 192.168.99.0/24 0.0.0.0/0' at 0
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: insert 'permit tcp 0.0.0.0/0 0.0.0.0/0 dport=179' at 1
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: insert 'permit tcp 0.0.0.0/0 0.0.0.0/0 sport=179' at 2
+      violated after: ['reach-lan20-lan10', 'redundancy-lan20-lan10']   NEW violations: []
+      counterexample: [local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2
+      counterexample: [local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []
+
+====================================================================================================
+OUTCOME: rejected_unverified   final state: FAILED
+====================================================================================================
+State path: DETECTED -> DIAGNOSING -> ROOT_CAUSE_IDENTIFIED -> PLANNING -> VERIFYING -> PLANNING -> VERIFYING -> PLANNING -> VERIFYING -> PLANNING -> VERIFYING -> FAILED
+Timings (ms): {'diagnose': 1896.5, 'plan': 11365.63, 'verify': 60.08, 'execute': 0.0, 'total': 13329.5}; audit chain verified: True (0 entries)
+LLM usage: {'provider': 'gemini', 'model': 'gemini-3.5-flash-lite', 'calls': 7, 'prompt_tokens': 41115, 'completion_tokens': 2814, 'total_tokens': 43929, 'latency_ms': 13026.8, 'invalid_responses': 1, 'retries': 0, 'source': 'provider_reported'}
+record saved to demos/output/demo2_multifault_self_correction__llm.json

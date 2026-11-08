@@ -44,7 +44,7 @@ class RecordingProvider(LLMProvider):
 @dataclass
 class ReplayProvider(LLMProvider):
     provider: str = "gemini"
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.6-flash"
     cassette: Path = DEFAULT_CASSETTE
     source: str = "replay"
     _data: Dict[str, dict] = field(default_factory=dict)

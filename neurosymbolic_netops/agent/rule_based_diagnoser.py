@@ -208,6 +208,8 @@ class RuleBasedDiagnoser:
 
 
 class RuleBasedPlanner:
+    """One-shot repair rules plus one generic revision rule driven by verifier counterexamples
+    (``_alternative_for``)."""
     strategy = "rule_based"
 
     def __init__(self, registry: SkillRegistry):
@@ -227,9 +229,12 @@ class RuleBasedPlanner:
         for h in hypotheses:
             key = (h.device, h.fault_type, h.location)
             if exclude and key in exclude:
-                skipped.append(h.id)
-                continue
-            op = self._op_for(ctx, h, typical)
+                op = self._alternative_for(ctx, h)  # counterexample-driven revision (see docstring)
+                if op is None:
+                    skipped.append(h.id)
+                    continue
+            else:
+                op = self._op_for(ctx, h, typical)
             if op is None:
                 skipped.append(h.id)
                 continue
@@ -241,6 +246,25 @@ class RuleBasedPlanner:
         return PlanProposal(strategy=self.strategy,
                             plan=PatchPlan(ops=ops, rationale="rule-based repair per hypothesis", addresses_hypotheses=used),
                             notes=f"skipped {skipped}" if skipped else "")
+
+    def _alternative_for(self, ctx, h: Hypothesis):
+        """Revision rule (added after the test split was frozen; see EXPERIMENTAL_METHODOLOGY.md):
+        if removing/unbinding an ACL was rejected by verification, restore instead the ACL that the
+        device's other fabric uplinks use in the same direction (sibling-interface consistency)."""
+        if h.fault_type not in ("acl_blocks_intended_traffic", "acl_blocks_control_plane"):
+            return None
+        d = ctx.network[h.device]
+        acl = h.location.split("#")[0]
+        bound = [i for i in d.interfaces.values() if i.acl_in == acl]
+        if not bound:
+            return None
+        intf = bound[0]
+        siblings = [i.acl_in for i in d.interfaces.values()
+                    if i.name != intf.name and ctx.topology.link_for(h.device, i.name) and i.acl_in and i.acl_in != acl]
+        if not siblings:
+            return None
+        target = max(set(siblings), key=siblings.count)
+        return BindAcl(device=h.device, interface=intf.name, direction="in", acl=target)
 
     def _op_for(self, ctx, h: Hypothesis, typical):
         net = ctx.network

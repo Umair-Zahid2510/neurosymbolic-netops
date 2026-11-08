@@ -156,3 +156,36 @@ TEMPLATES: Dict[str, Callable[..., FaultSpec]] = {
                             md5_unilateral, neighbor_deactivated, missing_network, route_map_drop, acl_deny_lan,
                             acl_deny_service, acl_supernet_deny, acl_block_bgp, acl_transit_deny)
 }
+
+
+# ---------------------------------------------------------------------------------------------
+# NOVEL templates: added AFTER the rule-based baseline was frozen (git commit a9fd5c4) and used
+# only in the held-out test split. They exercise outbound ACLs on spines and prefix-specific
+# route filtering, which the rule author did not write dedicated rules for.
+# ---------------------------------------------------------------------------------------------
+def acl_out_deny_spine(net, topo, dev, intf, **_):
+    peer_dev, _ = topo.link_for(dev, intf).other(dev)
+    lan = lan_of(net, topo, peer_dev)
+    other = [lan_of(net, topo, d) for d in sorted(net) if lan_of(net, topo, d) and lan_of(net, topo, d) != lan][0]
+    return FaultSpec(template="acl_out_deny_spine", category="ACL", culprit=dev, location=f"{dev}:{intf}",
+                     description=f"{dev} {intf} outbound ACL drops {other} -> {lan}",
+                     inject=_plan(CreateAcl(device=dev, acl="EGRESS_GUARD", rules=[
+                         AclRule(action="deny", protocol="ip", src=other, dst=lan), AclRule(action="permit")]),
+                         BindAcl(device=dev, interface=intf, direction="out", acl="EGRESS_GUARD"), why="inject"))
+
+
+def route_map_prefix_filter(net, topo, dev, nbr, **_):
+    from core.patch_ops import SetPrefixListEntry
+    owner = topo.owner_of_ip(nbr, net)[0]
+    lan = lan_of(net, topo, owner) or lan_of(net, topo, [d for d in sorted(net) if lan_of(net, topo, d)][0])
+    victim = [lan_of(net, topo, d) for d in sorted(net) if lan_of(net, topo, d)][0]
+    return FaultSpec(template="route_map_prefix_filter", category="BGP", culprit=dev, location=f"{dev}:{nbr}",
+                     description=f"{dev} import filter from {nbr} drops {victim} only",
+                     inject=_plan(SetPrefixListEntry(device=dev, prefix_list="PL_BLOCK", seq=5, action="permit", prefix=victim),
+                                  SetRouteMapEntry(device=dev, route_map="RM_IMPORT", seq=10, action="deny", match_prefix_list="PL_BLOCK"),
+                                  SetRouteMapEntry(device=dev, route_map="RM_IMPORT", seq=20, action="permit"),
+                                  SetBgpNeighborRouteMap(device=dev, neighbor=nbr, direction="in", route_map="RM_IMPORT"),
+                                  why="inject"))
+
+
+NOVEL_TEMPLATES = {"acl_out_deny_spine": acl_out_deny_spine, "route_map_prefix_filter": route_map_prefix_filter}

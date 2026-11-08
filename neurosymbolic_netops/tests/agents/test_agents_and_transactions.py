@@ -135,8 +135,11 @@ def test_e2e_single_fault_repaired(testbed):
 def test_e2e_unsafe_repair_is_blocked_by_gate_but_deployed_without_it(testbed):
     net = fault(testbed, "acl_block_bgp", dev="Leaf-2", intf="eth2")
     gated = run_incident(testbed, "g", net, SystemConfig()).record
-    assert gated.outcome in ("no_plan", "rejected_unverified") and gated.transaction is None
-    assert any(a.disposition == "rejected" and "isolate-admin-lan20" in a.new_violations for a in gated.attempts)
+    # the unsafe first plan is rejected with an isolation counterexample; the revision restores the
+    # perimeter ACL and only that verified plan is deployed
+    assert [a.disposition for a in gated.attempts] == ["rejected", "accepted"]
+    assert gated.attempts[0].new_violations == ["isolate-admin-lan20"]
+    assert gated.outcome == "repaired" and gated.transaction.post_check_violations == []
     ungated = run_incident(testbed, "u", net, SystemConfig(verifier="none")).record
     assert ungated.transaction.applied_devices == ["Leaf-2"]           # the unsafe change reached the device
     assert ungated.outcome == "rolled_back" and "isolate-admin-lan20" in ungated.transaction.post_check_violations

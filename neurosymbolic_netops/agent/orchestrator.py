@@ -51,6 +51,7 @@ class IncidentRun:
     raw_bytes: int
     audit_ok: bool
     audit_entries: int
+    final_network: Optional[Network] = None
 
 
 def build_supervisor(tb: Testbed, observed: Network, cfg: SystemConfig, audit: AuditLog) -> Supervisor:
@@ -90,4 +91,5 @@ def run_incident(tb: Testbed, incident_id: str, faulty: Network, cfg: SystemConf
     rec = sup.handle(incident_id, faulty, digest, events)
     ok, _ = audit.verify()
     return IncidentRun(record=rec, detection_ms=round(detection_ms, 2), digest_bytes=digest.digest_bytes,
-                       raw_bytes=raw_bytes, audit_ok=ok, audit_entries=len(audit.entries))
+                       raw_bytes=raw_bytes, audit_ok=ok, audit_entries=len(audit.entries),
+                       final_network=sup.exe.engine.adapter.observed_network() if sup.exe else None)

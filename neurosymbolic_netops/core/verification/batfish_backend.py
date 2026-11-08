@@ -60,6 +60,7 @@ class BatfishBackend:
         self.workdir = Path(workdir or tempfile.gettempdir()) / "netops_batfish_snapshots"
         self._bf = None
         self.last_snapshot: Optional[str] = None
+        self.ifname = ios_interface_name  # canonical -> dialect interface name used in locations
 
     # ------------------------------------------------------------- session/snapshot
     def _session(self):
@@ -73,15 +74,18 @@ class BatfishBackend:
         return self._bf
 
     def load_snapshot(self, network: Network) -> str:
+        import hashlib
         bf = self._session()
-        name = "s_" + network_fingerprint(network)[:16]
+        texts = {dev: render_ios(cfg) for dev, cfg in sorted(network.items())}
+        # cache key = hash of the exact rendered text (a renderer change must not reuse a snapshot)
+        name = "s_" + hashlib.sha256(repr(sorted(texts.items())).encode()).hexdigest()[:16]
         if name in bf.list_snapshots():
             bf.set_snapshot(name)
         else:
             d = self.workdir / name / "configs"
             d.mkdir(parents=True, exist_ok=True)
-            for dev, cfg in network.items():
-                (d / f"{dev}.cfg").write_text(render_ios(cfg), encoding="utf-8")
+            for dev, text in texts.items():
+                (d / f"{dev}.cfg").write_text(text, encoding="utf-8")
             bf.init_snapshot(str(d.parent), name=name, overwrite=True)
         self.last_snapshot = name
         return name
@@ -122,7 +126,7 @@ class BatfishBackend:
 
     def _start(self, device: str, interface: Optional[str]) -> str:
         if interface:
-            return f"@enter({self._node(device)}[{ios_interface_name(interface)}])"
+            return f"@enter({self._node(device)}[{self.ifname(interface)}])"
         return self._node(device)
 
     @staticmethod

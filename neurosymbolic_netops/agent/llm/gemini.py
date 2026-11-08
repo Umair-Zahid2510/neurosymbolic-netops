@@ -12,7 +12,7 @@ from agent.llm.base import ChatResult, LLMError, LLMProvider, RetryableLLMError,
 @dataclass
 class GeminiProvider(LLMProvider):
     provider: str = "gemini"
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.6-flash"
     api_key: Optional[str] = None
     client: object = None  # injectable for tests
 

@@ -1,0 +1,81 @@
+
+====================================================================================================
+INCIDENT DEMO2-MULTI
+====================================================================================================
+Components: {"diagnosis": "rule_based", "planning": "rule_based", "verifier": "local_symbolic+ir_static", "actuation": "inmemory/SIMULATED", "approval": "auto_policy", "telemetry": "local_simulation"}
+Injected ground truth (hidden from the agents):
+   - [ACL] Leaf-2 eth2 inbound ACL blocks BGP (tcp/179 both directions)
+   - [ROUTING] Leaf-1 no longer advertises 10.1.10.0/24
+
+====================================================================================================
+TIER 1  Telemetry -> edge detection -> anomaly digest
+====================================================================================================
+raw telemetry 152266 bytes -> digest 3097 bytes; detection 6271.85 ms
+   A01 probe_failure      dev=Leaf-2 intf=None peer=None x8 via probe_loss: probe 10.1.20.10->10.1.10.10 loss up to 100%
+   A02 bgp_session_flap   dev=Leaf-2 intf=None peer=10.0.4.1 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Hold timer expired / connection t
+   A03 bgp_session_flap   dev=Spine-2 intf=None peer=10.0.4.2 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Hold timer expired / connection t
+   A04 route_missing      dev=Leaf-2 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.1.10.0/24 removed from RIB (no 
+   A05 route_missing      dev=Spine-1 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+   A06 route_missing      dev=Spine-2 intf=None peer=None x10 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+Topology-ranked candidates: [('Leaf-2', 3.25), ('Spine-2', 2.25), ('Spine-1', 0.9), ('Leaf-1', 0.3)]
+Intents violated at detection: ['bgp-all-sessions', 'reach-lan20-lan10', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+
+====================================================================================================
+TIER 2  Diagnosis (read-only skills)
+====================================================================================================
+[rule_based] 3 rule-matched hypotheses over 4 candidate devices
+   H1: Leaf-2 acl_blocks_control_plane @ CTRL_PLANE_FILTER#0 :: Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any any eq 179' denies BGP TCP/179 from 10.0.4.1  evidence=['E-2dfdc264']
+   H2: Leaf-2 acl_blocks_control_plane @ CTRL_PLANE_FILTER#1 :: Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any eq 179 any' denies BGP TCP/179 replies from 10.0.4.1  evidence=['E-230bee7d']
+   H3: Leaf-1 missing_prefix_advertisement @ 10.1.10.0/24 :: Leaf-1 owns 10.1.10.0/24 but does not advertise it into BGP  evidence=['E-fa0dfee0']
+skill calls: 29; first five: C001:check_link(device=Leaf-1,interface=eth1), C002:check_link(device=Leaf-1,interface=eth2), C003:check_link(device=Leaf-2,interface=eth1), C004:check_link(device=Leaf-2,interface=eth2), C005:bgp_summary(device=Leaf-1)
+
+====================================================================================================
+TIER 2/3  Planning <-> symbolic verification (reflection loop)
+====================================================================================================
+Attempt 1 [rule_based] -> REJECTED  (verifier: ['local_symbolic', 'ir_static'], 19.13 ms)
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 dport=179'
+      op: Leaf-2 ACL CTRL_PLANE_FILTER: remove 'deny tcp 0.0.0.0/0 0.0.0.0/0 sport=179'
+      op: Leaf-1 BGP: advertise 10.1.10.0/24
+      violated after: ['isolate-admin-lan20']   NEW violations: ['isolate-admin-lan20']
+      counterexample: [local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2
+Attempt 2 [rule_based] -> ACCEPTED  (verifier: ['local_symbolic', 'ir_static'], 17.26 ms)
+      op: Leaf-2 eth2: bind ACL PERIMETER_SECURITY_POLICY in
+      op: Leaf-1 BGP: advertise 10.1.10.0/24
+Final verified plan: ['Leaf-2 eth2: bind ACL PERIMETER_SECURITY_POLICY in', 'Leaf-1 BGP: advertise 10.1.10.0/24'] | final verification: {'passed': True, 'backends': ['local_symbolic', 'ir_static'], 'violated': [], 'fingerprint': 'a5e85a3086822eed157d08a1318c87d6f1740b80d3e5260337f228315f3b795b'}
+Approval: auto-approved: verification passed | token for plan 45ee808f02cc
+
+====================================================================================================
+TIER 4  Transactional actuation
+====================================================================================================
+TX0001-45ee808f adapter=inmemory/SIMULATED status=COMMITTED failure=None
+   OK  capture                  fingerprint 4db176908dd5
+   OK  build_candidate          2 ops on ['Leaf-1', 'Leaf-2']
+   OK  syntax_check             render/parse round-trip OK
+   OK  symbolic_verification    backends=['local_symbolic', 'ir_static'] violated=[]
+   OK  prepare                  devices to change: ['Leaf-1', 'Leaf-2']
+   OK  authorize                token from auto_policy (auto_policy)
+   OK  apply:Leaf-1             
+   OK  apply:Leaf-2             
+   OK  post_check               observed state violated=[]
+   OK  commit                   change confirmed
+Configuration diff (IOS rendering):
+      --- Leaf-1 (before)
+      +++ Leaf-1 (after)
+      @@ -43,2 +43,3 @@
+        address-family ipv4 unicast
+      +  network 10.1.10.0 mask 255.255.255.0
+         maximum-paths 2
+      --- Leaf-2 (before)
+      +++ Leaf-2 (after)
+      @@ -26,3 +26,3 @@
+        ip address 10.0.4.2 255.255.255.252
+      - ip access-group CTRL_PLANE_FILTER in
+      + ip access-group PERIMETER_SECURITY_POLICY in
+        mtu 1500
+
+====================================================================================================
+OUTCOME: repaired   final state: COMPLETED
+====================================================================================================
+State path: DETECTED -> DIAGNOSING -> ROOT_CAUSE_IDENTIFIED -> PLANNING -> VERIFYING -> PLANNING -> VERIFYING -> APPROVED -> EXECUTING -> POST_CHECK -> COMPLETED
+Timings (ms): {'diagnose': 26.66, 'plan': 0.96, 'verify': 62.47, 'execute': 36.76, 'total': 134.21}; audit chain verified: True (12 entries)
+record saved to demos/output/demo2_multifault_self_correction__rule_based.json

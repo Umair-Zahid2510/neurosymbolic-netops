@@ -1,0 +1,82 @@
+
+====================================================================================================
+INCIDENT DEMO3-ROLLBACK
+====================================================================================================
+Components: {"diagnosis": "rule_based", "planning": "rule_based", "verifier": "local_symbolic+ir_static", "actuation": "inmemory/SIMULATED", "approval": "auto_policy", "telemetry": "local_simulation"}
+Injected ground truth (hidden from the agents):
+   - [LINK] Spine-2 eth1 administratively shut down
+
+====================================================================================================
+TIER 1  Telemetry -> edge detection -> anomaly digest
+====================================================================================================
+raw telemetry 143164 bytes -> digest 3040 bytes; detection 4491.62 ms
+   A01 link_down          dev=Leaf-1 intf=eth2 peer=None x10 via syslog_classifier+counter_state: [link] %LINK-3-UPDOWN: Interface GigabitEthernet0/2, changed state to down
+   A02 link_down          dev=Spine-2 intf=eth1 peer=None x9 via syslog_classifier+counter_state: [link] %LINK-5-CHANGED: Interface GigabitEthernet0/1 changed state to administra
+   A03 bgp_session_down   dev=Leaf-1 intf=None peer=10.0.3.1 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.1 Down Interface flap
+   A04 bgp_session_down   dev=Spine-2 intf=None peer=10.0.3.2 x1 via syslog_classifier: [bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down - Interface flap
+   A05 route_missing      dev=Leaf-1 intf=None peer=None x9 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.0.3.0/30 removed from RIB (no v
+   A06 route_missing      dev=Spine-2 intf=None peer=None x10 via syslog_classifier+counter_state: [routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remainin
+Topology-ranked candidates: [('Leaf-1', 3.48), ('Spine-2', 3.48)]
+Intents violated at detection: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+
+====================================================================================================
+TIER 2  Diagnosis (read-only skills)
+====================================================================================================
+[rule_based] 1 rule-matched hypotheses over 4 candidate devices
+   H1: Spine-2 interface_admin_down @ eth1 :: Spine-2 eth1 is administratively down  evidence=['E-cd2e7556']
+skill calls: 28; first five: C001:check_link(device=Leaf-1,interface=eth1), C002:check_link(device=Leaf-1,interface=eth2), C003:check_link(device=Leaf-2,interface=eth1), C004:check_link(device=Leaf-2,interface=eth2), C005:bgp_summary(device=Leaf-1)
+
+====================================================================================================
+TIER 2/3  Planning <-> symbolic verification (reflection loop)
+====================================================================================================
+Attempt 1 [rule_based] -> ACCEPTED  (verifier: ['local_symbolic', 'ir_static'], 14.81 ms)
+      op: Spine-2 eth1: no shutdown
+Final verified plan: ['Spine-2 eth1: no shutdown'] | final verification: {'passed': True, 'backends': ['local_symbolic', 'ir_static'], 'violated': [], 'fingerprint': 'c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b'}
+Approval: auto-approved: verification passed | token for plan baa3553d5072
+
+====================================================================================================
+TIER 4  Transactional actuation
+====================================================================================================
+TX0001-baa3553d adapter=inmemory/SIMULATED status=ROLLED_BACK failure=post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']
+   OK  capture                  fingerprint 58ece6dacbad
+   OK  build_candidate          1 ops on ['Spine-2']
+   OK  syntax_check             render/parse round-trip OK
+   OK  symbolic_verification    backends=['local_symbolic', 'ir_static'] violated=[]
+   OK  prepare                  devices to change: ['Spine-2']
+   OK  authorize                token from auto_policy (auto_policy)
+   OK  apply:Spine-2            
+   ERR post_check               observed state violated=['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-l
+   OK  rollback:Spine-2         restored captured configuration
+   OK  restore_verification     all touched devices match captured config
+Configuration diff (IOS rendering):
+      --- Spine-2 (before)
+      +++ Spine-2 (after)
+      @@ -11,3 +11,3 @@
+        duplex full
+      - shutdown
+      + no shutdown
+       !
+
+====================================================================================================
+OUTCOME: rolled_back   final state: FAILED
+====================================================================================================
+State path: DETECTED -> DIAGNOSING -> ROOT_CAUSE_IDENTIFIED -> PLANNING -> VERIFYING -> APPROVED -> EXECUTING -> POST_CHECK -> ROLLBACK -> FAILED
+Timings (ms): {'diagnose': 26.26, 'plan': 0.23, 'verify': 39.22, 'execute': 52.31, 'total': 121.33}; audit chain verified: True (12 entries)
+
+====================================================================================================
+AUDIT RECORD (HMAC-SHA256 chained)
+====================================================================================================
+   #00 execution_agent  tx.begin                     {'adapter': 'inmemory', 'adapter_label': 'SIMULATED', 'ops': ['Spine-2  mac=6cd3f3cefd6b
+   #01 execution_agent  tx.capture                   {'detail': 'fingerprint 58ece6dacbad', 'ok': True, 'tx_id': 'TX0001-ba  mac=2cebbdee14fe
+   #02 execution_agent  tx.build_candidate           {'detail': "1 ops on ['Spine-2']", 'ok': True, 'tx_id': 'TX0001-baa355  mac=bcc5f5926cb3
+   #03 execution_agent  tx.syntax_check              {'detail': 'render/parse round-trip OK', 'ok': True, 'tx_id': 'TX0001-  mac=c78eb33c08da
+   #04 execution_agent  tx.symbolic_verification     {'detail': "backends=['local_symbolic', 'ir_static'] violated=[]", 'ok  mac=190a62494187
+   #05 execution_agent  tx.prepare                   {'detail': "devices to change: ['Spine-2']", 'ok': True, 'tx_id': 'TX0  mac=b577aa7a802b
+   #06 execution_agent  tx.authorize                 {'detail': 'token from auto_policy (auto_policy)', 'ok': True, 'tx_id'  mac=988cff1947f0
+   #07 execution_agent  tx.apply:Spine-2             {'detail': '', 'ok': True, 'tx_id': 'TX0001-baa3553d'}  mac=339372de3ad5
+   #08 execution_agent  tx.post_check                {'detail': "observed state violated=['bgp-all-sessions', 'redundancy-l  mac=94d9bfecef39
+   #09 execution_agent  tx.rollback:Spine-2          {'detail': 'restored captured configuration', 'ok': True, 'tx_id': 'TX  mac=68d249415cfc
+   #10 execution_agent  tx.restore_verification      {'detail': 'all touched devices match captured config', 'ok': True, 't  mac=f6edf33eaf4a
+   #11 execution_agent  tx.end                       {'applied': ['Spine-2'], 'failure': "post-check failed: ['bgp-all-sess  mac=4fa20421687b
+chain verification: (True, None)
+record saved to demos/output/demo3_failed_deployment_rollback__rule_based.json

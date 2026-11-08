@@ -177,7 +177,7 @@ def provider_from_env(mode: Optional[str] = None) -> LLMProvider:
     common = dict(timeout_s=float(os.environ.get("NETOPS_LLM_TIMEOUT_S", 60)),
                   max_retries=int(os.environ.get("NETOPS_LLM_MAX_RETRIES", 4)),
                   temperature=float(os.environ["NETOPS_LLM_TEMPERATURE"]) if os.environ.get("NETOPS_LLM_TEMPERATURE") else 0.2)
-    model = os.environ.get("NETOPS_LLM_MODEL") or ("gemini-2.5-flash" if name == "gemini" else "gpt-4.1-mini")
+    model = os.environ.get("NETOPS_LLM_MODEL") or ("gemini-3.6-flash" if name == "gemini" else "gpt-4.1-mini")
     if (mode or os.environ.get("NETOPS_LLM_MODE")) == "offline":
         from agent.llm.replay import ReplayProvider
         return ReplayProvider(provider=name, model=model)
