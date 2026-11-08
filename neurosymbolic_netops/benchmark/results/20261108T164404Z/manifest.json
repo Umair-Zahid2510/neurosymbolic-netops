@@ -1,0 +1,16 @@
+{
+  "run_id": "20261108T164404Z",
+  "git_sha": "a13deaa4c9de9ee64554410276837c208fb16a85",
+  "conditions": [
+    "C1b"
+  ],
+  "skipped": {},
+  "splits": "test",
+  "trials": 1,
+  "oracle": "batfish",
+  "scenarios": 38,
+  "python": "3.12.4",
+  "llm": null,
+  "errors": 0,
+  "wall_seconds": 751.8
+}

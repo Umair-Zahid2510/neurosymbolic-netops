@@ -1,0 +1,140 @@
+{
+  "C1b/test": {
+    "runs": 38,
+    "top1": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "top3": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "repaired": {
+      "mean": 0.9474,
+      "ci95": [
+        0.8684,
+        1.0
+      ]
+    },
+    "final_intents_satisfied": {
+      "mean": 0.9474,
+      "ci95": [
+        0.8684,
+        1.0
+      ]
+    },
+    "restored_to_baseline": {
+      "mean": 0.5263,
+      "ci95": [
+        0.3684,
+        0.6842
+      ]
+    },
+    "unsafe_deployed": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "rolled_back": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "precision": {
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ]
+    },
+    "recall": {
+      "mean": 0.9868,
+      "ci95": [
+        0.9605,
+        1.0
+      ]
+    },
+    "f1": {
+      "mean": 0.9912,
+      "ci95": [
+        0.9737,
+        1.0
+      ]
+    },
+    "fault_recall": {
+      "mean": 0.9825,
+      "ci95": [
+        0.9474,
+        1.0
+      ]
+    },
+    "attempts": {
+      "mean": 1.21,
+      "median": 1.0
+    },
+    "gate_rejections": {
+      "mean": 0.21,
+      "median": 0.0
+    },
+    "tool_calls": {
+      "mean": 32.82,
+      "median": 28.0
+    },
+    "llm_calls": {
+      "mean": 0.0,
+      "median": 0.0
+    },
+    "prompt_tokens": {
+      "mean": 0.0,
+      "median": 0.0
+    },
+    "completion_tokens": {
+      "mean": 0.0,
+      "median": 0.0
+    },
+    "total_ms": {
+      "mean": 144.67,
+      "median": 122.72
+    },
+    "detection_ms": {
+      "mean": 98.08,
+      "median": 56.39
+    },
+    "diagnose_ms": {
+      "mean": 38.52,
+      "median": 31.93
+    },
+    "plan_ms": {
+      "mean": 2.05,
+      "median": 0.74
+    },
+    "verify_ms": {
+      "mean": 55.76,
+      "median": 47.19
+    },
+    "execute_ms": {
+      "mean": 42.06,
+      "median": 36.67
+    },
+    "llm_latency_ms": {
+      "mean": 0.0,
+      "median": 0.0
+    },
+    "rollback_restore_verified": "0/0",
+    "outcomes": {
+      "no_plan": 1,
+      "rejected_unverified": 1,
+      "repaired": 36
+    }
+  }
+}
