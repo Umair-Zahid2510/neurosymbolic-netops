@@ -8,3 +8,4 @@ __pycache__/
 neurosymbolic_netops/benchmark/results/_scratch/
 neurosymbolic_netops/runtime/
 neurosymbolic_netops/runtime/
+*.zip
