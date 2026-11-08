@@ -1,0 +1,26 @@
+incident_id,fault_category,description,ground_truth_culprit,identified_culprit,localization_correct,baseline_repaired,neurosymbolic_repaired,invariant_violations_caught,reflection_turns,watchdog_rollback,token_reduction_pct,prompt_tokens,completion_tokens,latency_ms
+FAULT_LINK_001,LINK,Leaf-1 interface eth1 down via administrative shutdown,Leaf-1,Leaf-1,True,True,True,0,1,False,46.73,424,98,30.66
+FAULT_LINK_002,LINK,Spine-2 interface eth2 down via administrative shutdown,Spine-2,Spine-2,True,True,True,0,1,False,48.31,398,99,29.06
+FAULT_LINK_003,LINK,MTU mismatch on Leaf-2 eth1 (1400 vs 1500),Leaf-2,Leaf-2,True,True,True,0,1,False,47.69,408,97,30.57
+FAULT_LINK_004,LINK,Speed/Duplex mismatch on Spine-1 eth1 (100/half vs 1000/full),Spine-1,Spine-1,True,True,True,0,1,False,48.06,402,105,27.03
+FAULT_LINK_005,LINK,Leaf-2 eth2 disabled via shutdown,Leaf-2,Leaf-2,True,True,True,0,1,False,47.93,403,98,28.02
+FAULT_BGP_001,BGP,BGP remote-as mismatch on Leaf-1 for Spine-1 (65099 instead of 65000),Leaf-1,Leaf-1,True,True,True,0,1,False,47.7,409,108,26.54
+FAULT_BGP_002,BGP,Missing BGP network advertisement for 10.1.10.0/24 on Leaf-1,Leaf-1,Leaf-1,True,True,True,0,1,False,18.33,637,110,30.05
+FAULT_BGP_003,BGP,Erroneous route-map DROP_ALL denying outbound prefix export to Leaf-2 on Spine-1,Spine-1,Spine-1,True,False,True,1,2,False,46.32,965,207,30.63
+FAULT_BGP_004,BGP,BGP MD5 password authentication mismatch on Leaf-2 towards Spine-1,Leaf-2,Leaf-2,True,True,True,0,1,False,47.15,417,111,27.25
+FAULT_BGP_005,BGP,Spine-2 neighbor 10.0.3.2 not activated under BGP,Spine-2,Spine-2,True,True,True,0,1,False,47.88,406,103,38.07
+FAULT_ACL_001,ACL,Leaf-1 inbound ACL erroneously dropping subnet 10.1.20.0/24,Leaf-1,Leaf-1,True,False,True,1,2,False,36.18,1123,247,39.21
+FAULT_ACL_002,ACL,Leaf-2 ACL blocking HTTP/HTTPS web traffic (ports 80 and 443),Leaf-2,Leaf-2,True,True,True,0,1,False,36.0,512,129,31.61
+FAULT_ACL_003,ACL,Spine-1 ACL blocking BGP TCP port 179 on interface eth1,Spine-1,Spine-1,True,True,True,0,1,False,45.26,450,104,29.63
+FAULT_ACL_004,ACL,Leaf-2 inbound ACL dropping ingress packets from Host LAN 10.1.10.0/24,Leaf-2,Leaf-2,True,True,True,0,1,False,36.14,509,115,27.51
+FAULT_ACL_005,ACL,Spine-2 transit interface eth1 has default deny filter applied,Spine-2,Spine-2,True,True,True,0,1,False,45.54,446,108,28.61
+STRESS_MF_001,MULTI-FAULT,Combinatorial k=3: Leaf-1 eth1 shutdown + Leaf-2 BGP MD5 auth mismatch + Leaf-1 rogue ACL drop,Leaf-1,Leaf-1,True,False,True,2,3,False,17.12,2426,323,31.05
+STRESS_MF_002,MULTI-FAULT,Combinatorial k=3: Leaf-2 eth1 MTU 1400 + Leaf-1 missing BGP network 10.1.10.0 + Spine-2 transit filter,Leaf-2,Spine-2,True,False,True,2,3,False,17.35,2376,315,32.12
+STRESS_MF_003,MULTI-FAULT,Combinatorial k=3: Spine-1 route-map DROP_ALL out + Spine-2 BGP peer inactive + Leaf-2 port 80/443 filter,Spine-1,Leaf-2,True,False,True,2,3,False,0.0,2809,343,30.49
+STRESS_MF_004,MULTI-FAULT,Combinatorial k=3: Spine-1 speed/duplex mismatch + Leaf-1 bad remote-as 65099 + Leaf-2 inbound ACL drop 10.1.10.0/24,Spine-1,Leaf-2,True,False,True,2,3,False,18.0,2305,328,31.05
+STRESS_MF_005,MULTI-FAULT,Combinatorial k=3: Leaf-2 eth2 shutdown + Spine-1 BGP control port 179 filter + Leaf-2 missing BGP network 10.1.20.0,Leaf-2,Spine-1,True,False,True,2,3,False,17.54,2297,313,31.02
+STRESS_NOISE_001,NOISY-TELEMETRY,Leaf-1 eth1 shutdown embedded in benign multi-switch telemetry noise,Leaf-1,Leaf-1,True,True,True,0,1,False,43.06,492,98,26.43
+STRESS_NOISE_002,NOISY-TELEMETRY,Spine-2 eth2 shutdown embedded in benign background NTP/STP noise,Spine-2,Spine-2,True,True,True,0,1,False,44.39,466,99,27.03
+STRESS_NOISE_003,NOISY-TELEMETRY,Leaf-2 BGP authentication mismatch amid high-frequency benign console events,Leaf-2,Leaf-2,True,True,True,0,1,False,43.66,480,110,26.85
+STRESS_NOISE_004,NOISY-TELEMETRY,Leaf-1 ACL drop on subnet 10.1.20.0/24 embedded in benign STP logs,Leaf-1,Leaf-1,True,True,True,0,1,False,33.76,563,115,27.39
+STRESS_NOISE_005,NOISY-TELEMETRY,Spine-1 duplex mismatch obscured by benign NTP polling telemetry,Spine-1,Spine-1,True,True,True,0,1,False,45.32,450,105,30.29

@@ -1,0 +1,48 @@
+{
+  "topology_name": "2-Spine 2-Leaf Data Center Fabric",
+  "nodes": {
+    "Spine-1": {
+      "asn": 65000,
+      "role": "spine",
+      "interfaces": {
+        "eth1": {"ip": "10.0.1.1/30", "peer_node": "Leaf-1", "peer_intf": "eth1", "peer_ip": "10.0.1.2", "peer_asn": 65001},
+        "eth2": {"ip": "10.0.2.1/30", "peer_node": "Leaf-2", "peer_intf": "eth1", "peer_ip": "10.0.2.2", "peer_asn": 65002}
+      }
+    },
+    "Spine-2": {
+      "asn": 65000,
+      "role": "spine",
+      "interfaces": {
+        "eth1": {"ip": "10.0.3.1/30", "peer_node": "Leaf-1", "peer_intf": "eth2", "peer_ip": "10.0.3.2", "peer_asn": 65001},
+        "eth2": {"ip": "10.0.4.1/30", "peer_node": "Leaf-2", "peer_intf": "eth2", "peer_ip": "10.0.4.2", "peer_asn": 65002}
+      }
+    },
+    "Leaf-1": {
+      "asn": 65001,
+      "role": "leaf",
+      "interfaces": {
+        "eth1": {"ip": "10.0.1.2/30", "peer_node": "Spine-1", "peer_intf": "eth1", "peer_ip": "10.0.1.1", "peer_asn": 65000},
+        "eth2": {"ip": "10.0.3.2/30", "peer_node": "Spine-2", "peer_intf": "eth1", "peer_ip": "10.0.3.1", "peer_asn": 65000},
+        "vlan10": {"ip": "10.1.10.1/24", "subnet": "10.1.10.0/24", "description": "Host LAN"}
+      }
+    },
+    "Leaf-2": {
+      "asn": 65002,
+      "role": "leaf",
+      "interfaces": {
+        "eth1": {"ip": "10.0.2.2/30", "peer_node": "Spine-1", "peer_intf": "eth2", "peer_ip": "10.0.2.1", "peer_asn": 65000},
+        "eth2": {"ip": "10.0.4.2/30", "peer_node": "Spine-2", "peer_intf": "eth2", "peer_ip": "10.0.4.1", "peer_asn": 65000},
+        "vlan20": {"ip": "10.1.20.1/24", "subnet": "10.1.20.0/24", "description": "Server LAN"}
+      }
+    }
+  },
+  "invariants": {
+    "reachability": [
+      {"src_node": "Leaf-1", "src_subnet": "10.1.10.0/24", "dst_node": "Leaf-2", "dst_subnet": "10.1.20.0/24"},
+      {"src_node": "Leaf-2", "src_subnet": "10.1.20.0/24", "dst_node": "Leaf-1", "dst_subnet": "10.1.10.0/24"}
+    ],
+    "security_drop": [
+      {"subnet": "192.168.99.0/24", "action": "deny"}
+    ]
+  }
+}

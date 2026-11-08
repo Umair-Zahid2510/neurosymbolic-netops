@@ -1,0 +1,16 @@
+incident_id,fault_category,description,ground_truth_culprit,identified_culprit,localization_correct,baseline_repaired,neurosymbolic_repaired,invariant_violations_caught,reflection_turns,watchdog_rollback,token_reduction_pct,prompt_tokens,completion_tokens,latency_ms
+FAULT_LINK_001,LINK,Leaf-1 interface eth1 down via administrative shutdown,Leaf-1,Leaf-1,True,True,True,0,1,False,46.73,424,98,3.01
+FAULT_LINK_002,LINK,Spine-2 interface eth2 down via administrative shutdown,Spine-2,Spine-2,True,True,True,0,1,False,48.31,398,99,3.0
+FAULT_LINK_003,LINK,MTU mismatch on Leaf-2 eth1 (1400 vs 1500),Leaf-2,Leaf-2,True,True,True,0,1,False,47.69,408,97,2.0
+FAULT_LINK_004,LINK,Speed/Duplex mismatch on Spine-1 eth1 (100/half vs 1000/full),Spine-1,Spine-1,True,True,True,0,1,False,48.06,402,105,2.01
+FAULT_LINK_005,LINK,Leaf-2 eth2 disabled via shutdown,Leaf-2,Leaf-2,True,True,True,0,1,False,47.93,403,98,2.0
+FAULT_BGP_001,BGP,BGP remote-as mismatch on Leaf-1 for Spine-1 (65099 instead of 65000),Leaf-1,Leaf-1,True,True,True,0,1,False,47.7,409,108,3.0
+FAULT_BGP_002,BGP,Missing BGP network advertisement for 10.1.10.0/24 on Leaf-1,Leaf-1,Leaf-1,True,True,True,0,1,False,36.79,493,110,2.0
+FAULT_BGP_003,BGP,Erroneous route-map DROP_ALL denying outbound prefix export to Leaf-2 on Spine-1,Spine-1,Spine-1,True,False,True,1,2,False,46.32,965,207,3.99
+FAULT_BGP_004,BGP,BGP MD5 password authentication mismatch on Leaf-2 towards Spine-1,Leaf-2,Leaf-2,True,True,True,0,1,False,47.15,417,111,2.99
+FAULT_BGP_005,BGP,Spine-2 neighbor 10.0.3.2 not activated under BGP,Spine-2,Spine-2,True,True,True,0,1,False,47.88,406,103,3.01
+FAULT_ACL_001,ACL,Leaf-1 inbound ACL erroneously dropping subnet 10.1.20.0/24,Leaf-1,Leaf-1,True,False,True,1,2,False,36.18,1123,247,4.01
+FAULT_ACL_002,ACL,Leaf-2 ACL blocking HTTP/HTTPS web traffic (ports 80 and 443),Leaf-2,Leaf-2,True,True,True,0,1,False,36.0,512,129,2.99
+FAULT_ACL_003,ACL,Spine-1 ACL blocking BGP TCP port 179 on interface eth1,Spine-1,Spine-1,True,True,True,0,1,False,45.26,450,104,2.99
+FAULT_ACL_004,ACL,Leaf-2 inbound ACL dropping ingress packets from Host LAN 10.1.10.0/24,Leaf-2,Leaf-2,True,True,True,0,1,False,36.14,509,115,3.01
+FAULT_ACL_005,ACL,Spine-2 transit interface eth1 has default deny filter applied,Spine-2,Spine-2,True,True,True,0,1,False,45.54,446,108,2.0

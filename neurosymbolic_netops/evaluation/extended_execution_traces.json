@@ -1,0 +1,3286 @@
+[
+  {
+    "incident_id": "FAULT_LINK_001",
+    "category": "LINK",
+    "description": "Leaf-1 interface eth1 down via administrative shutdown",
+    "baseline": {
+      "incident_id": "FAULT_LINK_001",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 46.73,
+      "prompt_tokens": 424,
+      "completion_tokens": 98,
+      "total_latency_ms": 41.01,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_001",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth1, changed state to administratively down",
+          "%LINEPROTO-5-UPDOWN: Line protocol on Interface eth1, changed state to down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_LINK_001",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 46.73,
+      "prompt_tokens": 424,
+      "completion_tokens": 98,
+      "total_latency_ms": 30.66,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_001",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth1, changed state to administratively down",
+          "%LINEPROTO-5-UPDOWN: Line protocol on Interface eth1, changed state to down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_LINK_002",
+    "category": "LINK",
+    "description": "Spine-2 interface eth2 down via administrative shutdown",
+    "baseline": {
+      "incident_id": "FAULT_LINK_002",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 48.31,
+      "prompt_tokens": 398,
+      "completion_tokens": 99,
+      "total_latency_ms": 26.49,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_002",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-3-UPDOWN: Interface eth2, changed state to down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Peer link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Spine-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_LINK_002",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 48.31,
+      "prompt_tokens": 398,
+      "completion_tokens": 99,
+      "total_latency_ms": 29.06,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_002",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-3-UPDOWN: Interface eth2, changed state to down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Peer link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Spine-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_LINK_003",
+    "category": "LINK",
+    "description": "MTU mismatch on Leaf-2 eth1 (1400 vs 1500)",
+    "baseline": {
+      "incident_id": "FAULT_LINK_003",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.69,
+      "prompt_tokens": 408,
+      "completion_tokens": 97,
+      "total_latency_ms": 28.25,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_003",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%ETH-4-MTU_MISMATCH: MTU mismatch detected on eth1 (local 1400, remote 1500)",
+          "%BGP-3-NOTIFICATION: sent to neighbor 10.0.2.1 4/0 (hold time expired)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-2 has MTU 1400 causing fragmentation/drops.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "mtu 1500",
+                "rollback_command_block": "mtu 1400",
+                "justification": "Align MTU to standard 1500 bytes to resolve hold-timer drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_LINK_003",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.69,
+      "prompt_tokens": 408,
+      "completion_tokens": 97,
+      "total_latency_ms": 30.57,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_003",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%ETH-4-MTU_MISMATCH: MTU mismatch detected on eth1 (local 1400, remote 1500)",
+          "%BGP-3-NOTIFICATION: sent to neighbor 10.0.2.1 4/0 (hold time expired)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-2 has MTU 1400 causing fragmentation/drops.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "mtu 1500",
+                "rollback_command_block": "mtu 1400",
+                "justification": "Align MTU to standard 1500 bytes to resolve hold-timer drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_LINK_004",
+    "category": "LINK",
+    "description": "Speed/Duplex mismatch on Spine-1 eth1 (100/half vs 1000/full)",
+    "baseline": {
+      "incident_id": "FAULT_LINK_004",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 48.06,
+      "prompt_tokens": 402,
+      "completion_tokens": 105,
+      "total_latency_ms": 26.73,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_004",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on eth1",
+          "%PORT-5-COLLISION: High late collision rate detected on Spine-1 eth1"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_LINK_004",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 48.06,
+      "prompt_tokens": 402,
+      "completion_tokens": 105,
+      "total_latency_ms": 27.03,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_004",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on eth1",
+          "%PORT-5-COLLISION: High late collision rate detected on Spine-1 eth1"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_LINK_005",
+    "category": "LINK",
+    "description": "Leaf-2 eth2 disabled via shutdown",
+    "baseline": {
+      "incident_id": "FAULT_LINK_005",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.93,
+      "prompt_tokens": 403,
+      "completion_tokens": 98,
+      "total_latency_ms": 26.05,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_005",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth2, changed state to administratively down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Interface down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Leaf-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_LINK_005",
+      "fault_category": "LINK",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.93,
+      "prompt_tokens": 403,
+      "completion_tokens": 98,
+      "total_latency_ms": 28.02,
+      "execution_trace": {
+        "incident_id": "FAULT_LINK_005",
+        "fault_category": "LINK",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth2, changed state to administratively down",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Interface down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Leaf-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_BGP_001",
+    "category": "BGP",
+    "description": "BGP remote-as mismatch on Leaf-1 for Spine-1 (65099 instead of 65000)",
+    "baseline": {
+      "incident_id": "FAULT_BGP_001",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.7,
+      "prompt_tokens": 409,
+      "completion_tokens": 108,
+      "total_latency_ms": 27.05,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_001",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-3-NOTIFICATION: received from neighbor 10.0.1.1 2/2 (bad peer AS 65099 expected 65000)",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down BGP peer AS mismatch"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "BGP neighbor 10.0.1.1 on Leaf-1 has erroneous remote-as 65099 (expected 65000).",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.1.1 remote-as 65000",
+                "rollback_command_block": "neighbor 10.0.1.1 remote-as 65099",
+                "justification": "Correct peer remote-as to establish eBGP session."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_BGP_001",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.7,
+      "prompt_tokens": 409,
+      "completion_tokens": 108,
+      "total_latency_ms": 26.54,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_001",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-3-NOTIFICATION: received from neighbor 10.0.1.1 2/2 (bad peer AS 65099 expected 65000)",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down BGP peer AS mismatch"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "BGP neighbor 10.0.1.1 on Leaf-1 has erroneous remote-as 65099 (expected 65000).",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.1.1 remote-as 65000",
+                "rollback_command_block": "neighbor 10.0.1.1 remote-as 65099",
+                "justification": "Correct peer remote-as to establish eBGP session."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_BGP_002",
+    "category": "BGP",
+    "description": "Missing BGP network advertisement for 10.1.10.0/24 on Leaf-1",
+    "baseline": {
+      "incident_id": "FAULT_BGP_002",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 18.33,
+      "prompt_tokens": 637,
+      "completion_tokens": 110,
+      "total_latency_ms": 27.05,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_002",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%ROUTING-4-UNREACHABLE: Destination subnet 10.1.10.0/24 missing from Spine-1 and Leaf-2 RIB",
+          "%FLOW-3-DROP: End-to-end synthetic probe from 10.1.20.1 to 10.1.10.1 dropped: No route to host"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Leaf-1 missing network advertisement for Host LAN 10.1.10.0/24.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ROUTING",
+                "command_block": "network 10.1.10.0 mask 255.255.255.0",
+                "rollback_command_block": "no network 10.1.10.0 mask 255.255.255.0",
+                "justification": "Advertise Host LAN prefix into BGP for datacenter transit."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_BGP_002",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 18.33,
+      "prompt_tokens": 637,
+      "completion_tokens": 110,
+      "total_latency_ms": 30.05,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_002",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%ROUTING-4-UNREACHABLE: Destination subnet 10.1.10.0/24 missing from Spine-1 and Leaf-2 RIB",
+          "%FLOW-3-DROP: End-to-end synthetic probe from 10.1.20.1 to 10.1.10.1 dropped: No route to host"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Leaf-1 missing network advertisement for Host LAN 10.1.10.0/24.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ROUTING",
+                "command_block": "network 10.1.10.0 mask 255.255.255.0",
+                "rollback_command_block": "no network 10.1.10.0 mask 255.255.255.0",
+                "justification": "Advertise Host LAN prefix into BGP for datacenter transit."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_BGP_003",
+    "category": "BGP",
+    "description": "Erroneous route-map DROP_ALL denying outbound prefix export to Leaf-2 on Spine-1",
+    "baseline": {
+      "incident_id": "FAULT_BGP_003",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 46.32,
+      "prompt_tokens": 430,
+      "completion_tokens": 95,
+      "total_latency_ms": 3.0,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_003",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-4-ROUTEMAP_FILTER: 0 prefixes announced to peer 10.0.2.2 due to route-map DROP_ALL",
+          "%SYNTH-4-PATH_DEGRADED: Traffic path Spine-1 -> Leaf-2 transit blackholed"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "BGP prefix announcement filtered by route-map.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "BGP",
+                "command_block": "route-map DROP_ALL permit 20",
+                "rollback_command_block": "no route-map DROP_ALL permit 20",
+                "justification": "Append permit stanza to route-map."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_BGP_003",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 2,
+      "invariant_violations_caught": 1,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 46.32,
+      "prompt_tokens": 965,
+      "completion_tokens": 207,
+      "total_latency_ms": 30.63,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_003",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-4-ROUTEMAP_FILTER: 0 prefixes announced to peer 10.0.2.2 due to route-map DROP_ALL",
+          "%SYNTH-4-PATH_DEGRADED: Traffic path Spine-1 -> Leaf-2 transit blackholed"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "BGP prefix announcement filtered by route-map.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "BGP",
+                "command_block": "route-map DROP_ALL permit 20",
+                "rollback_command_block": "no route-map DROP_ALL permit 20",
+                "justification": "Append permit stanza to route-map."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "Route-map filter violation: Spine-1 has route-map DROP_ALL denying outbound prefix distribution"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "Route-map filter violation: Spine-1 has route-map DROP_ALL denying outbound prefix distribution"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Disassociate drop route-map from BGP neighbor session.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.2 route-map DROP_ALL out",
+                "rollback_command_block": "neighbor 10.0.2.2 route-map DROP_ALL out",
+                "justification": "Remove outbound route-map DROP_ALL completely from neighbor 10.0.2.2."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Spine-1' failed formal verification.\nInvariant Violations Detected:\n- Route-map filter violation: Spine-1 has route-map DROP_ALL denying outbound prefix distribution\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_BGP_004",
+    "category": "BGP",
+    "description": "BGP MD5 password authentication mismatch on Leaf-2 towards Spine-1",
+    "baseline": {
+      "incident_id": "FAULT_BGP_004",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.15,
+      "prompt_tokens": 417,
+      "completion_tokens": 111,
+      "total_latency_ms": 27.06,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_004",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.2.1 Down BGP authentication failure"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Unilateral BGP MD5 authentication password configured for 10.0.2.1 on Leaf-2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.1 password",
+                "rollback_command_block": "neighbor 10.0.2.1 password INCORRECT_SECRET",
+                "justification": "Remove mismatched BGP password to allow session handshake."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_BGP_004",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.15,
+      "prompt_tokens": 417,
+      "completion_tokens": 111,
+      "total_latency_ms": 27.25,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_004",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.2.1 Down BGP authentication failure"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Unilateral BGP MD5 authentication password configured for 10.0.2.1 on Leaf-2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.1 password",
+                "rollback_command_block": "neighbor 10.0.2.1 password INCORRECT_SECRET",
+                "justification": "Remove mismatched BGP password to allow session handshake."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_BGP_005",
+    "category": "BGP",
+    "description": "Spine-2 neighbor 10.0.3.2 not activated under BGP",
+    "baseline": {
+      "incident_id": "FAULT_BGP_005",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.88,
+      "prompt_tokens": 406,
+      "completion_tokens": 103,
+      "total_latency_ms": 26.58,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_005",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-3-PEER_INACTIVE: neighbor 10.0.3.2 is not activated for IPv4 Unicast",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down Address family inactive"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Neighbor 10.0.3.2 on Spine-2 is deactivated for address-family.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.3.2 activate",
+                "rollback_command_block": "no neighbor 10.0.3.2 activate",
+                "justification": "Activate BGP address-family to announce routing tables."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_BGP_005",
+      "fault_category": "BGP",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 47.88,
+      "prompt_tokens": 406,
+      "completion_tokens": 103,
+      "total_latency_ms": 38.07,
+      "execution_trace": {
+        "incident_id": "FAULT_BGP_005",
+        "fault_category": "BGP",
+        "telemetry_logs": [
+          "%BGP-3-PEER_INACTIVE: neighbor 10.0.3.2 is not activated for IPv4 Unicast",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down Address family inactive"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Neighbor 10.0.3.2 on Spine-2 is deactivated for address-family.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.3.2 activate",
+                "rollback_command_block": "no neighbor 10.0.3.2 activate",
+                "justification": "Activate BGP address-family to announce routing tables."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_ACL_001",
+    "category": "ACL",
+    "description": "Leaf-1 inbound ACL erroneously dropping subnet 10.1.20.0/24",
+    "baseline": {
+      "incident_id": "FAULT_ACL_001",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 36.18,
+      "prompt_tokens": 508,
+      "completion_tokens": 123,
+      "total_latency_ms": 7.0,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_001",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1, 150 packets",
+          "%FLOW-3-PROBE_FAILED: End-to-end data-plane probe dropped by inbound ACL on Leaf-1"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Access-list blocking traffic; flushing all deny entries.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 192.168.99.0 0.0.0.255 any\n no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 192.168.99.0 0.0.0.255 any\n deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Flush all filter deny rules on Leaf-1 to restore traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_ACL_001",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 2,
+      "invariant_violations_caught": 1,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 36.18,
+      "prompt_tokens": 1123,
+      "completion_tokens": 247,
+      "total_latency_ms": 39.21,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_001",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1, 150 packets",
+          "%FLOW-3-PROBE_FAILED: End-to-end data-plane probe dropped by inbound ACL on Leaf-1"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Access-list blocking traffic; flushing all deny entries.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 192.168.99.0 0.0.0.255 any\n no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 192.168.99.0 0.0.0.255 any\n deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Flush all filter deny rules on Leaf-1 to restore traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "Security invariant violation: Leaf-1 does not explicitly deny unauthorized admin subnet 192.168.99.0/24"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "Security invariant violation: Leaf-1 does not explicitly deny unauthorized admin subnet 192.168.99.0/24"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Targeted removal of erroneous deny rule while preserving perimeter security invariant.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Surgically remove only the erroneous 10.1.20.0/24 drop rule, keeping 192.168.99.0/24 security block intact."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-1' failed formal verification.\nInvariant Violations Detected:\n- Security invariant violation: Leaf-1 does not explicitly deny unauthorized admin subnet 192.168.99.0/24\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_ACL_002",
+    "category": "ACL",
+    "description": "Leaf-2 ACL blocking HTTP/HTTPS web traffic (ports 80 and 443)",
+    "baseline": {
+      "incident_id": "FAULT_ACL_002",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 36.0,
+      "prompt_tokens": 512,
+      "completion_tokens": 129,
+      "total_latency_ms": 35.2,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_002",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied TCP 10.1.10.10:51234 -> 10.1.20.10:443",
+          "%APP-4-SERVICE_DEGRADED: Port 443 health-check failed across datacenter fabric"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny tcp any any eq 80, deny tcp any any eq 443",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny tcp any any eq 80\n no deny tcp any any eq 443",
+                "rollback_command_block": "deny tcp any any eq 80\n deny tcp any any eq 443",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_ACL_002",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 36.0,
+      "prompt_tokens": 512,
+      "completion_tokens": 129,
+      "total_latency_ms": 31.61,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_002",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied TCP 10.1.10.10:51234 -> 10.1.20.10:443",
+          "%APP-4-SERVICE_DEGRADED: Port 443 health-check failed across datacenter fabric"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny tcp any any eq 80, deny tcp any any eq 443",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny tcp any any eq 80\n no deny tcp any any eq 443",
+                "rollback_command_block": "deny tcp any any eq 80\n deny tcp any any eq 443",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_ACL_003",
+    "category": "ACL",
+    "description": "Spine-1 ACL blocking BGP TCP port 179 on interface eth1",
+    "baseline": {
+      "incident_id": "FAULT_ACL_003",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.26,
+      "prompt_tokens": 450,
+      "completion_tokens": 104,
+      "total_latency_ms": 30.65,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_003",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list BLOCK_BGP_CTRL denied tcp 10.0.1.2:179 -> 10.0.1.1:179",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.2 Down Peer closed connection"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-1 bound to BLOCK_BGP_CTRL dropping BGP TCP 179.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group BLOCK_BGP_CTRL in",
+                "rollback_command_block": "ip access-group BLOCK_BGP_CTRL in",
+                "justification": "Detach ACL blocking BGP control packets."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_ACL_003",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.26,
+      "prompt_tokens": 450,
+      "completion_tokens": 104,
+      "total_latency_ms": 29.63,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_003",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list BLOCK_BGP_CTRL denied tcp 10.0.1.2:179 -> 10.0.1.1:179",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.2 Down Peer closed connection"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-1 bound to BLOCK_BGP_CTRL dropping BGP TCP 179.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group BLOCK_BGP_CTRL in",
+                "rollback_command_block": "ip access-group BLOCK_BGP_CTRL in",
+                "justification": "Detach ACL blocking BGP control packets."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_ACL_004",
+    "category": "ACL",
+    "description": "Leaf-2 inbound ACL dropping ingress packets from Host LAN 10.1.10.0/24",
+    "baseline": {
+      "incident_id": "FAULT_ACL_004",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 36.14,
+      "prompt_tokens": 509,
+      "completion_tokens": 115,
+      "total_latency_ms": 27.2,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_004",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.10.5 -> 10.1.20.10",
+          "%NETOPS-3-INVARIANT_VIOLATION: Invariant reachability failed: Leaf-1 Host LAN -> Leaf-2 Server LAN"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny ip 10.1.10.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.10.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.10.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_ACL_004",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 36.14,
+      "prompt_tokens": 509,
+      "completion_tokens": 115,
+      "total_latency_ms": 27.51,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_004",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.10.5 -> 10.1.20.10",
+          "%NETOPS-3-INVARIANT_VIOLATION: Invariant reachability failed: Leaf-1 Host LAN -> Leaf-2 Server LAN"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny ip 10.1.10.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.10.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.10.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "FAULT_ACL_005",
+    "category": "ACL",
+    "description": "Spine-2 transit interface eth1 has default deny filter applied",
+    "baseline": {
+      "incident_id": "FAULT_ACL_005",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.54,
+      "prompt_tokens": 446,
+      "completion_tokens": 108,
+      "total_latency_ms": 25.8,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_005",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list TRANSIT_FILTER denied 10.0.3.2 -> 10.0.3.1 (all traffic)",
+          "%FLOW-3-TRANSIT_FAIL: ECMP path via Spine-2 dropping 100% transit packets"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-2 bound to TRANSIT_FILTER denying transit IP traffic.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group TRANSIT_FILTER in",
+                "rollback_command_block": "ip access-group TRANSIT_FILTER in",
+                "justification": "Remove default deny transit filter from interface."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "FAULT_ACL_005",
+      "fault_category": "ACL",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.54,
+      "prompt_tokens": 446,
+      "completion_tokens": 108,
+      "total_latency_ms": 28.61,
+      "execution_trace": {
+        "incident_id": "FAULT_ACL_005",
+        "fault_category": "ACL",
+        "telemetry_logs": [
+          "%SEC-6-IPACCESSLOGP: list TRANSIT_FILTER denied 10.0.3.2 -> 10.0.3.1 (all traffic)",
+          "%FLOW-3-TRANSIT_FAIL: ECMP path via Spine-2 dropping 100% transit packets"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-2 bound to TRANSIT_FILTER denying transit IP traffic.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group TRANSIT_FILTER in",
+                "rollback_command_block": "ip access-group TRANSIT_FILTER in",
+                "justification": "Remove default deny transit filter from interface."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_MF_001",
+    "category": "MULTI-FAULT",
+    "description": "Combinatorial k=3: Leaf-1 eth1 shutdown + Leaf-2 BGP MD5 auth mismatch + Leaf-1 rogue ACL drop",
+    "baseline": {
+      "incident_id": "STRESS_MF_001",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 17.12,
+      "prompt_tokens": 697,
+      "completion_tokens": 98,
+      "total_latency_ms": 3.0,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_001",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth1 on Leaf-1, changed state to administratively down",
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152 on Leaf-2",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1 on Leaf-1",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_MF_001",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 3,
+      "invariant_violations_caught": 2,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 17.12,
+      "prompt_tokens": 2426,
+      "completion_tokens": 323,
+      "total_latency_ms": 31.05,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_001",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth1 on Leaf-1, changed state to administratively down",
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152 on Leaf-2",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1 on Leaf-1",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2] NOT_ESTABLISHED: MD5 authentication mismatch (Leaf-2=BAD_MD5_KEY vs Spine-1=None)",
+                "Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'",
+                "Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "NOT_ESTABLISHED (AUTH_FAIL)",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2] NOT_ESTABLISHED: MD5 authentication mismatch (Leaf-2=BAD_MD5_KEY vs Spine-1=None)",
+              "Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'",
+              "Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Unilateral BGP MD5 authentication password configured for 10.0.2.1 on Leaf-2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.1 password",
+                "rollback_command_block": "neighbor 10.0.2.1 password BAD_MD5_KEY",
+                "justification": "Remove mismatched BGP password to allow session handshake."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-1' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2] NOT_ESTABLISHED: MD5 authentication mismatch (Leaf-2=BAD_MD5_KEY vs Spine-1=None)\n- Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'\n- Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'",
+                "Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'",
+              "Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'"
+            ]
+          },
+          {
+            "turn": 3,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-1: deny ip 10.1.20.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-2' failed formal verification.\nInvariant Violations Detected:\n- Data-plane drop: Leaf-1 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'\n- Data-plane drop: Leaf-1 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.20.0 0.0.0.255 any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_MF_002",
+    "category": "MULTI-FAULT",
+    "description": "Combinatorial k=3: Leaf-2 eth1 MTU 1400 + Leaf-1 missing BGP network 10.1.10.0 + Spine-2 transit filter",
+    "baseline": {
+      "incident_id": "STRESS_MF_002",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 17.35,
+      "prompt_tokens": 686,
+      "completion_tokens": 97,
+      "total_latency_ms": 2.0,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_002",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%ETH-4-MTU_MISMATCH: MTU mismatch detected on Leaf-2 eth1 (local 1400, remote 1500)",
+          "%ROUTING-4-UNREACHABLE: Destination subnet 10.1.10.0/24 missing from BGP RIB",
+          "%SEC-6-IPACCESSLOGP: list TRANSIT_FILTER denied 10.0.3.2 -> 10.0.3.1 on Spine-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-2 has MTU 1400 causing fragmentation/drops.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "mtu 1500",
+                "rollback_command_block": "mtu 1400",
+                "justification": "Align MTU to standard 1500 bytes to resolve hold-timer drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_MF_002",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 3,
+      "invariant_violations_caught": 2,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 17.35,
+      "prompt_tokens": 2376,
+      "completion_tokens": 315,
+      "total_latency_ms": 32.12,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_002",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%ETH-4-MTU_MISMATCH: MTU mismatch detected on Leaf-2 eth1 (local 1400, remote 1500)",
+          "%ROUTING-4-UNREACHABLE: Destination subnet 10.1.10.0/24 missing from BGP RIB",
+          "%SEC-6-IPACCESSLOGP: list TRANSIT_FILTER denied 10.0.3.2 -> 10.0.3.1 on Spine-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-2 has MTU 1400 causing fragmentation/drops.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "mtu 1500",
+                "rollback_command_block": "mtu 1400",
+                "justification": "Align MTU to standard 1500 bytes to resolve hold-timer drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'",
+                "Route advertisement missing: Leaf-1 does not advertise 10.1.10.0/24 into BGP",
+                "Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "NOT_ESTABLISHED (ACL_DROP)",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": false,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'",
+              "Route advertisement missing: Leaf-1 does not advertise 10.1.10.0/24 into BGP",
+              "Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Leaf-1 missing network advertisement for Host LAN 10.1.10.0/24.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ROUTING",
+                "command_block": "network 10.1.10.0 mask 255.255.255.0",
+                "rollback_command_block": "no network 10.1.10.0 mask 255.255.255.0",
+                "justification": "Advertise Host LAN prefix into BGP for datacenter transit."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-2' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'\n- Route advertisement missing: Leaf-1 does not advertise 10.1.10.0/24 into BGP\n- Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'",
+                "Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "NOT_ESTABLISHED (ACL_DROP)",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'",
+              "Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'"
+            ]
+          },
+          {
+            "turn": 3,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-2 bound to TRANSIT_FILTER denying transit IP traffic.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group TRANSIT_FILTER in",
+                "rollback_command_block": "ip access-group TRANSIT_FILTER in",
+                "justification": "Remove default deny transit filter from interface."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-1' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Spine-2 ACL Traffic blocked by default deny rule: 'deny ip any any'\n- Data-plane drop: Spine-2 interface eth1 ACL TRANSIT_FILTER: Traffic blocked by default deny rule: 'deny ip any any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_MF_003",
+    "category": "MULTI-FAULT",
+    "description": "Combinatorial k=3: Spine-1 route-map DROP_ALL out + Spine-2 BGP peer inactive + Leaf-2 port 80/443 filter",
+    "baseline": {
+      "incident_id": "STRESS_MF_003",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 0.0,
+      "prompt_tokens": 834,
+      "completion_tokens": 111,
+      "total_latency_ms": 2.99,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_003",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%BGP-4-ROUTEMAP_FILTER: 0 prefixes announced to peer 10.0.2.2 on Spine-1 due to route-map DROP_ALL",
+          "%BGP-3-PEER_INACTIVE: neighbor 10.0.3.2 is not activated on Spine-2",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied TCP on Leaf-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Outbound route-map DROP_ALL on Spine-1 blocking export to 10.0.2.2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.2 route-map DROP_ALL out",
+                "rollback_command_block": "neighbor 10.0.2.2 route-map DROP_ALL out",
+                "justification": "Remove drop route-map to restore prefix propagation."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_MF_003",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 3,
+      "invariant_violations_caught": 2,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 0.0,
+      "prompt_tokens": 2809,
+      "completion_tokens": 343,
+      "total_latency_ms": 30.49,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_003",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%BGP-4-ROUTEMAP_FILTER: 0 prefixes announced to peer 10.0.2.2 on Spine-1 due to route-map DROP_ALL",
+          "%BGP-3-PEER_INACTIVE: neighbor 10.0.3.2 is not activated on Spine-2",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied TCP on Leaf-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Outbound route-map DROP_ALL on Spine-1 blocking export to 10.0.2.2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.2 route-map DROP_ALL out",
+                "rollback_command_block": "neighbor 10.0.2.2 route-map DROP_ALL out",
+                "justification": "Remove drop route-map to restore prefix propagation."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Neighbor 10.0.3.2 deactivated on Spine-2",
+                "Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'",
+                "Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "NOT_ESTABLISHED (INACTIVE)",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Neighbor 10.0.3.2 deactivated on Spine-2",
+              "Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'",
+              "Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Neighbor 10.0.3.2 on Spine-2 is deactivated for address-family.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.3.2 activate",
+                "rollback_command_block": "no neighbor 10.0.3.2 activate",
+                "justification": "Activate BGP address-family to announce routing tables."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Spine-1' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2] NOT_ESTABLISHED: Neighbor 10.0.3.2 deactivated on Spine-2\n- Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'\n- Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'",
+                "Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'",
+              "Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'"
+            ]
+          },
+          {
+            "turn": 3,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny tcp any any eq 80, deny tcp any any eq 443",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny tcp any any eq 80\n no deny tcp any any eq 443",
+                "rollback_command_block": "deny tcp any any eq 80\n deny tcp any any eq 443",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Spine-2' failed formal verification.\nInvariant Violations Detected:\n- Security transit drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'\n- Security transit drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: TCP port 443 transit dropped by rule: 'deny tcp any any eq 80'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_MF_004",
+    "category": "MULTI-FAULT",
+    "description": "Combinatorial k=3: Spine-1 speed/duplex mismatch + Leaf-1 bad remote-as 65099 + Leaf-2 inbound ACL drop 10.1.10.0/24",
+    "baseline": {
+      "incident_id": "STRESS_MF_004",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 18.0,
+      "prompt_tokens": 656,
+      "completion_tokens": 105,
+      "total_latency_ms": 3.01,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_004",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on Spine-1 eth1",
+          "%BGP-3-NOTIFICATION: bad peer AS 65099 on Leaf-1",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.10.10 on Leaf-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_MF_004",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 3,
+      "invariant_violations_caught": 2,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 18.0,
+      "prompt_tokens": 2305,
+      "completion_tokens": 328,
+      "total_latency_ms": 31.05,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_004",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on Spine-1 eth1",
+          "%BGP-3-NOTIFICATION: bad peer AS 65099 on Leaf-1",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.10.10 on Leaf-2"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Leaf-1 configured remote-as 65099, expected 65000",
+                "Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'",
+                "Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "NOT_ESTABLISHED (AS_MISMATCH)",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Leaf-1 configured remote-as 65099, expected 65000",
+              "Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'",
+              "Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "BGP",
+              "root_cause_analysis": "BGP neighbor 10.0.1.1 on Leaf-1 has erroneous remote-as 65099 (expected 65000).",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "BGP",
+                "command_block": "neighbor 10.0.1.1 remote-as 65000",
+                "rollback_command_block": "neighbor 10.0.1.1 remote-as 65099",
+                "justification": "Correct peer remote-as to establish eBGP session."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Spine-1' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Leaf-1 configured remote-as 65099, expected 65000\n- Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'\n- Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'",
+                "Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'",
+              "Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'"
+            ]
+          },
+          {
+            "turn": 3,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-2: deny ip 10.1.10.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.10.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.10.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-1' failed formal verification.\nInvariant Violations Detected:\n- Data-plane drop: Leaf-2 interface eth1 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'\n- Data-plane drop: Leaf-2 interface eth2 ACL PERIMETER_SECURITY_POLICY: Data-plane transit dropped by ACL rule: 'deny ip 10.1.10.0 0.0.0.255 any'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_MF_005",
+    "category": "MULTI-FAULT",
+    "description": "Combinatorial k=3: Leaf-2 eth2 shutdown + Spine-1 BGP control port 179 filter + Leaf-2 missing BGP network 10.1.20.0",
+    "baseline": {
+      "incident_id": "STRESS_MF_005",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": false,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": true,
+      "actuation_status": "WATCHDOG_ROLLED_BACK",
+      "token_reduction_pct": 17.54,
+      "prompt_tokens": 677,
+      "completion_tokens": 98,
+      "total_latency_ms": 2.99,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_005",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth2 on Leaf-2 changed state to administratively down",
+          "%SEC-6-IPACCESSLOGP: list BLOCK_BGP_CTRL denied tcp 10.0.1.2:179 on Spine-1",
+          "%ROUTING-4-UNREACHABLE: Prefix 10.1.20.0/24 missing from Spine routing table"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Leaf-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_MF_005",
+      "fault_category": "MULTI-FAULT",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 3,
+      "invariant_violations_caught": 2,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 17.54,
+      "prompt_tokens": 2297,
+      "completion_tokens": 313,
+      "total_latency_ms": 31.02,
+      "execution_trace": {
+        "incident_id": "STRESS_MF_005",
+        "fault_category": "MULTI-FAULT",
+        "telemetry_logs": [
+          "%LINK-5-CHANGED: Interface eth2 on Leaf-2 changed state to administratively down",
+          "%SEC-6-IPACCESSLOGP: list BLOCK_BGP_CTRL denied tcp 10.0.1.2:179 on Spine-1",
+          "%ROUTING-4-UNREACHABLE: Prefix 10.1.20.0/24 missing from Spine routing table"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth2 on Leaf-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth2 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'",
+                "Route advertisement missing: Leaf-2 does not advertise 10.1.20.0/24 into BGP"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "NOT_ESTABLISHED (ACL_DROP)",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": false,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'",
+              "Route advertisement missing: Leaf-2 does not advertise 10.1.20.0/24 into BGP"
+            ]
+          },
+          {
+            "turn": 2,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Leaf-2 missing network advertisement for Server LAN 10.1.20.0/24.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "ROUTING",
+                "command_block": "network 10.1.20.0 mask 255.255.255.0",
+                "rollback_command_block": "no network 10.1.20.0 mask 255.255.255.0",
+                "justification": "Advertise Server LAN prefix into BGP for datacenter transit."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-2' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'\n- Route advertisement missing: Leaf-2 does not advertise 10.1.20.0/24 into BGP\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": false,
+              "counterexamples": [
+                "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'"
+              ],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "NOT_ESTABLISHED (ACL_DROP)",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": false
+              }
+            },
+            "rejection_trace": [
+              "BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'"
+            ]
+          },
+          {
+            "turn": 3,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Interface on Spine-1 bound to BLOCK_BGP_CTRL dropping BGP TCP 179.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "ACL",
+                "command_block": "no ip access-group BLOCK_BGP_CTRL in",
+                "rollback_command_block": "ip access-group BLOCK_BGP_CTRL in",
+                "justification": "Detach ACL blocking BGP control packets."
+              }
+            },
+            "reflection_feedback": "FORMAL VERIFICATION SAFETY GATE REJECTION:\nYour proposed patch on target device 'Leaf-2' failed formal verification.\nInvariant Violations Detected:\n- BGP Session [Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2] NOT_ESTABLISHED: Spine-1 ACL BGP control plane dropped by rule: 'deny tcp any any eq 179'\n\nDirective: Analyze the formal counterexample trace above. Correct the misconfiguration and synthesize an alternate patch strictly adhering to the declarative intent schema.",
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_NOISE_001",
+    "category": "NOISY-TELEMETRY",
+    "description": "Leaf-1 eth1 shutdown embedded in benign multi-switch telemetry noise",
+    "baseline": {
+      "incident_id": "STRESS_NOISE_001",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 43.06,
+      "prompt_tokens": 492,
+      "completion_tokens": 98,
+      "total_latency_ms": 25.82,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_001",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%LINK-5-CHANGED: Interface eth1 on Leaf-1, changed state to administratively down",
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 172.16.10.5 started"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_NOISE_001",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 43.06,
+      "prompt_tokens": 492,
+      "completion_tokens": 98,
+      "total_latency_ms": 26.43,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_001",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%LINK-5-CHANGED: Interface eth1 on Leaf-1, changed state to administratively down",
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.1.1 Down Interface flap / link down",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 172.16.10.5 started"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Leaf-1 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_NOISE_002",
+    "category": "NOISY-TELEMETRY",
+    "description": "Spine-2 eth2 shutdown embedded in benign background NTP/STP noise",
+    "baseline": {
+      "incident_id": "STRESS_NOISE_002",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 44.39,
+      "prompt_tokens": 466,
+      "completion_tokens": 99,
+      "total_latency_ms": 26.05,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_002",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%LINK-3-UPDOWN: Interface eth2, changed state to down",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Peer link down",
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_NOISE_002",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-2",
+      "ground_truth_culprit": "Spine-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 44.39,
+      "prompt_tokens": 466,
+      "completion_tokens": 99,
+      "total_latency_ms": 27.03,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_002",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%LINK-3-UPDOWN: Interface eth2, changed state to down",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Peer link down",
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-2",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-2 is administratively shut down.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-2",
+                "subsystem": "INTERFACE",
+                "command_block": "no shutdown",
+                "rollback_command_block": "shutdown",
+                "justification": "Bring up administratively down interface eth1 to restore link adjacency."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_NOISE_003",
+    "category": "NOISY-TELEMETRY",
+    "description": "Leaf-2 BGP authentication mismatch amid high-frequency benign console events",
+    "baseline": {
+      "incident_id": "STRESS_NOISE_003",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 43.66,
+      "prompt_tokens": 480,
+      "completion_tokens": 110,
+      "total_latency_ms": 26.23,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_003",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152 on Leaf-2",
+          "%SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 172.16.10.5 started",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.2.1 Down BGP authentication failure",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%NTP-5-PEERSYNC: Synchronized to NTP server 192.168.1.51"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Unilateral BGP MD5 authentication password configured for 10.0.2.1 on Leaf-2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.1 password",
+                "rollback_command_block": "neighbor 10.0.2.1 password NOISY_SECRET",
+                "justification": "Remove mismatched BGP password to allow session handshake."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_NOISE_003",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-2",
+      "ground_truth_culprit": "Leaf-2",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 43.66,
+      "prompt_tokens": 480,
+      "completion_tokens": 110,
+      "total_latency_ms": 26.85,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_003",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)",
+          "%TCP-6-BADAUTH: Invalid MD5 digest from 10.0.2.1:179 to 10.0.2.2:49152 on Leaf-2",
+          "%SYS-6-LOGGINGHOST_STARTSTOP: Logging to host 172.16.10.5 started",
+          "%BGP-5-ADJCHANGE: neighbor 10.0.2.1 Down BGP authentication failure",
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%NTP-5-PEERSYNC: Synchronized to NTP server 192.168.1.51"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-2",
+              "failure_category": "BGP",
+              "root_cause_analysis": "Unilateral BGP MD5 authentication password configured for 10.0.2.1 on Leaf-2.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-2",
+                "subsystem": "BGP",
+                "command_block": "no neighbor 10.0.2.1 password",
+                "rollback_command_block": "neighbor 10.0.2.1 password NOISY_SECRET",
+                "justification": "Remove mismatched BGP password to allow session handshake."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_NOISE_004",
+    "category": "NOISY-TELEMETRY",
+    "description": "Leaf-1 ACL drop on subnet 10.1.20.0/24 embedded in benign STP logs",
+    "baseline": {
+      "incident_id": "STRESS_NOISE_004",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 33.76,
+      "prompt_tokens": 563,
+      "completion_tokens": 115,
+      "total_latency_ms": 25.45,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_004",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1 on Leaf-1",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%FLOW-3-PROBE_FAILED: End-to-end data-plane probe dropped by inbound ACL on Leaf-1",
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-1: deny ip 10.1.20.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_NOISE_004",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Leaf-1",
+      "ground_truth_culprit": "Leaf-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 33.76,
+      "prompt_tokens": 563,
+      "completion_tokens": 115,
+      "total_latency_ms": 27.39,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_004",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%STP-6-TOPOLOGY_CHANGE: Spanning tree topology change detected on VLAN 1",
+          "%SEC-6-IPACCESSLOGP: list PERIMETER_SECURITY_POLICY denied 10.1.20.1 -> 10.1.10.1 on Leaf-1",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)",
+          "%FLOW-3-PROBE_FAILED: End-to-end data-plane probe dropped by inbound ACL on Leaf-1",
+          "%SYS-5-CONFIG_I: Configured from console by admin on vty0 (192.168.1.10)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Leaf-1",
+              "failure_category": "ACL",
+              "root_cause_analysis": "Erroneous ACL deny rules in PERIMETER_SECURITY_POLICY on Leaf-1: deny ip 10.1.20.0 0.0.0.255 any",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Leaf-1",
+                "subsystem": "ACL",
+                "command_block": "no deny ip 10.1.20.0 0.0.0.255 any",
+                "rollback_command_block": "deny ip 10.1.20.0 0.0.0.255 any",
+                "justification": "Remove erroneous filter rules to permit valid transit traffic."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "incident_id": "STRESS_NOISE_005",
+    "category": "NOISY-TELEMETRY",
+    "description": "Spine-1 duplex mismatch obscured by benign NTP polling telemetry",
+    "baseline": {
+      "incident_id": "STRESS_NOISE_005",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.32,
+      "prompt_tokens": 450,
+      "completion_tokens": 105,
+      "total_latency_ms": 26.72,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_005",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on Spine-1 eth1",
+          "%NTP-5-PEERSYNC: Synchronized to NTP server 192.168.1.51",
+          "%PORT-5-COLLISION: High late collision rate detected on Spine-1 eth1",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": "BYPASSED_BASELINE"
+          }
+        ]
+      }
+    },
+    "neurosymbolic": {
+      "incident_id": "STRESS_NOISE_005",
+      "fault_category": "NOISY-TELEMETRY",
+      "culprit_localized": true,
+      "identified_culprit": "Spine-1",
+      "ground_truth_culprit": "Spine-1",
+      "verification_passed": true,
+      "repair_successful": true,
+      "reflection_turns": 1,
+      "invariant_violations_caught": 0,
+      "watchdog_rollback": false,
+      "actuation_status": "COMMIT_CONFIRMED",
+      "token_reduction_pct": 45.32,
+      "prompt_tokens": 450,
+      "completion_tokens": 105,
+      "total_latency_ms": 30.29,
+      "execution_trace": {
+        "incident_id": "STRESS_NOISE_005",
+        "fault_category": "NOISY-TELEMETRY",
+        "telemetry_logs": [
+          "%NTP-4-PEERUNREACH: Peer 192.168.1.50 is unreachable",
+          "%CDP-4-DUPLEX_MISMATCH: full/half duplex mismatch on Spine-1 eth1",
+          "%NTP-5-PEERSYNC: Synchronized to NTP server 192.168.1.51",
+          "%PORT-5-COLLISION: High late collision rate detected on Spine-1 eth1",
+          "%LINK-3-POLL: Interface SNMP counter collection polling completed (0 errors)"
+        ],
+        "turns": [
+          {
+            "turn": 1,
+            "diagnostic_output": {
+              "identified_culprit_device": "Spine-1",
+              "failure_category": "LINK",
+              "root_cause_analysis": "Interface eth1 on Spine-1 has speed 100 duplex half mismatch.",
+              "confidence_score": 0.96,
+              "proposed_patch": {
+                "target_device": "Spine-1",
+                "subsystem": "INTERFACE",
+                "command_block": "speed 1000\n duplex full",
+                "rollback_command_block": "speed 100\n duplex half",
+                "justification": "Restore full duplex 1000Mbps negotiation to clear collision drops."
+              }
+            },
+            "reflection_feedback": null,
+            "symbolic_check": {
+              "passed": true,
+              "counterexamples": [],
+              "details": {
+                "bgp_sessions": {
+                  "Leaf-1:10.0.1.1 <-> Spine-1:10.0.1.2": "ESTABLISHED",
+                  "Leaf-1:10.0.3.1 <-> Spine-2:10.0.3.2": "ESTABLISHED",
+                  "Leaf-2:10.0.2.1 <-> Spine-1:10.0.2.2": "ESTABLISHED",
+                  "Leaf-2:10.0.4.1 <-> Spine-2:10.0.4.2": "ESTABLISHED"
+                },
+                "prefix_advertisement_leaf1": true,
+                "prefix_advertisement_leaf2": true,
+                "loop_free": true,
+                "reachability": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
