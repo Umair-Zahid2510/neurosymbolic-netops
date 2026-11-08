@@ -50,6 +50,24 @@ Median per-incident cost:
 |---|---|---|---|---|---|---|---|---|---|
 | C1b/test | 56.39 | 31.93 | 0.74 | 47.19 | 36.67 | 28.0 | 0.0 | 0.0 | 0.0 |
 
+## Run `20261108T172920Z`
+
+commit `3f19c3a5e0` · conditions ['C2', 'C4'] · scenarios 3 · oracle **local** · errors 0 · wall 448.4 s
+
+| condition/split | n | top-1 | top-3 | F1 | fault recall | repaired | final intents OK | restored to baseline | unsafe deployed | rolled back | restores verified | gate rejections/incident | median total ms |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| C2/test | 3 | 0.667 [0.00, 1.00] | 0.667 [0.00, 1.00] | 0.600 [0.00, 1.00] | 0.667 [0.00, 1.00] | 0.333 [0.00, 1.00] | 0.333 [0.00, 1.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0/0 | 0.0 | 24869.91 |
+| C4/test | 3 | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0.000 [0.00, 0.00] | 0/0 | 0.0 | 95424.49 |
+
+Outcomes: C2/test: {'no_hypothesis': 1, 'no_plan': 1, 'repaired': 1}; C4/test: {'no_hypothesis': 3}
+
+Median per-incident cost:
+
+| condition/split | detection ms | diagnose ms | plan ms | verify ms | execute ms | tool calls | LLM calls | prompt tok | completion tok |
+|---|---|---|---|---|---|---|---|---|---|
+| C2/test | 49.92 | 18231.45 | 19369.76 | 14.58 | 0.0 | 0 | 1 | 2789 | 2451 |
+| C4/test | 63.71 | 95400.98 | 0.0 | 13.37 | 0.0 | 4 | 0 | 0 | 0 |
+
 ## Local model vs real Batfish (single-fault differential)
 
 Agreement on the set of violated intents: **50/90** (run before the `bgp-peer-consistency` intent existed; that ir_static intent now covers the MD5/activation gaps).

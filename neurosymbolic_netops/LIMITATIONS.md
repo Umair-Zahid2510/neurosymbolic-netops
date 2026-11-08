@@ -18,6 +18,8 @@ This file is meant to be read alongside every result in the repository.
    - the LLM results that do exist are three single demonstration runs across three models (`gemini-3.6-flash`, `gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`).
 
    Those runs show the integration works end to end. They are anecdotes, not measurements of accuracy.
+
+   A later Groq pilot (`openai/gpt-oss-120b`; free tier 8,000 tokens/minute) ran conditions C2 and C4 on 3 held-out scenarios. It is a pilot: n = 3, one trial, and it is not statistically meaningful.
 5. **Mocked tests prove interface logic only.** Tests under `tests/llm` mock the provider SDKs. They do not show that a live provider behaves the same way. Live behaviour is shown by the `-m live` smoke test and the demo transcripts in `demos/output/*__llm.txt`.
 6. **Self-reported LLM confidence is stored as uncalibrated** and never used for gating. The rule-based strategy reports no confidence.
 

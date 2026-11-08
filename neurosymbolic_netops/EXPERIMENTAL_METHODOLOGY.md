@@ -91,3 +91,8 @@ The three live LLM demonstrations are reported as single anecdotal runs.
 
 ## 7. Threats to validity
 See `LIMITATIONS.md`: synthetic telemetry, a simulated adapter, shared-model circularity in local mode, author contamination of the rule baseline, the static-analysis scope of Batfish, and the narrow IR.
+
+## 8. Groq LLM pilot (run `20261108T172920Z`) - pilot, not a measurement
+Model `openai/gpt-oss-120b` on Groq's free tier (8,000 tokens/minute), conditions C2 (no tools, no gate) and C4 (tools + gate), 3 held-out scenarios, one trial.
+- **Obtained:** C2 repaired 1/3 (the novel route-map template, 2 calls, 9.5k tokens). The other 5 incidents ended as `no_hypothesis` or `no_plan`, because Groq returned HTTP 400 for protocol violations by the model: it called a tool when none was offered, invented a `json` tool, or produced unvalidatable JSON.
+- **Consequence:** these errors were then fatal in our client. They are now classified as invalid model output and fed back with a retry (`InvalidModelOutputError`, covered by a test). **The pilot has not been re-run since this fix.** It mainly shows tool-calling reliability as a failure mode, as the Open5GS benchmark in the survey (§2.4) also highlights.

@@ -34,6 +34,12 @@ class RetryableLLMError(LLMError):
     pass
 
 
+class InvalidModelOutputError(LLMError):
+    """The provider rejected the model's own output (e.g. called a tool that was not offered,
+    or produced JSON the API could not validate). Treated as an invalid response: fed back and
+    retried within the invalid-response budget, never silently ignored."""
+
+
 @dataclass
 class ToolSpec:
     name: str
@@ -143,7 +149,17 @@ def run_structured(provider: LLMProvider, system: str, user: str, schema: Type[B
     rounds = invalid = 0
     while True:
         use_tools = tools if (tools and rounds < max_tool_rounds) else None
-        res = provider.chat(sys_full, msgs, use_tools, json_mode=use_tools is None, usage=usage)
+        try:
+            res = provider.chat(sys_full, msgs, use_tools, json_mode=use_tools is None, usage=usage)
+        except InvalidModelOutputError as exc:
+            invalid += 1
+            usage.invalid_responses += 1
+            if invalid > max_invalid:
+                raise LLMError(f"provider rejected model output {invalid} times: {str(exc)[:300]}") from exc
+            msgs.append({"role": "user", "content": f"The API rejected your last reply: {str(exc)[:300]}. "
+                         + ("Do not call any tool now. " if use_tools is None else "")
+                         + "Reply with ONLY the JSON object."})
+            continue
         if res.tool_calls and use_tools:
             rounds += 1
             msgs.append({"role": "assistant", "content": res.text, "tool_calls": res.tool_calls, "_raw": res.raw_message})

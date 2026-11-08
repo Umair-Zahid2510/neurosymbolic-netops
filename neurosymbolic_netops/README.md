@@ -35,7 +35,7 @@ See `ARCHITECTURE.md` for the state machine, agent contracts, verification backe
 
 | Real and working | Simulated / synthetic | Planned / not done |
 |---|---|---|
-| Gemini API integration (tool calling, structured output, retries, provider-reported tokens). Live-verified. | Telemetry (generated from simulated network state) | FRR / Containerlab emulator adapter |
+| Gemini and Groq API integrations (tool calling, structured output, retries, provider-reported tokens). Both live-verified. | Telemetry (generated from simulated network state) | FRR / Containerlab emulator adapter |
 | Batfish verification (pybatfish against `batfish/allinone`). Live-verified. | Device adapter (`InMemoryAdapter` with fault injection) | NETCONF, gNMI, real devices |
 | MCP server with a real MCP client↔server protocol exchange | Causal-discovery data (synthetic SCM) | LLM benchmark conditions C2–C5 (API quota) |
 | Typed IR, parser and renderers (IOS, EOS, Junos); translation checked behaviourally in Batfish | | OpenConfig / YANG intents; SLM edge model |
@@ -58,7 +58,7 @@ Python 3.12 was used, and dependency versions are pinned.
 
 ### LLM provider
 Edit `.env`:
-- Set `NETOPS_LLM_MODE=llm` and `NETOPS_LLM_PROVIDER=gemini` (or `openai`).
+- Set `NETOPS_LLM_MODE=llm` and `NETOPS_LLM_PROVIDER=gemini` (or `openai`, or `groq`, which uses `GROQ_API_KEY` and the OpenAI-compatible Groq API; `openai/gpt-oss-120b` live-verified).
 - Set `NETOPS_LLM_MODEL`; `gemini-3.6-flash` was used for the live runs.
 - Set `GEMINI_API_KEY` (or `OPENAI_API_KEY`).
 
@@ -135,6 +135,10 @@ All numbers are in `benchmark/results/REPORT.md`, generated from raw files; the 
 - author contamination of the rule baseline;
 - Batfish's static scope;
 - HMAC rather than PKI signatures.
+
+## Sharing the project
+Use `python scripts/make_release_zip.py`, which excludes `.env` and refuses to build if any API key is found. Never share `.env`.
+Write-side approval defaults to **human**; benchmarks and demos opt into `auto_verified_simulation`, which is refused for non-simulated adapters.
 
 ## Repository map
 ```

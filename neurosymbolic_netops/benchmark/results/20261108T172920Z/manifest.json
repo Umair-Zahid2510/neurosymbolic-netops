@@ -1,0 +1,21 @@
+{
+  "run_id": "20261108T172920Z",
+  "git_sha": "3f19c3a5e045ad2a8511fa7b801c6086d87cb71f",
+  "conditions": [
+    "C2",
+    "C4"
+  ],
+  "skipped": {},
+  "splits": "test",
+  "trials": 1,
+  "oracle": "local",
+  "scenarios": 3,
+  "python": "3.12.4",
+  "llm": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source": "provider_reported"
+  },
+  "errors": 0,
+  "wall_seconds": 448.4
+}

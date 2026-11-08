@@ -141,3 +141,11 @@ def test_live_provider_smoke():
                                    '"fault_type":"interface_admin_down","location":"eth1","statement":"test"}],'
                                    '"reasoning_summary":"smoke"}', LLMDiagnosisOutput)
     assert usage.calls >= 1 and usage.total_tokens > 0
+
+
+def test_provider_rejected_output_is_fed_back_as_invalid_response():
+    from agent.llm.base import InvalidModelOutputError
+    p = Scripted([InvalidModelOutputError("Tool choice is none, but model called a tool"), reply(GOOD)])
+    out, usage, _ = run_structured(p, "s", "u", LLMDiagnosisOutput)
+    assert usage.invalid_responses == 1 and out.hypotheses
+    assert "Do not call any tool" in p.seen[1][1][-1]["content"]

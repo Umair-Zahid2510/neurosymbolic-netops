@@ -7,7 +7,7 @@ import os
 from dataclasses import dataclass
 from typing import Optional
 
-from agent.llm.base import ChatResult, LLMError, LLMProvider, RetryableLLMError
+from agent.llm.base import ChatResult, InvalidModelOutputError, LLMError, LLMProvider, RetryableLLMError
 
 
 @dataclass
@@ -52,6 +52,11 @@ class OpenAIProvider(LLMProvider):
             r = self.client.chat.completions.create(**kw)
         except (openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError, openai.InternalServerError) as exc:
             raise RetryableLLMError(f"{type(exc).__name__}: {exc}") from exc
+        except openai.BadRequestError as exc:
+            msg = str(exc)
+            if any(k in msg for k in ("tool call validation", "Tool choice is none", "Failed to validate JSON", "failed_generation")):
+                raise InvalidModelOutputError(msg) from exc
+            raise LLMError(f"OpenAI-compatible API error: {exc}") from exc
         except openai.APIError as exc:
             raise LLMError(f"OpenAI API error: {exc}") from exc
         msg = r.choices[0].message
