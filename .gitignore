@@ -9,4 +9,3 @@ neurosymbolic_netops/benchmark/results/_scratch/
 neurosymbolic_netops/runtime/
 neurosymbolic_netops/models/*.pkl
 neurosymbolic_netops/runtime/
-neurosymbolic_netops/demos/output/*.json

@@ -1,0 +1,699 @@
+{
+ "incident_id": "DEMO2-MULTI",
+ "modes": {
+  "diagnosis": "llm:gemini/gemini-3.5-flash-lite (no tools)",
+  "planning": "llm:gemini/gemini-3.5-flash-lite",
+  "verifier": "local_symbolic+ir_static",
+  "actuation": "inmemory/SIMULATED",
+  "approval": "auto_policy",
+  "telemetry": "local_simulation"
+ },
+ "state": "FAILED",
+ "transitions": [
+  {
+   "frm": "DETECTED",
+   "to": "DIAGNOSING",
+   "at": "2026-11-08T16:40:39.575549+00:00",
+   "reason": "6 anomalies; violated intents ['bgp-all-sessions', 'reach-lan20-lan10', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "DIAGNOSING",
+   "to": "ROOT_CAUSE_IDENTIFIED",
+   "at": "2026-11-08T16:40:41.471672+00:00",
+   "reason": "1 hypotheses"
+  },
+  {
+   "frm": "ROOT_CAUSE_IDENTIFIED",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:40:41.471672+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:40:44.658130+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:40:44.670123+00:00",
+   "reason": "revise plan using counterexamples"
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:40:46.474343+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:40:46.487866+00:00",
+   "reason": "revise plan using counterexamples"
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:40:49.817337+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:40:49.829569+00:00",
+   "reason": "revise plan using counterexamples"
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:40:52.877412+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "FAILED",
+   "at": "2026-11-08T16:40:52.890409+00:00",
+   "reason": "no verified plan within 4 attempts"
+  }
+ ],
+ "digest": {
+  "anomalies": [
+   {
+    "anomaly_id": "A01",
+    "kind": "probe_failure",
+    "detector": "probe_loss",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": {
+     "src_ip": "10.1.20.10",
+     "dst_ip": "10.1.10.10",
+     "protocol": "ip",
+     "dst_port": null,
+     "src_port": null
+    },
+    "severity": 1.0,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 8,
+    "evidence_event_ids": [
+     "ev-4dbf4ecb887f",
+     "ev-07adae66fc5e",
+     "ev-c9541585c963",
+     "ev-ab756296d2a9",
+     "ev-701c290f4c12",
+     "ev-98e4b0ddd586",
+     "ev-eeb7a35be727",
+     "ev-4f9bd0cd149a"
+    ],
+    "summary": "probe 10.1.20.10->10.1.10.10 loss up to 100%"
+   },
+   {
+    "anomaly_id": "A02",
+    "kind": "bgp_session_flap",
+    "detector": "syslog_classifier",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": "10.0.4.1",
+    "flow": null,
+    "severity": 0.75,
+    "first_seen": "2026-11-08T10:03:00.993000Z",
+    "last_seen": "2026-11-08T10:03:00.993000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-9a1537dd8725"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Hold timer expired / connection timed out"
+   },
+   {
+    "anomaly_id": "A03",
+    "kind": "bgp_session_flap",
+    "detector": "syslog_classifier",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": "10.0.4.2",
+    "flow": null,
+    "severity": 0.75,
+    "first_seen": "2026-11-08T10:03:01.415000Z",
+    "last_seen": "2026-11-08T10:03:01.415000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-644e6a3d8642"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Hold timer expired / connection timed out"
+   },
+   {
+    "anomaly_id": "A04",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-20825a70e45b",
+     "ev-28319a38f151",
+     "ev-c15c9fde3f92",
+     "ev-9fb61f87db8a",
+     "ev-c53beec87b52",
+     "ev-05ba64bc3b2d",
+     "ev-532c4089e160",
+     "ev-9aa4c04c4675",
+     "ev-02c448c20a71"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.1.10.0/24 removed from RIB (no valid path)"
+   },
+   {
+    "anomaly_id": "A05",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-1",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-6e7868eb66c5",
+     "ev-5facc68e37b9",
+     "ev-9e7f9d427a21",
+     "ev-7dc22d6b74da",
+     "ev-55ab0bb5ed55",
+     "ev-f273d9b85c1e",
+     "ev-9b1825a4065a",
+     "ev-218ed8e4d6b2",
+     "ev-318eaa2b56e9"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   },
+   {
+    "anomaly_id": "A06",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-f92bd28ee71a",
+     "ev-18f4981f8afd",
+     "ev-a8748c933d1e",
+     "ev-4243d6ef514d",
+     "ev-47a3f99cd35d",
+     "ev-dd77a5d1f3ae",
+     "ev-4b977052c668",
+     "ev-5be7ebe403be",
+     "ev-95c853b4b424",
+     "ev-f4b31421117e"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   }
+  ],
+  "missing_data": [],
+  "raw_bytes": 152266,
+  "digest_bytes": 3097
+ },
+ "candidates": [
+  {
+   "device": "Leaf-2",
+   "score": 3.25,
+   "reasons": [
+    "probe_failure observed on device (A01)",
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "bgp_session_flap observed on device (A02)",
+    "owns peer 10.0.4.2 named in bgp_session_flap",
+    "route_missing observed on device (A04)"
+   ]
+  },
+  {
+   "device": "Spine-2",
+   "score": 2.25,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "owns peer 10.0.4.1 named in bgp_session_flap",
+    "bgp_session_flap observed on device (A03)",
+    "route_missing observed on device (A06)"
+   ]
+  },
+  {
+   "device": "Spine-1",
+   "score": 0.9,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "route_missing observed on device (A05)"
+   ]
+  },
+  {
+   "device": "Leaf-1",
+   "score": 0.3,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10"
+   ]
+  }
+ ],
+ "initially_violated": [
+  "bgp-all-sessions",
+  "reach-lan20-lan10",
+  "redundancy-lan10-lan20",
+  "redundancy-lan20-lan10"
+ ],
+ "diagnoses": [
+  {
+   "strategy": "llm:gemini/gemini-3.5-flash-lite (no tools)",
+   "hypotheses": [
+    {
+     "id": "H1",
+     "device": "Leaf-2",
+     "category": "ACL",
+     "fault_type": "acl_blocks_control_plane",
+     "location": "CTRL_PLANE_FILTER#1",
+     "statement": "The ACL rule on Leaf-2 GigabitEthernet0/2 blocks BGP TCP port 179 control plane traffic.",
+     "evidence": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06"
+     ],
+     "self_reported_confidence": 1.0
+    }
+   ],
+   "reasoning_summary": "On Leaf-2, interface GigabitEthernet0/2 has an inbound access-list 'CTRL_PLANE_FILTER' applied via 'ip access-group CTRL_PLANE_FILTER in'. This ACL explicitly denies TCP traffic for port 179 in both directions ('deny tcp any any eq 179', 'deny tcp any eq 179 any'), which blocks BGP control plane traffic coming from Spine-2 (neighbor 10.0.4.1). As a result, the BGP session between Leaf-2 and Spine-2 went down due to hold timer expiration (A02, A03), and route 10.1.10.0/24 was withdrawn (A04, A05, A06), leading to probe failures (A01).",
+   "skill_call_ids": [],
+   "usage": {
+    "provider": "gemini",
+    "model": "gemini-3.5-flash-lite",
+    "calls": 1,
+    "prompt_tokens": 3569,
+    "completion_tokens": 354,
+    "total_tokens": 3923,
+    "latency_ms": 1883.5,
+    "invalid_responses": 0,
+    "retries": 0,
+    "source": "provider_reported"
+   }
+  }
+ ],
+ "final_hypotheses": [
+  {
+   "id": "H1",
+   "device": "Leaf-2",
+   "category": "ACL",
+   "fault_type": "acl_blocks_control_plane",
+   "location": "CTRL_PLANE_FILTER#1",
+   "statement": "The ACL rule on Leaf-2 GigabitEthernet0/2 blocks BGP TCP port 179 control plane traffic.",
+   "evidence": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06"
+   ],
+   "self_reported_confidence": 1.0
+  }
+ ],
+ "tool_calls": [
+  {
+   "call_id": "C001",
+   "evidence_id": "E-9101a3bc",
+   "skill": "inspect_acl",
+   "caller": "planning_agent[llm]",
+   "args": {
+    "acl": "CTRL_PLANE_FILTER",
+    "device": "Leaf-2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acls": [
+     {
+      "acl": "CTRL_PLANE_FILTER",
+      "rules": [
+       {
+        "index": 0,
+        "rule": "deny tcp any any eq 179",
+        "key": "deny tcp 0.0.0.0/0 0.0.0.0/0 dport=179"
+       },
+       {
+        "index": 1,
+        "rule": "deny tcp any eq 179 any",
+        "key": "deny tcp 0.0.0.0/0 0.0.0.0/0 sport=179"
+       },
+       {
+        "index": 2,
+        "rule": "permit ip any any",
+        "key": "permit ip 0.0.0.0/0 0.0.0.0/0"
+       }
+      ],
+      "bound_to": [
+       {
+        "interface": "eth2",
+        "direction": "in"
+       }
+      ],
+      "deny_hits_in_window": 13.0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 1.405,
+   "data_source": "local_simulation"
+  }
+ ],
+ "attempts": [
+  {
+   "attempt": 1,
+   "strategy": "llm:gemini/gemini-3.5-flash-lite",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": 179,
+       "dst_port": null,
+       "log": false
+      }
+     }
+    ],
+    "rationale": "",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": false,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [
+    "isolate-admin-lan20",
+    "reach-lan20-lan10",
+    "redundancy-lan20-lan10"
+   ],
+   "new_violations": [
+    "isolate-admin-lan20"
+   ],
+   "counterexamples": [
+    "[local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2",
+    "[local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []",
+    "[local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2"
+   ],
+   "disposition": "rejected",
+   "verify_ms": 11.74
+  },
+  {
+   "attempt": 2,
+   "strategy": "llm:gemini/gemini-3.5-flash-lite",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "insert_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "position": 0,
+      "rule": {
+       "action": "permit",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     }
+    ],
+    "rationale": "Insert a permit rule for TCP port 179 at the top of the CTRL_PLANE_FILTER ACL on Leaf-2 to allow BGP control plane traffic to pass on GigabitEthernet0/2 without removing the entire ACL or weakening other security intents.",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": false,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [
+    "isolate-admin-lan20",
+    "reach-lan20-lan10",
+    "redundancy-lan20-lan10"
+   ],
+   "new_violations": [
+    "isolate-admin-lan20"
+   ],
+   "counterexamples": [
+    "[local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2",
+    "[local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []",
+    "[local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2"
+   ],
+   "disposition": "rejected",
+   "verify_ms": 13.14
+  },
+  {
+   "attempt": 3,
+   "strategy": "llm:gemini/gemini-3.5-flash-lite",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": 179,
+       "dst_port": null,
+       "log": false
+      }
+     }
+    ],
+    "rationale": "Remove the deny tcp rules for port 179 from CTRL_PLANE_FILTER on Leaf-2 so BGP control plane traffic is permitted, while keeping PERIMETER_SECURITY_POLICY intact.",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": false,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [
+    "isolate-admin-lan20",
+    "reach-lan20-lan10",
+    "redundancy-lan20-lan10"
+   ],
+   "new_violations": [
+    "isolate-admin-lan20"
+   ],
+   "counterexamples": [
+    "[local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2",
+    "[local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []",
+    "[local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2"
+   ],
+   "disposition": "rejected",
+   "verify_ms": 11.4
+  },
+  {
+   "attempt": 4,
+   "strategy": "llm:gemini/gemini-3.5-flash-lite",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": 179,
+       "dst_port": null,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "insert_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "position": 0,
+      "rule": {
+       "action": "deny",
+       "protocol": "ip",
+       "src": "192.168.99.0/24",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": null,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "insert_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "position": 1,
+      "rule": {
+       "action": "permit",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "insert_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "position": 2,
+      "rule": {
+       "action": "permit",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": 179,
+       "dst_port": null,
+       "log": false
+      }
+     }
+    ],
+    "rationale": "Permit BGP (TCP port 179) in CTRL_PLANE_FILTER while explicitly denying the unauthorized admin subnet 192.168.99.0/24 at the top of the inbound ACL on GigabitEthernet0/2 to satisfy both BGP establishment and admin isolation intents.",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": false,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [
+    "reach-lan20-lan10",
+    "redundancy-lan20-lan10"
+   ],
+   "new_violations": [],
+   "counterexamples": [
+    "[local_symbolic] reach-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip) from Leaf-2[eth20]: NO_ROUTE at Leaf-2 (Leaf-2 has no route to 10.1.10.10) via Leaf-2",
+    "[local_symbolic] redundancy-lan20-lan10: 10.1.20.0/24 -> 10.1.10.0/24 (ip): only 0 disjoint delivering path(s) (need 2); transit devices []"
+   ],
+   "disposition": "adopted_partial_progress",
+   "verify_ms": 12.73
+  }
+ ],
+ "final_plan": null,
+ "final_verification": {},
+ "approval": null,
+ "approval_decision": "",
+ "transaction": null,
+ "outcome": "rejected_unverified",
+ "timings_ms": {
+  "diagnose": 1896.5,
+  "plan": 11365.63,
+  "verify": 60.08,
+  "execute": 0.0,
+  "total": 13329.5
+ },
+ "llm_usage": {
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "calls": 7,
+  "prompt_tokens": 41115,
+  "completion_tokens": 2814,
+  "total_tokens": 43929,
+  "latency_ms": 13026.8,
+  "invalid_responses": 1,
+  "retries": 0,
+  "source": "provider_reported"
+ }
+}

@@ -1,0 +1,1336 @@
+{
+ "incident_id": "DEMO3-ROLLBACK",
+ "modes": {
+  "diagnosis": "rule_based",
+  "planning": "rule_based",
+  "verifier": "local_symbolic+ir_static",
+  "actuation": "inmemory/SIMULATED",
+  "approval": "auto_policy",
+  "telemetry": "local_simulation"
+ },
+ "state": "FAILED",
+ "transitions": [
+  {
+   "frm": "DETECTED",
+   "to": "DIAGNOSING",
+   "at": "2026-11-08T16:33:34.321843+00:00",
+   "reason": "6 anomalies; violated intents ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "DIAGNOSING",
+   "to": "ROOT_CAUSE_IDENTIFIED",
+   "at": "2026-11-08T16:33:34.347850+00:00",
+   "reason": "1 hypotheses"
+  },
+  {
+   "frm": "ROOT_CAUSE_IDENTIFIED",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:33:34.347850+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:33:34.348850+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "APPROVED",
+   "at": "2026-11-08T16:33:34.378385+00:00",
+   "reason": "auto-approved: verification passed"
+  },
+  {
+   "frm": "APPROVED",
+   "to": "EXECUTING",
+   "at": "2026-11-08T16:33:34.378385+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "EXECUTING",
+   "to": "POST_CHECK",
+   "at": "2026-11-08T16:33:34.431436+00:00",
+   "reason": "post-check failed"
+  },
+  {
+   "frm": "POST_CHECK",
+   "to": "ROLLBACK",
+   "at": "2026-11-08T16:33:34.431436+00:00",
+   "reason": "post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "ROLLBACK",
+   "to": "FAILED",
+   "at": "2026-11-08T16:33:34.431436+00:00",
+   "reason": "rolled back"
+  }
+ ],
+ "digest": {
+  "anomalies": [
+   {
+    "anomaly_id": "A01",
+    "kind": "link_down",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-1",
+    "interface": "eth2",
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.9,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-3994b836b12b",
+     "ev-c0adf113d6c7",
+     "ev-b550854ca5dc",
+     "ev-16bcf3fb0d05",
+     "ev-a1837222dbea",
+     "ev-7074d691b6f0",
+     "ev-400d2d828e6f",
+     "ev-731acbb32c37",
+     "ev-0f6a18150d64",
+     "ev-53ecc933186c"
+    ],
+    "summary": "[link] %LINK-3-UPDOWN: Interface GigabitEthernet0/2, changed state to down"
+   },
+   {
+    "anomaly_id": "A02",
+    "kind": "link_down",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": "eth1",
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.9,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-a46fbf2c77a2",
+     "ev-4e221971437c",
+     "ev-c559a564095c",
+     "ev-302e07227c47",
+     "ev-bd08d42795e0",
+     "ev-d69ea69f9d59",
+     "ev-f873414909f8",
+     "ev-f02cad66c637",
+     "ev-db4e08c39b6c"
+    ],
+    "summary": "[link] %LINK-5-CHANGED: Interface GigabitEthernet0/1 changed state to administratively down"
+   },
+   {
+    "anomaly_id": "A03",
+    "kind": "bgp_session_down",
+    "detector": "syslog_classifier",
+    "device": "Leaf-1",
+    "interface": null,
+    "peer_ip": "10.0.3.1",
+    "flow": null,
+    "severity": 0.8,
+    "first_seen": "2026-11-08T10:03:02.488000Z",
+    "last_seen": "2026-11-08T10:03:02.488000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-1457f5c3b00b"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.1 Down Interface flap"
+   },
+   {
+    "anomaly_id": "A04",
+    "kind": "bgp_session_down",
+    "detector": "syslog_classifier",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": "10.0.3.2",
+    "flow": null,
+    "severity": 0.8,
+    "first_seen": "2026-11-08T10:03:01.308000Z",
+    "last_seen": "2026-11-08T10:03:01.308000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-f79b3c067b9a"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down - Interface flap"
+   },
+   {
+    "anomaly_id": "A05",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-1",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-e965ff3e5b1b",
+     "ev-7f55ba3c85b4",
+     "ev-639384b346e4",
+     "ev-a38b2794d064",
+     "ev-6a442f5d7b64",
+     "ev-4c1d77c4100a",
+     "ev-28c76f5d2d61",
+     "ev-b1d955fd7324",
+     "ev-69dd97bfcdf6"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.0.3.0/30 removed from RIB (no valid path)"
+   },
+   {
+    "anomaly_id": "A06",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-aecde2db72e5",
+     "ev-4c9fc6b861a1",
+     "ev-a8748c933d1e",
+     "ev-4243d6ef514d",
+     "ev-47a3f99cd35d",
+     "ev-dd77a5d1f3ae",
+     "ev-4b977052c668",
+     "ev-5be7ebe403be",
+     "ev-95c853b4b424",
+     "ev-f4b31421117e"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   }
+  ],
+  "missing_data": [],
+  "raw_bytes": 143164,
+  "digest_bytes": 3040
+ },
+ "candidates": [
+  {
+   "device": "Leaf-1",
+   "score": 3.48,
+   "reasons": [
+    "link_down observed on device (A01)",
+    "far end eth2 of link with link_down on Spine-2:eth1",
+    "bgp_session_down observed on device (A03)",
+    "owns peer 10.0.3.2 named in bgp_session_down",
+    "route_missing observed on device (A05)"
+   ]
+  },
+  {
+   "device": "Spine-2",
+   "score": 3.48,
+   "reasons": [
+    "far end eth1 of link with link_down on Leaf-1:eth2",
+    "link_down observed on device (A02)",
+    "owns peer 10.0.3.1 named in bgp_session_down",
+    "bgp_session_down observed on device (A04)",
+    "route_missing observed on device (A06)"
+   ]
+  }
+ ],
+ "initially_violated": [
+  "bgp-all-sessions",
+  "redundancy-lan10-lan20",
+  "redundancy-lan20-lan10"
+ ],
+ "diagnoses": [
+  {
+   "strategy": "rule_based",
+   "hypotheses": [
+    {
+     "id": "H1",
+     "device": "Spine-2",
+     "category": "LINK",
+     "fault_type": "interface_admin_down",
+     "location": "eth1",
+     "statement": "Spine-2 eth1 is administratively down",
+     "evidence": [
+      "E-cd2e7556"
+     ],
+     "self_reported_confidence": null
+    }
+   ],
+   "reasoning_summary": "1 rule-matched hypotheses over 4 candidate devices",
+   "skill_call_ids": [
+    "C001",
+    "C002",
+    "C003",
+    "C004",
+    "C005",
+    "C006",
+    "C007",
+    "C008",
+    "C009",
+    "C010",
+    "C011",
+    "C012",
+    "C013",
+    "C014",
+    "C015",
+    "C016",
+    "C017",
+    "C018",
+    "C019",
+    "C020",
+    "C021",
+    "C022",
+    "C023",
+    "C024",
+    "C025",
+    "C026",
+    "C027",
+    "C028"
+   ],
+   "usage": null
+  }
+ ],
+ "final_hypotheses": [
+  {
+   "id": "H1",
+   "device": "Spine-2",
+   "category": "LINK",
+   "fault_type": "interface_admin_down",
+   "location": "eth1",
+   "statement": "Spine-2 eth1 is administratively down",
+   "evidence": [
+    "E-cd2e7556"
+   ],
+   "self_reported_confidence": null
+  }
+ ],
+ "tool_calls": [
+  {
+   "call_id": "C001",
+   "evidence_id": "E-2674b0b2",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "interface": "eth1"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-1",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.1.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-1 Gi0/1"
+    },
+    "peer": {
+     "device": "Spine-1",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.1.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-1 Gi0/1"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 4.42,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C002",
+   "evidence_id": "E-cd2e7556",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "interface": "eth2"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-1",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "down",
+     "ipv4": "10.0.3.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-2 Gi0/1"
+    },
+    "peer": {
+     "device": "Spine-2",
+     "interface": "eth1",
+     "admin_status": "administratively down",
+     "oper_status": "down",
+     "ipv4": "10.0.3.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-1 Gi0/2"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.28,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C003",
+   "evidence_id": "E-ffcbdc37",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "interface": "eth1"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-2",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.2.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-1 Gi0/2"
+    },
+    "peer": {
+     "device": "Spine-1",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.2.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-2 Gi0/1"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.292,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C004",
+   "evidence_id": "E-db8298c2",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "interface": "eth2"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-2",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.4.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-2 Gi0/2"
+    },
+    "peer": {
+     "device": "Spine-2",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.4.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-2 Gi0/2"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.221,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C005",
+   "evidence_id": "E-f027f442",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "local_as": 65001,
+    "router_id": "10.1.10.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.1.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     },
+     {
+      "neighbor": "10.0.3.1",
+      "remote_as_configured": 65000,
+      "state": "Idle",
+      "last_reset": "Interface flap",
+      "prefixes_received": 0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.16,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C006",
+   "evidence_id": "E-4a183b3b",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "local_as": 65002,
+    "router_id": "10.1.20.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.2.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     },
+     {
+      "neighbor": "10.0.4.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.119,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C007",
+   "evidence_id": "E-3c63157a",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-1",
+    "local_as": 65000,
+    "router_id": "10.0.1.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.1.2",
+      "remote_as_configured": 65001,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     },
+     {
+      "neighbor": "10.0.2.2",
+      "remote_as_configured": 65002,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.103,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C008",
+   "evidence_id": "E-6d63db7d",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "router_id": "10.0.3.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.3.2",
+      "remote_as_configured": 65001,
+      "state": "Idle",
+      "last_reset": "Interface flap",
+      "prefixes_received": 0
+     },
+     {
+      "neighbor": "10.0.4.2",
+      "remote_as_configured": 65002,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.17,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C009",
+   "evidence_id": "E-18ade794",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "neighbor_ip": "10.0.3.1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "local_as": 65001,
+    "neighbor": "10.0.3.1",
+    "peer_device_per_topology": "Spine-2",
+    "remote_as_configured": 65000,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Idle",
+    "last_reset": "Interface flap",
+    "prefixes_received": 0,
+    "advertised_networks": [
+     "10.1.10.0/24"
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.386,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C010",
+   "evidence_id": "E-e7e809cc",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2",
+    "neighbor_ip": "10.0.3.2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "neighbor": "10.0.3.2",
+    "peer_device_per_topology": "Leaf-1",
+    "remote_as_configured": 65001,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Idle",
+    "last_reset": "Interface flap",
+    "prefixes_received": 0,
+    "advertised_networks": []
+   },
+   "error": null,
+   "duration_ms": 0.229,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C011",
+   "evidence_id": "E-937f61fa",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.0.3.1",
+    "dst_ip": "10.0.3.2",
+    "protocol": "tcp",
+    "dst_port": 179,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.265,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C012",
+   "evidence_id": "E-41d32602",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.0.3.1",
+    "dst_ip": "10.0.3.2",
+    "protocol": "tcp",
+    "dst_port": 49152,
+    "src_port": 179
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.316,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C013",
+   "evidence_id": "E-e7e809cc",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2",
+    "neighbor_ip": "10.0.3.2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "neighbor": "10.0.3.2",
+    "peer_device_per_topology": "Leaf-1",
+    "remote_as_configured": 65001,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Idle",
+    "last_reset": "Interface flap",
+    "prefixes_received": 0,
+    "advertised_networks": []
+   },
+   "error": null,
+   "duration_ms": 0.257,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C014",
+   "evidence_id": "E-18ade794",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "neighbor_ip": "10.0.3.1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "local_as": 65001,
+    "neighbor": "10.0.3.1",
+    "peer_device_per_topology": "Spine-2",
+    "remote_as_configured": 65000,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Idle",
+    "last_reset": "Interface flap",
+    "prefixes_received": 0,
+    "advertised_networks": [
+     "10.1.10.0/24"
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.354,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C015",
+   "evidence_id": "E-937f61fa",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.0.3.1",
+    "dst_ip": "10.0.3.2",
+    "protocol": "tcp",
+    "dst_port": 179,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.25,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C016",
+   "evidence_id": "E-41d32602",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.0.3.1",
+    "dst_ip": "10.0.3.2",
+    "protocol": "tcp",
+    "dst_port": 49152,
+    "src_port": 179
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.197,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C017",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.206,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C018",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.238,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C019",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.506,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C020",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.293,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C021",
+   "evidence_id": "E-2434122b",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 443,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.379,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C022",
+   "evidence_id": "E-2434122b",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 443,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.304,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C023",
+   "evidence_id": "E-14e05c58",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 80,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.255,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C024",
+   "evidence_id": "E-14e05c58",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 80,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.209,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C025",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.363,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C026",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.273,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C027",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.237,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C028",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.251,
+   "data_source": "local_simulation"
+  }
+ ],
+ "attempts": [
+  {
+   "attempt": 1,
+   "strategy": "rule_based",
+   "plan": {
+    "ops": [
+     {
+      "device": "Spine-2",
+      "op": "set_interface_enabled",
+      "interface": "eth1",
+      "enabled": true
+     }
+    ],
+    "rationale": "rule-based repair per hypothesis",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": true,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [],
+   "new_violations": [],
+   "counterexamples": [],
+   "disposition": "accepted",
+   "verify_ms": 14.81
+  }
+ ],
+ "final_plan": {
+  "ops": [
+   {
+    "device": "Spine-2",
+    "op": "set_interface_enabled",
+    "interface": "eth1",
+    "enabled": true
+   }
+  ],
+  "rationale": "rule-based repair per hypothesis",
+  "addresses_hypotheses": [
+   "H1"
+  ]
+ },
+ "final_verification": {
+  "passed": true,
+  "backends": [
+   "local_symbolic",
+   "ir_static"
+  ],
+  "violated": [],
+  "fingerprint": "c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b"
+ },
+ "approval": {
+  "plan_hash": "baa3553d5072918a6d576b8f46a0b0dc72ead58f2fd8267dffa8bf45b47a6bc4",
+  "candidate_fingerprint": "c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b",
+  "approver": "auto_policy",
+  "policy": "auto_policy",
+  "issued_at": "2026-11-08T16:33:34.378385+00:00",
+  "nonce": "6dc719570d7f3283",
+  "mac": "af4506b65bd17a8998cd347fbbf49215125fb0654338b3c91fd7978560ed24fa"
+ },
+ "approval_decision": "auto-approved: verification passed",
+ "transaction": {
+  "tx_id": "TX0001-baa3553d",
+  "adapter": "inmemory",
+  "adapter_label": "SIMULATED",
+  "plan_hash": "baa3553d5072918a6d576b8f46a0b0dc72ead58f2fd8267dffa8bf45b47a6bc4",
+  "devices": [
+   "Spine-2"
+  ],
+  "status": "ROLLED_BACK",
+  "steps": [
+   {
+    "step": "capture",
+    "ok": true,
+    "detail": "fingerprint 58ece6dacbad",
+    "ms": 1.2
+   },
+   {
+    "step": "build_candidate",
+    "ok": true,
+    "detail": "1 ops on ['Spine-2']",
+    "ms": 2.96
+   },
+   {
+    "step": "syntax_check",
+    "ok": true,
+    "detail": "render/parse round-trip OK",
+    "ms": 0.4
+   },
+   {
+    "step": "symbolic_verification",
+    "ok": true,
+    "detail": "backends=['local_symbolic', 'ir_static'] violated=[]",
+    "ms": 13.93
+   },
+   {
+    "step": "prepare",
+    "ok": true,
+    "detail": "devices to change: ['Spine-2']",
+    "ms": 0.01
+   },
+   {
+    "step": "authorize",
+    "ok": true,
+    "detail": "token from auto_policy (auto_policy)",
+    "ms": 0.0
+   },
+   {
+    "step": "apply:Spine-2",
+    "ok": true,
+    "detail": "",
+    "ms": 0.23
+   },
+   {
+    "step": "post_check",
+    "ok": false,
+    "detail": "observed state violated=['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']",
+    "ms": 14.95
+   },
+   {
+    "step": "rollback:Spine-2",
+    "ok": true,
+    "detail": "restored captured configuration",
+    "ms": 0.21
+   },
+   {
+    "step": "restore_verification",
+    "ok": true,
+    "detail": "all touched devices match captured config",
+    "ms": 0.0
+   }
+  ],
+  "applied_devices": [
+   "Spine-2"
+  ],
+  "rolled_back_devices": [
+   "Spine-2"
+  ],
+  "failure": "post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']",
+  "post_check_violations": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "restore_verified": true,
+  "diff": "--- Spine-2 (before)\n+++ Spine-2 (after)\n@@ -11,3 +11,3 @@\n  duplex full\n- shutdown\n+ no shutdown\n !",
+  "duration_ms": 50.92
+ },
+ "outcome": "rolled_back",
+ "timings_ms": {
+  "diagnose": 26.26,
+  "plan": 0.23,
+  "verify": 39.22,
+  "execute": 52.31,
+  "total": 121.33
+ },
+ "llm_usage": null
+}

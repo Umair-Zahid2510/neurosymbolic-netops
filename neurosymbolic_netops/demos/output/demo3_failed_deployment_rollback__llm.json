@@ -1,0 +1,470 @@
+{
+ "incident_id": "DEMO3-ROLLBACK",
+ "modes": {
+  "diagnosis": "llm:gemini/gemini-3.1-flash-lite (no tools)",
+  "planning": "llm:gemini/gemini-3.1-flash-lite",
+  "verifier": "local_symbolic+ir_static",
+  "actuation": "inmemory/SIMULATED",
+  "approval": "auto_policy",
+  "telemetry": "local_simulation"
+ },
+ "state": "FAILED",
+ "transitions": [
+  {
+   "frm": "DETECTED",
+   "to": "DIAGNOSING",
+   "at": "2026-11-08T16:41:03.152684+00:00",
+   "reason": "6 anomalies; violated intents ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "DIAGNOSING",
+   "to": "ROOT_CAUSE_IDENTIFIED",
+   "at": "2026-11-08T16:41:05.516902+00:00",
+   "reason": "1 hypotheses"
+  },
+  {
+   "frm": "ROOT_CAUSE_IDENTIFIED",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:41:05.516902+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:41:06.723518+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "APPROVED",
+   "at": "2026-11-08T16:41:06.781283+00:00",
+   "reason": "auto-approved: verification passed"
+  },
+  {
+   "frm": "APPROVED",
+   "to": "EXECUTING",
+   "at": "2026-11-08T16:41:06.781283+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "EXECUTING",
+   "to": "POST_CHECK",
+   "at": "2026-11-08T16:41:06.923560+00:00",
+   "reason": "post-check failed"
+  },
+  {
+   "frm": "POST_CHECK",
+   "to": "ROLLBACK",
+   "at": "2026-11-08T16:41:06.923560+00:00",
+   "reason": "post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "ROLLBACK",
+   "to": "FAILED",
+   "at": "2026-11-08T16:41:06.923560+00:00",
+   "reason": "rolled back"
+  }
+ ],
+ "digest": {
+  "anomalies": [
+   {
+    "anomaly_id": "A01",
+    "kind": "link_down",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-1",
+    "interface": "eth2",
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.9,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-3994b836b12b",
+     "ev-c0adf113d6c7",
+     "ev-b550854ca5dc",
+     "ev-16bcf3fb0d05",
+     "ev-a1837222dbea",
+     "ev-7074d691b6f0",
+     "ev-400d2d828e6f",
+     "ev-731acbb32c37",
+     "ev-0f6a18150d64",
+     "ev-53ecc933186c"
+    ],
+    "summary": "[link] %LINK-3-UPDOWN: Interface GigabitEthernet0/2, changed state to down"
+   },
+   {
+    "anomaly_id": "A02",
+    "kind": "link_down",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": "eth1",
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.9,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-a46fbf2c77a2",
+     "ev-4e221971437c",
+     "ev-c559a564095c",
+     "ev-302e07227c47",
+     "ev-bd08d42795e0",
+     "ev-d69ea69f9d59",
+     "ev-f873414909f8",
+     "ev-f02cad66c637",
+     "ev-db4e08c39b6c"
+    ],
+    "summary": "[link] %LINK-5-CHANGED: Interface GigabitEthernet0/1 changed state to administratively down"
+   },
+   {
+    "anomaly_id": "A03",
+    "kind": "bgp_session_down",
+    "detector": "syslog_classifier",
+    "device": "Leaf-1",
+    "interface": null,
+    "peer_ip": "10.0.3.1",
+    "flow": null,
+    "severity": 0.8,
+    "first_seen": "2026-11-08T10:03:02.488000Z",
+    "last_seen": "2026-11-08T10:03:02.488000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-1457f5c3b00b"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.1 Down Interface flap"
+   },
+   {
+    "anomaly_id": "A04",
+    "kind": "bgp_session_down",
+    "detector": "syslog_classifier",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": "10.0.3.2",
+    "flow": null,
+    "severity": 0.8,
+    "first_seen": "2026-11-08T10:03:01.308000Z",
+    "last_seen": "2026-11-08T10:03:01.308000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-f79b3c067b9a"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.3.2 Down - Interface flap"
+   },
+   {
+    "anomaly_id": "A05",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-1",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-e965ff3e5b1b",
+     "ev-7f55ba3c85b4",
+     "ev-639384b346e4",
+     "ev-a38b2794d064",
+     "ev-6a442f5d7b64",
+     "ev-4c1d77c4100a",
+     "ev-28c76f5d2d61",
+     "ev-b1d955fd7324",
+     "ev-69dd97bfcdf6"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.0.3.0/30 removed from RIB (no valid path)"
+   },
+   {
+    "anomaly_id": "A06",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-aecde2db72e5",
+     "ev-4c9fc6b861a1",
+     "ev-a8748c933d1e",
+     "ev-4243d6ef514d",
+     "ev-47a3f99cd35d",
+     "ev-dd77a5d1f3ae",
+     "ev-4b977052c668",
+     "ev-5be7ebe403be",
+     "ev-95c853b4b424",
+     "ev-f4b31421117e"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   }
+  ],
+  "missing_data": [],
+  "raw_bytes": 143164,
+  "digest_bytes": 3040
+ },
+ "candidates": [
+  {
+   "device": "Leaf-1",
+   "score": 3.48,
+   "reasons": [
+    "link_down observed on device (A01)",
+    "far end eth2 of link with link_down on Spine-2:eth1",
+    "bgp_session_down observed on device (A03)",
+    "owns peer 10.0.3.2 named in bgp_session_down",
+    "route_missing observed on device (A05)"
+   ]
+  },
+  {
+   "device": "Spine-2",
+   "score": 3.48,
+   "reasons": [
+    "far end eth1 of link with link_down on Leaf-1:eth2",
+    "link_down observed on device (A02)",
+    "owns peer 10.0.3.1 named in bgp_session_down",
+    "bgp_session_down observed on device (A04)",
+    "route_missing observed on device (A06)"
+   ]
+  }
+ ],
+ "initially_violated": [
+  "bgp-all-sessions",
+  "redundancy-lan10-lan20",
+  "redundancy-lan20-lan10"
+ ],
+ "diagnoses": [
+  {
+   "strategy": "llm:gemini/gemini-3.1-flash-lite (no tools)",
+   "hypotheses": [
+    {
+     "id": "H1",
+     "device": "Spine-2",
+     "category": "LINK",
+     "fault_type": "interface_admin_down",
+     "location": "eth1",
+     "statement": "The interface eth1 on Spine-2 is administratively down, causing the link to Leaf-1 (eth2) to fail and the BGP session to drop.",
+     "evidence": [
+      "A02",
+      "A01",
+      "A04",
+      "A03"
+     ],
+     "self_reported_confidence": 1.0
+    }
+   ],
+   "reasoning_summary": "The anomaly logs show that the link between Leaf-1 (eth2) and Spine-2 (eth1) is down. Inspection of the running configuration for Spine-2 reveals that interface GigabitEthernet0/1 is explicitly configured with the 'shutdown' command. This administrative shutdown is the root cause of the link failure, which subsequently triggered the BGP session down event (A03, A04) and the resulting route withdrawals (A05, A06).",
+   "skill_call_ids": [],
+   "usage": {
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "calls": 1,
+    "prompt_tokens": 3469,
+    "completion_tokens": 269,
+    "total_tokens": 3738,
+    "latency_ms": 2352.0,
+    "invalid_responses": 0,
+    "retries": 0,
+    "source": "provider_reported"
+   }
+  }
+ ],
+ "final_hypotheses": [
+  {
+   "id": "H1",
+   "device": "Spine-2",
+   "category": "LINK",
+   "fault_type": "interface_admin_down",
+   "location": "eth1",
+   "statement": "The interface eth1 on Spine-2 is administratively down, causing the link to Leaf-1 (eth2) to fail and the BGP session to drop.",
+   "evidence": [
+    "A02",
+    "A01",
+    "A04",
+    "A03"
+   ],
+   "self_reported_confidence": 1.0
+  }
+ ],
+ "tool_calls": [],
+ "attempts": [
+  {
+   "attempt": 1,
+   "strategy": "llm:gemini/gemini-3.1-flash-lite",
+   "plan": {
+    "ops": [
+     {
+      "device": "Spine-2",
+      "op": "set_interface_enabled",
+      "interface": "eth1",
+      "enabled": true
+     }
+    ],
+    "rationale": "The interface eth1 on Spine-2 is administratively down, which prevents the BGP session with Leaf-1 from establishing. Enabling this interface will restore the link and the BGP session.",
+    "addresses_hypotheses": [
+     "H1"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": true,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [],
+   "new_violations": [],
+   "counterexamples": [],
+   "disposition": "accepted",
+   "verify_ms": 27.53
+  }
+ ],
+ "final_plan": {
+  "ops": [
+   {
+    "device": "Spine-2",
+    "op": "set_interface_enabled",
+    "interface": "eth1",
+    "enabled": true
+   }
+  ],
+  "rationale": "The interface eth1 on Spine-2 is administratively down, which prevents the BGP session with Leaf-1 from establishing. Enabling this interface will restore the link and the BGP session.",
+  "addresses_hypotheses": [
+   "H1"
+  ]
+ },
+ "final_verification": {
+  "passed": true,
+  "backends": [
+   "local_symbolic",
+   "ir_static"
+  ],
+  "violated": [],
+  "fingerprint": "c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b"
+ },
+ "approval": {
+  "plan_hash": "baa3553d5072918a6d576b8f46a0b0dc72ead58f2fd8267dffa8bf45b47a6bc4",
+  "candidate_fingerprint": "c4c284a265a86db64054b15a4391278c38a8636cace79339d14e4496c8875c1b",
+  "approver": "auto_policy",
+  "policy": "auto_policy",
+  "issued_at": "2026-11-08T16:41:06.780288+00:00",
+  "nonce": "d9c0ddda03d62020",
+  "mac": "406c78bb27b8477263f97c66480ea2a51e3d41717617cf8137c655fd67ef5153"
+ },
+ "approval_decision": "auto-approved: verification passed",
+ "transaction": {
+  "tx_id": "TX0001-baa3553d",
+  "adapter": "inmemory",
+  "adapter_label": "SIMULATED",
+  "plan_hash": "baa3553d5072918a6d576b8f46a0b0dc72ead58f2fd8267dffa8bf45b47a6bc4",
+  "devices": [
+   "Spine-2"
+  ],
+  "status": "ROLLED_BACK",
+  "steps": [
+   {
+    "step": "capture",
+    "ok": true,
+    "detail": "fingerprint 58ece6dacbad",
+    "ms": 1.21
+   },
+   {
+    "step": "build_candidate",
+    "ok": true,
+    "detail": "1 ops on ['Spine-2']",
+    "ms": 3.82
+   },
+   {
+    "step": "syntax_check",
+    "ok": true,
+    "detail": "render/parse round-trip OK",
+    "ms": 1.24
+   },
+   {
+    "step": "symbolic_verification",
+    "ok": true,
+    "detail": "backends=['local_symbolic', 'ir_static'] violated=[]",
+    "ms": 36.79
+   },
+   {
+    "step": "prepare",
+    "ok": true,
+    "detail": "devices to change: ['Spine-2']",
+    "ms": 0.02
+   },
+   {
+    "step": "authorize",
+    "ok": true,
+    "detail": "token from auto_policy (auto_policy)",
+    "ms": 0.0
+   },
+   {
+    "step": "apply:Spine-2",
+    "ok": true,
+    "detail": "",
+    "ms": 1.74
+   },
+   {
+    "step": "post_check",
+    "ok": false,
+    "detail": "observed state violated=['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']",
+    "ms": 44.47
+   },
+   {
+    "step": "rollback:Spine-2",
+    "ok": true,
+    "detail": "restored captured configuration",
+    "ms": 0.97
+   },
+   {
+    "step": "restore_verification",
+    "ok": true,
+    "detail": "all touched devices match captured config",
+    "ms": 0.0
+   }
+  ],
+  "applied_devices": [
+   "Spine-2"
+  ],
+  "rolled_back_devices": [
+   "Spine-2"
+  ],
+  "failure": "post-check failed: ['bgp-all-sessions', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']",
+  "post_check_violations": [
+   "bgp-all-sessions",
+   "redundancy-lan10-lan20",
+   "redundancy-lan20-lan10"
+  ],
+  "restore_verified": true,
+  "diff": "--- Spine-2 (before)\n+++ Spine-2 (after)\n@@ -11,3 +11,3 @@\n  duplex full\n- shutdown\n+ no shutdown\n !",
+  "duration_ms": 132.68
+ },
+ "outcome": "rolled_back",
+ "timings_ms": {
+  "diagnose": 2364.08,
+  "plan": 1205.5,
+  "verify": 64.66,
+  "execute": 141.5,
+  "total": 3782.02
+ },
+ "llm_usage": {
+  "provider": "gemini",
+  "model": "gemini-3.1-flash-lite",
+  "calls": 2,
+  "prompt_tokens": 9205,
+  "completion_tokens": 400,
+  "total_tokens": 9605,
+  "latency_ms": 3532.7,
+  "invalid_responses": 0,
+  "retries": 0,
+  "source": "provider_reported"
+ }
+}

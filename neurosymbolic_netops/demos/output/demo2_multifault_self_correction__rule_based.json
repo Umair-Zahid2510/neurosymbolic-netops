@@ -1,0 +1,1525 @@
+{
+ "incident_id": "DEMO2-MULTI",
+ "modes": {
+  "diagnosis": "rule_based",
+  "planning": "rule_based",
+  "verifier": "local_symbolic+ir_static",
+  "actuation": "inmemory/SIMULATED",
+  "approval": "auto_policy",
+  "telemetry": "local_simulation"
+ },
+ "state": "COMPLETED",
+ "transitions": [
+  {
+   "frm": "DETECTED",
+   "to": "DIAGNOSING",
+   "at": "2026-11-08T16:33:26.648005+00:00",
+   "reason": "6 anomalies; violated intents ['bgp-all-sessions', 'reach-lan20-lan10', 'redundancy-lan10-lan20', 'redundancy-lan20-lan10']"
+  },
+  {
+   "frm": "DIAGNOSING",
+   "to": "ROOT_CAUSE_IDENTIFIED",
+   "at": "2026-11-08T16:33:26.674680+00:00",
+   "reason": "3 hypotheses"
+  },
+  {
+   "frm": "ROOT_CAUSE_IDENTIFIED",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:33:26.674680+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:33:26.676681+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "PLANNING",
+   "at": "2026-11-08T16:33:26.695327+00:00",
+   "reason": "revise plan using counterexamples"
+  },
+  {
+   "frm": "PLANNING",
+   "to": "VERIFYING",
+   "at": "2026-11-08T16:33:26.697338+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "VERIFYING",
+   "to": "APPROVED",
+   "at": "2026-11-08T16:33:26.728932+00:00",
+   "reason": "auto-approved: verification passed"
+  },
+  {
+   "frm": "APPROVED",
+   "to": "EXECUTING",
+   "at": "2026-11-08T16:33:26.728932+00:00",
+   "reason": ""
+  },
+  {
+   "frm": "EXECUTING",
+   "to": "POST_CHECK",
+   "at": "2026-11-08T16:33:26.766457+00:00",
+   "reason": "post-check passed on observed state"
+  },
+  {
+   "frm": "POST_CHECK",
+   "to": "COMPLETED",
+   "at": "2026-11-08T16:33:26.766457+00:00",
+   "reason": "committed"
+  }
+ ],
+ "digest": {
+  "anomalies": [
+   {
+    "anomaly_id": "A01",
+    "kind": "probe_failure",
+    "detector": "probe_loss",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": {
+     "src_ip": "10.1.20.10",
+     "dst_ip": "10.1.10.10",
+     "protocol": "ip",
+     "dst_port": null,
+     "src_port": null
+    },
+    "severity": 1.0,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 8,
+    "evidence_event_ids": [
+     "ev-4dbf4ecb887f",
+     "ev-07adae66fc5e",
+     "ev-c9541585c963",
+     "ev-ab756296d2a9",
+     "ev-701c290f4c12",
+     "ev-98e4b0ddd586",
+     "ev-eeb7a35be727",
+     "ev-4f9bd0cd149a"
+    ],
+    "summary": "probe 10.1.20.10->10.1.10.10 loss up to 100%"
+   },
+   {
+    "anomaly_id": "A02",
+    "kind": "bgp_session_flap",
+    "detector": "syslog_classifier",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": "10.0.4.1",
+    "flow": null,
+    "severity": 0.75,
+    "first_seen": "2026-11-08T10:03:00.993000Z",
+    "last_seen": "2026-11-08T10:03:00.993000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-9a1537dd8725"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.1 Down Hold timer expired / connection timed out"
+   },
+   {
+    "anomaly_id": "A03",
+    "kind": "bgp_session_flap",
+    "detector": "syslog_classifier",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": "10.0.4.2",
+    "flow": null,
+    "severity": 0.75,
+    "first_seen": "2026-11-08T10:03:01.415000Z",
+    "last_seen": "2026-11-08T10:03:01.415000Z",
+    "count": 1,
+    "evidence_event_ids": [
+     "ev-644e6a3d8642"
+    ],
+    "summary": "[bgp] %BGP-5-ADJCHANGE: neighbor 10.0.4.2 Down Hold timer expired / connection timed out"
+   },
+   {
+    "anomaly_id": "A04",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Leaf-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-20825a70e45b",
+     "ev-28319a38f151",
+     "ev-c15c9fde3f92",
+     "ev-9fb61f87db8a",
+     "ev-c53beec87b52",
+     "ev-05ba64bc3b2d",
+     "ev-532c4089e160",
+     "ev-9aa4c04c4675",
+     "ev-02c448c20a71"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: prefix 10.1.10.0/24 removed from RIB (no valid path)"
+   },
+   {
+    "anomaly_id": "A05",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-1",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 9,
+    "evidence_event_ids": [
+     "ev-6e7868eb66c5",
+     "ev-5facc68e37b9",
+     "ev-9e7f9d427a21",
+     "ev-7dc22d6b74da",
+     "ev-55ab0bb5ed55",
+     "ev-f273d9b85c1e",
+     "ev-9b1825a4065a",
+     "ev-218ed8e4d6b2",
+     "ev-318eaa2b56e9"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   },
+   {
+    "anomaly_id": "A06",
+    "kind": "route_missing",
+    "detector": "syslog_classifier+counter_state",
+    "device": "Spine-2",
+    "interface": null,
+    "peer_ip": null,
+    "flow": null,
+    "severity": 0.6,
+    "first_seen": "2026-11-08T10:03:00Z",
+    "last_seen": "2026-11-08T10:06:30Z",
+    "count": 10,
+    "evidence_event_ids": [
+     "ev-f92bd28ee71a",
+     "ev-18f4981f8afd",
+     "ev-a8748c933d1e",
+     "ev-4243d6ef514d",
+     "ev-47a3f99cd35d",
+     "ev-dd77a5d1f3ae",
+     "ev-4b977052c668",
+     "ev-5be7ebe403be",
+     "ev-95c853b4b424",
+     "ev-f4b31421117e"
+    ],
+    "summary": "[routing] %ROUTING-4-PREFIX_WITHDRAWN: route 10.1.10.0/24 withdrawn, no remaining next hop"
+   }
+  ],
+  "missing_data": [],
+  "raw_bytes": 152266,
+  "digest_bytes": 3097
+ },
+ "candidates": [
+  {
+   "device": "Leaf-2",
+   "score": 3.25,
+   "reasons": [
+    "probe_failure observed on device (A01)",
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "bgp_session_flap observed on device (A02)",
+    "owns peer 10.0.4.2 named in bgp_session_flap",
+    "route_missing observed on device (A04)"
+   ]
+  },
+  {
+   "device": "Spine-2",
+   "score": 2.25,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "owns peer 10.0.4.1 named in bgp_session_flap",
+    "bgp_session_flap observed on device (A03)",
+    "route_missing observed on device (A06)"
+   ]
+  },
+  {
+   "device": "Spine-1",
+   "score": 0.9,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10",
+    "route_missing observed on device (A05)"
+   ]
+  },
+  {
+   "device": "Leaf-1",
+   "score": 0.3,
+   "reasons": [
+    "on expected path of failed flow 10.1.20.10->10.1.10.10"
+   ]
+  }
+ ],
+ "initially_violated": [
+  "bgp-all-sessions",
+  "reach-lan20-lan10",
+  "redundancy-lan10-lan20",
+  "redundancy-lan20-lan10"
+ ],
+ "diagnoses": [
+  {
+   "strategy": "rule_based",
+   "hypotheses": [
+    {
+     "id": "H1",
+     "device": "Leaf-2",
+     "category": "ACL",
+     "fault_type": "acl_blocks_control_plane",
+     "location": "CTRL_PLANE_FILTER#0",
+     "statement": "Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any any eq 179' denies BGP TCP/179 from 10.0.4.1",
+     "evidence": [
+      "E-2dfdc264"
+     ],
+     "self_reported_confidence": null
+    },
+    {
+     "id": "H2",
+     "device": "Leaf-2",
+     "category": "ACL",
+     "fault_type": "acl_blocks_control_plane",
+     "location": "CTRL_PLANE_FILTER#1",
+     "statement": "Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any eq 179 any' denies BGP TCP/179 replies from 10.0.4.1",
+     "evidence": [
+      "E-230bee7d"
+     ],
+     "self_reported_confidence": null
+    },
+    {
+     "id": "H3",
+     "device": "Leaf-1",
+     "category": "ROUTING",
+     "fault_type": "missing_prefix_advertisement",
+     "location": "10.1.10.0/24",
+     "statement": "Leaf-1 owns 10.1.10.0/24 but does not advertise it into BGP",
+     "evidence": [
+      "E-fa0dfee0"
+     ],
+     "self_reported_confidence": null
+    }
+   ],
+   "reasoning_summary": "3 rule-matched hypotheses over 4 candidate devices",
+   "skill_call_ids": [
+    "C001",
+    "C002",
+    "C003",
+    "C004",
+    "C005",
+    "C006",
+    "C007",
+    "C008",
+    "C009",
+    "C010",
+    "C011",
+    "C012",
+    "C013",
+    "C014",
+    "C015",
+    "C016",
+    "C017",
+    "C018",
+    "C019",
+    "C020",
+    "C021",
+    "C022",
+    "C023",
+    "C024",
+    "C025",
+    "C026",
+    "C027",
+    "C028",
+    "C029"
+   ],
+   "usage": null
+  }
+ ],
+ "final_hypotheses": [
+  {
+   "id": "H1",
+   "device": "Leaf-2",
+   "category": "ACL",
+   "fault_type": "acl_blocks_control_plane",
+   "location": "CTRL_PLANE_FILTER#0",
+   "statement": "Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any any eq 179' denies BGP TCP/179 from 10.0.4.1",
+   "evidence": [
+    "E-2dfdc264"
+   ],
+   "self_reported_confidence": null
+  },
+  {
+   "id": "H2",
+   "device": "Leaf-2",
+   "category": "ACL",
+   "fault_type": "acl_blocks_control_plane",
+   "location": "CTRL_PLANE_FILTER#1",
+   "statement": "Leaf-2 eth2 in ACL CTRL_PLANE_FILTER rule 'deny tcp any eq 179 any' denies BGP TCP/179 replies from 10.0.4.1",
+   "evidence": [
+    "E-230bee7d"
+   ],
+   "self_reported_confidence": null
+  },
+  {
+   "id": "H3",
+   "device": "Leaf-1",
+   "category": "ROUTING",
+   "fault_type": "missing_prefix_advertisement",
+   "location": "10.1.10.0/24",
+   "statement": "Leaf-1 owns 10.1.10.0/24 but does not advertise it into BGP",
+   "evidence": [
+    "E-fa0dfee0"
+   ],
+   "self_reported_confidence": null
+  }
+ ],
+ "tool_calls": [
+  {
+   "call_id": "C001",
+   "evidence_id": "E-2674b0b2",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "interface": "eth1"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-1",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.1.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-1 Gi0/1"
+    },
+    "peer": {
+     "device": "Spine-1",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.1.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-1 Gi0/1"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 5.458,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C002",
+   "evidence_id": "E-0949999a",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "interface": "eth2"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-1",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.3.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-2 Gi0/1"
+    },
+    "peer": {
+     "device": "Spine-2",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.3.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-1 Gi0/2"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.368,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C003",
+   "evidence_id": "E-ffcbdc37",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "interface": "eth1"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-2",
+     "interface": "eth1",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.2.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "PERIMETER_SECURITY_POLICY",
+     "acl_out": null,
+     "description": "Link to Spine-1 Gi0/2"
+    },
+    "peer": {
+     "device": "Spine-1",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.2.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-2 Gi0/1"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.229,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C004",
+   "evidence_id": "E-0084f1bc",
+   "skill": "check_link",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "interface": "eth2"
+   },
+   "ok": true,
+   "result": {
+    "local": {
+     "device": "Leaf-2",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.4.2/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": "CTRL_PLANE_FILTER",
+     "acl_out": null,
+     "description": "Link to Spine-2 Gi0/2"
+    },
+    "peer": {
+     "device": "Spine-2",
+     "interface": "eth2",
+     "admin_status": "up",
+     "oper_status": "up",
+     "ipv4": "10.0.4.1/30",
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full",
+     "acl_in": null,
+     "acl_out": null,
+     "description": "Link to Leaf-2 Gi0/2"
+    },
+    "parameter_mismatches": [],
+    "fleet_typical": {
+     "mtu": 1500,
+     "speed": "1000",
+     "duplex": "full"
+    }
+   },
+   "error": null,
+   "duration_ms": 0.238,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C005",
+   "evidence_id": "E-8273ed1b",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "local_as": 65001,
+    "router_id": "10.1.10.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.1.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     },
+     {
+      "neighbor": "10.0.3.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.228,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C006",
+   "evidence_id": "E-de235f29",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "local_as": 65002,
+    "router_id": "10.1.20.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.2.1",
+      "remote_as_configured": 65000,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 0
+     },
+     {
+      "neighbor": "10.0.4.1",
+      "remote_as_configured": 65000,
+      "state": "Active",
+      "last_reset": null,
+      "prefixes_received": 0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.158,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C007",
+   "evidence_id": "E-a1f67bac",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-1",
+    "local_as": 65000,
+    "router_id": "10.0.1.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.1.2",
+      "remote_as_configured": 65001,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 0
+     },
+     {
+      "neighbor": "10.0.2.2",
+      "remote_as_configured": 65002,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 1
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.145,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C008",
+   "evidence_id": "E-28d48b2c",
+   "skill": "bgp_summary",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "router_id": "10.0.3.1",
+    "neighbors": [
+     {
+      "neighbor": "10.0.3.2",
+      "remote_as_configured": 65001,
+      "state": "Established",
+      "last_reset": null,
+      "prefixes_received": 0
+     },
+     {
+      "neighbor": "10.0.4.2",
+      "remote_as_configured": 65002,
+      "state": "Active",
+      "last_reset": null,
+      "prefixes_received": 0
+     }
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.147,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C009",
+   "evidence_id": "E-2892dbdc",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "neighbor_ip": "10.0.4.1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "local_as": 65002,
+    "neighbor": "10.0.4.1",
+    "peer_device_per_topology": "Spine-2",
+    "remote_as_configured": 65000,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Active",
+    "last_reset": null,
+    "prefixes_received": 0,
+    "advertised_networks": [
+     "10.1.20.0/24"
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.491,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C010",
+   "evidence_id": "E-ceb8985f",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2",
+    "neighbor_ip": "10.0.4.2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "neighbor": "10.0.4.2",
+    "peer_device_per_topology": "Leaf-2",
+    "remote_as_configured": 65002,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Active",
+    "last_reset": null,
+    "prefixes_received": 0,
+    "advertised_networks": []
+   },
+   "error": null,
+   "duration_ms": 0.404,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C011",
+   "evidence_id": "E-2dfdc264",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.0.4.1",
+    "dst_ip": "10.0.4.2",
+    "protocol": "tcp",
+    "dst_port": 179,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "deny",
+    "matched_rule_index": 0,
+    "matched_rule": "deny tcp any any eq 179"
+   },
+   "error": null,
+   "duration_ms": 0.266,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C012",
+   "evidence_id": "E-230bee7d",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.0.4.1",
+    "dst_ip": "10.0.4.2",
+    "protocol": "tcp",
+    "dst_port": 49152,
+    "src_port": 179
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "deny",
+    "matched_rule_index": 1,
+    "matched_rule": "deny tcp any eq 179 any"
+   },
+   "error": null,
+   "duration_ms": 0.272,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C013",
+   "evidence_id": "E-ceb8985f",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Spine-2",
+    "neighbor_ip": "10.0.4.2"
+   },
+   "ok": true,
+   "result": {
+    "device": "Spine-2",
+    "local_as": 65000,
+    "neighbor": "10.0.4.2",
+    "peer_device_per_topology": "Leaf-2",
+    "remote_as_configured": 65002,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Active",
+    "last_reset": null,
+    "prefixes_received": 0,
+    "advertised_networks": []
+   },
+   "error": null,
+   "duration_ms": 0.286,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C014",
+   "evidence_id": "E-2892dbdc",
+   "skill": "bgp_neighbor",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "neighbor_ip": "10.0.4.1"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "local_as": 65002,
+    "neighbor": "10.0.4.1",
+    "peer_device_per_topology": "Spine-2",
+    "remote_as_configured": 65000,
+    "password": null,
+    "ipv4_unicast_activated": true,
+    "route_map_in": null,
+    "route_map_out": null,
+    "state": "Active",
+    "last_reset": null,
+    "prefixes_received": 0,
+    "advertised_networks": [
+     "10.1.20.0/24"
+    ]
+   },
+   "error": null,
+   "duration_ms": 0.374,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C015",
+   "evidence_id": "E-2dfdc264",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.0.4.1",
+    "dst_ip": "10.0.4.2",
+    "protocol": "tcp",
+    "dst_port": 179,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "deny",
+    "matched_rule_index": 0,
+    "matched_rule": "deny tcp any any eq 179"
+   },
+   "error": null,
+   "duration_ms": 0.255,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C016",
+   "evidence_id": "E-230bee7d",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.0.4.1",
+    "dst_ip": "10.0.4.2",
+    "protocol": "tcp",
+    "dst_port": 49152,
+    "src_port": 179
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "deny",
+    "matched_rule_index": 1,
+    "matched_rule": "deny tcp any eq 179 any"
+   },
+   "error": null,
+   "duration_ms": 0.234,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C017",
+   "evidence_id": "E-fa0dfee0",
+   "skill": "routing_table",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "prefix": "10.1.10.0/24"
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "routes": [
+     {
+      "prefix": "10.1.10.0/24",
+      "protocol": "connected",
+      "next_hops": [
+       {
+        "ip": null,
+        "interface": "eth10"
+       }
+      ],
+      "as_path": []
+     }
+    ],
+    "count": 1
+   },
+   "error": null,
+   "duration_ms": 0.359,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C018",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.242,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C019",
+   "evidence_id": "E-f1ee4c06",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "permit",
+    "matched_rule_index": 2,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.222,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C020",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.239,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C021",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.407,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C022",
+   "evidence_id": "E-2434122b",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 443,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.235,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C023",
+   "evidence_id": "E-98a516c9",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 443,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "permit",
+    "matched_rule_index": 2,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.299,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C024",
+   "evidence_id": "E-14e05c58",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 80,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.239,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C025",
+   "evidence_id": "E-c242690d",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "tcp",
+    "dst_port": 80,
+    "src_port": 49152
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "permit",
+    "matched_rule_index": 2,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.273,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C026",
+   "evidence_id": "E-2fc3b463",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.259,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C027",
+   "evidence_id": "E-f1ee4c06",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "src_ip": "10.1.10.10",
+    "dst_ip": "10.1.20.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-2",
+    "acl": "CTRL_PLANE_FILTER",
+    "action": "permit",
+    "matched_rule_index": 2,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.213,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C028",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.229,
+   "data_source": "local_simulation"
+  },
+  {
+   "call_id": "C029",
+   "evidence_id": "E-0bf749b5",
+   "skill": "acl_packet_test",
+   "caller": "diagnostic_agent[rule_based]",
+   "args": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "src_ip": "10.1.20.10",
+    "dst_ip": "10.1.10.10",
+    "protocol": "ip",
+    "dst_port": null,
+    "src_port": null
+   },
+   "ok": true,
+   "result": {
+    "device": "Leaf-1",
+    "acl": "PERIMETER_SECURITY_POLICY",
+    "action": "permit",
+    "matched_rule_index": 1,
+    "matched_rule": "permit ip any any"
+   },
+   "error": null,
+   "duration_ms": 0.323,
+   "data_source": "local_simulation"
+  }
+ ],
+ "attempts": [
+  {
+   "attempt": 1,
+   "strategy": "rule_based",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": null,
+       "dst_port": 179,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-2",
+      "op": "remove_acl_rule",
+      "acl": "CTRL_PLANE_FILTER",
+      "rule": {
+       "action": "deny",
+       "protocol": "tcp",
+       "src": "0.0.0.0/0",
+       "dst": "0.0.0.0/0",
+       "src_port": 179,
+       "dst_port": null,
+       "log": false
+      }
+     },
+     {
+      "device": "Leaf-1",
+      "op": "set_bgp_network",
+      "prefix": "10.1.10.0/24",
+      "present": true
+     }
+    ],
+    "rationale": "rule-based repair per hypothesis",
+    "addresses_hypotheses": [
+     "H1",
+     "H2",
+     "H3"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": false,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [
+    "isolate-admin-lan20"
+   ],
+   "new_violations": [
+    "isolate-admin-lan20"
+   ],
+   "counterexamples": [
+    "[local_symbolic] isolate-admin-lan20: ISOLATION BREACH: 192.168.99.0/24 -> 10.1.20.0/24 (ip) entering at Spine-2 is DELIVERED via Spine-2>Leaf-2"
+   ],
+   "disposition": "rejected",
+   "verify_ms": 19.13
+  },
+  {
+   "attempt": 2,
+   "strategy": "rule_based",
+   "plan": {
+    "ops": [
+     {
+      "device": "Leaf-2",
+      "op": "bind_acl",
+      "interface": "eth2",
+      "direction": "in",
+      "acl": "PERIMETER_SECURITY_POLICY"
+     },
+     {
+      "device": "Leaf-1",
+      "op": "set_bgp_network",
+      "prefix": "10.1.10.0/24",
+      "present": true
+     }
+    ],
+    "rationale": "rule-based repair per hypothesis",
+    "addresses_hypotheses": [
+     "H1",
+     "H3"
+    ]
+   },
+   "plan_error": null,
+   "verification_passed": true,
+   "verification_backends": [
+    "local_symbolic",
+    "ir_static"
+   ],
+   "violated_before": [
+    "bgp-all-sessions",
+    "reach-lan20-lan10",
+    "redundancy-lan10-lan20",
+    "redundancy-lan20-lan10"
+   ],
+   "violated_after": [],
+   "new_violations": [],
+   "counterexamples": [],
+   "disposition": "accepted",
+   "verify_ms": 17.26
+  }
+ ],
+ "final_plan": {
+  "ops": [
+   {
+    "device": "Leaf-2",
+    "op": "bind_acl",
+    "interface": "eth2",
+    "direction": "in",
+    "acl": "PERIMETER_SECURITY_POLICY"
+   },
+   {
+    "device": "Leaf-1",
+    "op": "set_bgp_network",
+    "prefix": "10.1.10.0/24",
+    "present": true
+   }
+  ],
+  "rationale": "rule-based repair per hypothesis",
+  "addresses_hypotheses": [
+   "H1",
+   "H3"
+  ]
+ },
+ "final_verification": {
+  "passed": true,
+  "backends": [
+   "local_symbolic",
+   "ir_static"
+  ],
+  "violated": [],
+  "fingerprint": "a5e85a3086822eed157d08a1318c87d6f1740b80d3e5260337f228315f3b795b"
+ },
+ "approval": {
+  "plan_hash": "45ee808f02cc46409c81525ee23507f4329c508ce4a1808c8e2dcc3bc856dca0",
+  "candidate_fingerprint": "a5e85a3086822eed157d08a1318c87d6f1740b80d3e5260337f228315f3b795b",
+  "approver": "auto_policy",
+  "policy": "auto_policy",
+  "issued_at": "2026-11-08T16:33:26.728932+00:00",
+  "nonce": "22642b7dc6fc63c4",
+  "mac": "c3ee168a345b71e276865de62c158b5e8b462208ace659afe183e2c56bd64156"
+ },
+ "approval_decision": "auto-approved: verification passed",
+ "transaction": {
+  "tx_id": "TX0001-45ee808f",
+  "adapter": "inmemory",
+  "adapter_label": "SIMULATED",
+  "plan_hash": "45ee808f02cc46409c81525ee23507f4329c508ce4a1808c8e2dcc3bc856dca0",
+  "devices": [
+   "Leaf-1",
+   "Leaf-2"
+  ],
+  "status": "COMMITTED",
+  "steps": [
+   {
+    "step": "capture",
+    "ok": true,
+    "detail": "fingerprint 4db176908dd5",
+    "ms": 1.05
+   },
+   {
+    "step": "build_candidate",
+    "ok": true,
+    "detail": "2 ops on ['Leaf-1', 'Leaf-2']",
+    "ms": 2.49
+   },
+   {
+    "step": "syntax_check",
+    "ok": true,
+    "detail": "render/parse round-trip OK",
+    "ms": 1.29
+   },
+   {
+    "step": "symbolic_verification",
+    "ok": true,
+    "detail": "backends=['local_symbolic', 'ir_static'] violated=[]",
+    "ms": 15.98
+   },
+   {
+    "step": "prepare",
+    "ok": true,
+    "detail": "devices to change: ['Leaf-1', 'Leaf-2']",
+    "ms": 0.01
+   },
+   {
+    "step": "authorize",
+    "ok": true,
+    "detail": "token from auto_policy (auto_policy)",
+    "ms": 0.0
+   },
+   {
+    "step": "apply:Leaf-1",
+    "ok": true,
+    "detail": "",
+    "ms": 0.19
+   },
+   {
+    "step": "apply:Leaf-2",
+    "ok": true,
+    "detail": "",
+    "ms": 0.2
+   },
+   {
+    "step": "post_check",
+    "ok": true,
+    "detail": "observed state violated=[]",
+    "ms": 13.91
+   },
+   {
+    "step": "commit",
+    "ok": true,
+    "detail": "change confirmed",
+    "ms": 0.0
+   }
+  ],
+  "applied_devices": [
+   "Leaf-1",
+   "Leaf-2"
+  ],
+  "rolled_back_devices": [],
+  "failure": null,
+  "post_check_violations": [],
+  "restore_verified": null,
+  "diff": "--- Leaf-1 (before)\n+++ Leaf-1 (after)\n@@ -43,2 +43,3 @@\n  address-family ipv4 unicast\n+  network 10.1.10.0 mask 255.255.255.0\n   maximum-paths 2\n--- Leaf-2 (before)\n+++ Leaf-2 (after)\n@@ -26,3 +26,3 @@\n  ip address 10.0.4.2 255.255.255.252\n- ip access-group CTRL_PLANE_FILTER in\n+ ip access-group PERIMETER_SECURITY_POLICY in\n  mtu 1500",
+  "duration_ms": 36.64
+ },
+ "outcome": "repaired",
+ "timings_ms": {
+  "diagnose": 26.66,
+  "plan": 0.96,
+  "verify": 62.47,
+  "execute": 36.76,
+  "total": 134.21
+ },
+ "llm_usage": null
+}
