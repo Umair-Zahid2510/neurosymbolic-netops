@@ -15,7 +15,7 @@ from typing import List
 
 from core.causal_topology import TopologyGraph
 from core.config_ir import Network, network_fingerprint
-from core.intent_schema import (BgpSessionsIntent, IntentSet, IsolationIntent, LinkConsistencyIntent,
+from core.intent_schema import (BgpPeerConsistencyIntent, BgpSessionsIntent, IntentSet, IsolationIntent, LinkConsistencyIntent,
                                 NoForwardingLoopsIntent, ReachabilityIntent, RedundancyIntent)
 from core.network_model import NetworkState, Trace, compute_state, traceroute
 from core.verification.base import CheckResult, Counterexample, VerificationReport
@@ -100,7 +100,7 @@ class LocalSymbolicBackend:
                         for t in traceroute(network, topo, state, d, f.representative()):
                             if t.disposition in ("LOOP", "MAX_HOPS"):
                                 ces.append(_trace_ce(intent.id, f.label(), t, f"forwarding loop for {f.label()}: {'>'.join(t.path())}"))
-        elif isinstance(intent, LinkConsistencyIntent):
+        elif isinstance(intent, (LinkConsistencyIntent, BgpPeerConsistencyIntent)):
             res.passed = None
             res.note = "configuration invariant; evaluated by ir_static"
             return res
@@ -132,6 +132,9 @@ class IrStaticBackend:
         t0 = time.perf_counter()
         checks = []
         for intent in intents.intents:
+            if isinstance(intent, BgpPeerConsistencyIntent):
+                checks.append(self._bgp_consistency(intent, network))
+                continue
             if not isinstance(intent, LinkConsistencyIntent):
                 continue
             res = CheckResult(intent_id=intent.id, intent_kind=intent.kind, backend="ir_static", passed=True)
@@ -155,3 +158,34 @@ class IrStaticBackend:
         return VerificationReport(backends=["ir_static"], passed=all(c.passed for c in checks), checks=checks,
                                   network_fingerprint=network_fingerprint(network),
                                   duration_ms=round((time.perf_counter() - t0) * 1000, 3))
+
+    def _bgp_consistency(self, intent, network: Network) -> CheckResult:
+        res = CheckResult(intent_id=intent.id, intent_kind=intent.kind, backend="ir_static", passed=True)
+        for dev, cfg in sorted(network.items()):
+            if not cfg.bgp:
+                continue
+            for ip, n in sorted(cfg.bgp.neighbors.items()):
+                owner = self.topology.owner_of_ip(ip, network)
+                if not owner or not network[owner[0]].bgp:
+                    res.counterexamples.append(Counterexample(intent_id=intent.id, device=dev,
+                                               summary=f"{dev} neighbor {ip}: no BGP speaker owns this address"))
+                    continue
+                pdev = owner[0]
+                peer = network[pdev]
+                local = cfg.interface_on_subnet(ip)
+                pn = peer.bgp.neighbors.get(local.ip) if local else None
+                problems = []
+                if n.remote_as != peer.bgp.asn:
+                    problems.append(f"remote-as {n.remote_as} but {pdev} is AS {peer.bgp.asn}")
+                if pn is None:
+                    problems.append(f"{pdev} has no neighbor statement back to {local.ip if local else '?'}")
+                else:
+                    if (n.password or None) != (pn.password or None):
+                        problems.append(f"MD5 password differs from {pdev}'s")
+                if not n.activated:
+                    problems.append("not activated for IPv4 unicast")
+                for p in problems:
+                    res.counterexamples.append(Counterexample(intent_id=intent.id, device=dev,
+                                               summary=f"{dev} neighbor {ip} ({pdev}): {p}"))
+        res.passed = not res.counterexamples
+        return res

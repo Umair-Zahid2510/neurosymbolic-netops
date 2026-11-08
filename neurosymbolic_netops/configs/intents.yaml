@@ -68,3 +68,7 @@ intents:
   - id: link-consistency
     kind: link_consistency
     description: MTU, speed and duplex agree on both ends of every fabric link.
+
+  - id: bgp-peer-consistency
+    kind: bgp_peer_consistency
+    description: Both ends of each eBGP peering agree on remote-AS, MD5 password and IPv4 activation.

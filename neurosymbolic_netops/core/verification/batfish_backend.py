@@ -29,7 +29,7 @@ from typing import Any, Dict, List, Optional
 
 from core.causal_topology import TopologyGraph
 from core.config_ir import Network, network_fingerprint
-from core.intent_schema import (BgpSessionsIntent, IntentSet, IsolationIntent, LinkConsistencyIntent,
+from core.intent_schema import (BgpPeerConsistencyIntent, BgpSessionsIntent, IntentSet, IsolationIntent, LinkConsistencyIntent,
                                 NoForwardingLoopsIntent, ReachabilityIntent, RedundancyIntent)
 from core.renderers.ios import ios_interface_name, render_ios
 from core.verification.base import CheckResult, Counterexample, VerificationReport
@@ -191,7 +191,7 @@ class BatfishBackend:
             for _, r in frame.iterrows():
                 ces.append(Counterexample(intent_id=intent.id, summary=f"Batfish detectLoops: {r['Flow']}"))
             res.evidence = {"detectLoops_rows": len(frame)}
-        elif isinstance(intent, LinkConsistencyIntent):
+        elif isinstance(intent, (LinkConsistencyIntent, BgpPeerConsistencyIntent)):
             res.passed = None
             res.note = "configuration invariant; evaluated by ir_static"
             return res

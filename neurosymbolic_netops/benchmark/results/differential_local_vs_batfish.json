@@ -1,0 +1,1972 @@
+{
+  "summary": {
+    "cases": 90,
+    "agree": 50,
+    "by_template": {
+      "iface_shutdown": {
+        "cases": 8,
+        "agree": 8
+      },
+      "mtu_mismatch": {
+        "cases": 8,
+        "agree": 0
+      },
+      "duplex_mismatch": {
+        "cases": 8,
+        "agree": 0
+      },
+      "speed_mismatch": {
+        "cases": 8,
+        "agree": 0
+      },
+      "acl_block_bgp": {
+        "cases": 8,
+        "agree": 8
+      },
+      "acl_transit_deny": {
+        "cases": 8,
+        "agree": 8
+      },
+      "remote_as_mismatch": {
+        "cases": 8,
+        "agree": 8
+      },
+      "md5_unilateral": {
+        "cases": 8,
+        "agree": 0
+      },
+      "neighbor_deactivated": {
+        "cases": 8,
+        "agree": 0
+      },
+      "route_map_drop": {
+        "cases": 8,
+        "agree": 8
+      },
+      "missing_network": {
+        "cases": 2,
+        "agree": 2
+      },
+      "acl_deny_lan": {
+        "cases": 2,
+        "agree": 2
+      },
+      "acl_supernet_deny": {
+        "cases": 2,
+        "agree": 2
+      },
+      "acl_deny_service": {
+        "cases": 4,
+        "agree": 4
+      }
+    }
+  },
+  "rows": [
+    {
+      "template": "iface_shutdown",
+      "location": "Leaf-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.5,
+      "batfish_ms": 22035.2
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Leaf-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.4,
+      "batfish_ms": 17432.8
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Leaf-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 16.3,
+      "batfish_ms": 13093.6
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Leaf-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.3,
+      "batfish_ms": 7903.0
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Leaf-1:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 16.1,
+      "batfish_ms": 6937.5
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Leaf-1:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.0,
+      "batfish_ms": 7206.8
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Spine-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.8,
+      "batfish_ms": 5942.9
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Spine-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.7,
+      "batfish_ms": 6013.2
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Spine-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.9,
+      "batfish_ms": 6954.1
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Spine-1:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 21.0,
+      "batfish_ms": 14803.6
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Spine-1:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.7,
+      "batfish_ms": 8266.0
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Spine-1:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.6,
+      "batfish_ms": 6907.6
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Leaf-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.1,
+      "batfish_ms": 6795.5
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Leaf-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.8,
+      "batfish_ms": 5700.9
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Leaf-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.5,
+      "batfish_ms": 5758.6
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Leaf-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.0,
+      "batfish_ms": 5359.3
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Leaf-2:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 16.8,
+      "batfish_ms": 5222.0
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Leaf-2:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.2,
+      "batfish_ms": 6019.8
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Spine-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 16.5,
+      "batfish_ms": 7222.4
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Spine-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 21.4,
+      "batfish_ms": 6299.7
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Spine-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.0,
+      "batfish_ms": 5470.1
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Spine-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 10.1,
+      "batfish_ms": 8138.2
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Spine-1:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.6,
+      "batfish_ms": 7615.4
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Spine-1:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.7,
+      "batfish_ms": 11689.9
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Leaf-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.8,
+      "batfish_ms": 13155.9
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Leaf-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.0,
+      "batfish_ms": 9211.0
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Leaf-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 8.8,
+      "batfish_ms": 10182.0
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Leaf-1:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.0,
+      "batfish_ms": 6797.1
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Leaf-1:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 18.3,
+      "batfish_ms": 13936.5
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Leaf-1:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.5,
+      "batfish_ms": 7645.4
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Spine-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.3,
+      "batfish_ms": 8633.6
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Spine-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.4,
+      "batfish_ms": 8684.8
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Spine-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.3,
+      "batfish_ms": 16575.3
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Spine-2:eth1",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.7,
+      "batfish_ms": 18502.9
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Spine-2:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.6,
+      "batfish_ms": 12524.6
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Spine-2:eth1",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.6,
+      "batfish_ms": 9007.3
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Leaf-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.9,
+      "batfish_ms": 8011.3
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Leaf-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.5,
+      "batfish_ms": 15072.8
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Leaf-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.8,
+      "batfish_ms": 15594.1
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Leaf-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 23.4,
+      "batfish_ms": 8761.0
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Leaf-2:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.9,
+      "batfish_ms": 14612.1
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Leaf-2:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 20.7,
+      "batfish_ms": 10442.9
+    },
+    {
+      "template": "iface_shutdown",
+      "location": "Spine-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.6,
+      "batfish_ms": 6504.9
+    },
+    {
+      "template": "mtu_mismatch",
+      "location": "Spine-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 8.8,
+      "batfish_ms": 6794.5
+    },
+    {
+      "template": "duplex_mismatch",
+      "location": "Spine-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.0,
+      "batfish_ms": 6970.5
+    },
+    {
+      "template": "speed_mismatch",
+      "location": "Spine-2:eth2",
+      "category": "LINK",
+      "local_violated": [
+        "bgp-all-sessions",
+        "link-consistency",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "link-consistency"
+      ],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.6,
+      "batfish_ms": 7605.9
+    },
+    {
+      "template": "acl_block_bgp",
+      "location": "Spine-2:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.3,
+      "batfish_ms": 11003.8
+    },
+    {
+      "template": "acl_transit_deny",
+      "location": "Spine-2:eth2",
+      "category": "ACL",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 20.0,
+      "batfish_ms": 15621.2
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Leaf-1:10.0.1.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.8,
+      "batfish_ms": 12942.7
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Leaf-1:10.0.1.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.8,
+      "batfish_ms": 7310.6
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Leaf-1:10.0.1.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 10.0,
+      "batfish_ms": 7130.8
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Leaf-1:10.0.1.1",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.7,
+      "batfish_ms": 10080.1
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Leaf-1:10.0.3.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 8.9,
+      "batfish_ms": 6424.1
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Leaf-1:10.0.3.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 10.7,
+      "batfish_ms": 15406.8
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Leaf-1:10.0.3.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.0,
+      "batfish_ms": 10665.9
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Leaf-1:10.0.3.1",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.3,
+      "batfish_ms": 6897.7
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Leaf-2:10.0.2.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.6,
+      "batfish_ms": 11235.7
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Leaf-2:10.0.2.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.5,
+      "batfish_ms": 13483.3
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Leaf-2:10.0.2.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.2,
+      "batfish_ms": 11385.1
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Leaf-2:10.0.2.1",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.1,
+      "batfish_ms": 13634.6
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Leaf-2:10.0.4.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.1,
+      "batfish_ms": 16770.3
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Leaf-2:10.0.4.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 18.7,
+      "batfish_ms": 20636.1
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Leaf-2:10.0.4.1",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.2,
+      "batfish_ms": 7062.7
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Leaf-2:10.0.4.1",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 10.1,
+      "batfish_ms": 9767.6
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Spine-1:10.0.1.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.7,
+      "batfish_ms": 8306.4
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Spine-1:10.0.1.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.4,
+      "batfish_ms": 6881.3
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Spine-1:10.0.1.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 14.0,
+      "batfish_ms": 21754.5
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Spine-1:10.0.1.2",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.0,
+      "batfish_ms": 12990.9
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Spine-1:10.0.2.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.1,
+      "batfish_ms": 11516.8
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Spine-1:10.0.2.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 18.7,
+      "batfish_ms": 18259.5
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Spine-1:10.0.2.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.1,
+      "batfish_ms": 21065.7
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Spine-1:10.0.2.2",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.4,
+      "batfish_ms": 8094.7
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Spine-2:10.0.3.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.4,
+      "batfish_ms": 11726.6
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Spine-2:10.0.3.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.0,
+      "batfish_ms": 12294.9
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Spine-2:10.0.3.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 10.6,
+      "batfish_ms": 9315.9
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Spine-2:10.0.3.2",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "redundancy-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.5,
+      "batfish_ms": 18347.0
+    },
+    {
+      "template": "remote_as_mismatch",
+      "location": "Spine-2:10.0.4.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.2,
+      "batfish_ms": 16413.4
+    },
+    {
+      "template": "md5_unilateral",
+      "location": "Spine-2:10.0.4.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.3,
+      "batfish_ms": 10095.6
+    },
+    {
+      "template": "neighbor_deactivated",
+      "location": "Spine-2:10.0.4.2",
+      "category": "BGP",
+      "local_violated": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [],
+      "agree": false,
+      "only_local": [
+        "bgp-all-sessions",
+        "redundancy-lan10-lan20",
+        "redundancy-lan20-lan10"
+      ],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 9.9,
+      "batfish_ms": 11697.8
+    },
+    {
+      "template": "route_map_drop",
+      "location": "Spine-2:10.0.4.2",
+      "category": "BGP",
+      "local_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.9,
+      "batfish_ms": 18275.7
+    },
+    {
+      "template": "missing_network",
+      "location": "Leaf-1:10.1.10.0/24",
+      "category": "ROUTING",
+      "local_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.2,
+      "batfish_ms": 15942.6
+    },
+    {
+      "template": "acl_deny_lan",
+      "location": "Leaf-1:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.8,
+      "batfish_ms": 10071.0
+    },
+    {
+      "template": "acl_supernet_deny",
+      "location": "Leaf-1:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "batfish_violated": [
+        "reach-lan20-lan10",
+        "redundancy-lan20-lan10"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.2,
+      "batfish_ms": 7959.9
+    },
+    {
+      "template": "acl_deny_service",
+      "location": "Leaf-1:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [],
+      "batfish_violated": [],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 11.4,
+      "batfish_ms": 5337.1
+    },
+    {
+      "template": "acl_deny_service",
+      "location": "Leaf-1:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [],
+      "batfish_violated": [],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 13.7,
+      "batfish_ms": 5109.6
+    },
+    {
+      "template": "missing_network",
+      "location": "Leaf-2:10.1.20.0/24",
+      "category": "ROUTING",
+      "local_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 8.9,
+      "batfish_ms": 5472.6
+    },
+    {
+      "template": "acl_deny_lan",
+      "location": "Leaf-2:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.0,
+      "batfish_ms": 11524.5
+    },
+    {
+      "template": "acl_supernet_deny",
+      "location": "Leaf-2:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "reach-lan10-lan20",
+        "redundancy-lan10-lan20",
+        "svc-http-lan10-lan20",
+        "svc-https-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 12.3,
+      "batfish_ms": 7489.4
+    },
+    {
+      "template": "acl_deny_service",
+      "location": "Leaf-2:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "svc-http-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "svc-http-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 15.1,
+      "batfish_ms": 8472.0
+    },
+    {
+      "template": "acl_deny_service",
+      "location": "Leaf-2:PERIMETER_SECURITY_POLICY",
+      "category": "ACL",
+      "local_violated": [
+        "svc-https-lan10-lan20"
+      ],
+      "batfish_violated": [
+        "svc-https-lan10-lan20"
+      ],
+      "agree": true,
+      "only_local": [],
+      "only_batfish": [],
+      "batfish_parse_issues": [],
+      "local_ms": 21.7,
+      "batfish_ms": 6397.9
+    }
+  ]
+}

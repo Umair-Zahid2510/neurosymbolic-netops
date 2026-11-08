@@ -98,8 +98,15 @@ class LinkConsistencyIntent(_Intent):
     kind: Literal["link_consistency"] = "link_consistency"
 
 
+class BgpPeerConsistencyIntent(_Intent):
+    """Both ends of every configured eBGP peering agree on remote-AS, MD5 password and IPv4
+    activation (configuration invariant; Batfish does not model MD5 or AF activation)."""
+    kind: Literal["bgp_peer_consistency"] = "bgp_peer_consistency"
+
+
 Intent = Annotated[Union[ReachabilityIntent, IsolationIntent, RedundancyIntent, BgpSessionsIntent,
-                         NoForwardingLoopsIntent, LinkConsistencyIntent], Field(discriminator="kind")]
+                         NoForwardingLoopsIntent, LinkConsistencyIntent, BgpPeerConsistencyIntent],
+                   Field(discriminator="kind")]
 
 
 class IntentSet(BaseModel):
