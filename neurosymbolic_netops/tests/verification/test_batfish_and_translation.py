@@ -65,5 +65,10 @@ def test_batfish_composite_detects_faults(testbed, template, kw, intent):
 def test_dashboard_loads():
     from streamlit.testing.v1 import AppTest
     from tests.conftest import ROOT
-    at = AppTest.from_file(str(ROOT / "dashboard" / "app.py"), default_timeout=60).run()
+    at = AppTest.from_file(str(ROOT / "dashboard" / "app.py"), default_timeout=120).run()
     assert not at.exception
+    at.button[0].click().run()  # run a full incident (rule-based, local verifier) from the UI
+    assert not at.exception and at.metric[0].value == "repaired"
+    for view in ("Topology", "Training results", "Benchmark results"):
+        at.sidebar.radio[0].set_value(view).run()
+        assert not at.exception, view

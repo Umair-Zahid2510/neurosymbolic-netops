@@ -42,7 +42,7 @@ ALL = {**TEMPLATES, **NOVEL_TEMPLATES}
 
 st.sidebar.title("Neurosymbolic NetOps")
 st.sidebar.caption("Testbed: 2-spine / 2-leaf eBGP fabric (configuration-level model; no live devices)")
-view = st.sidebar.radio("View", ["Run an incident", "Topology", "Benchmark results"])
+view = st.sidebar.radio("View", ["Run an incident", "Topology", "Training results", "Benchmark results"])
 
 
 def location_args(template: str):
@@ -127,10 +127,10 @@ if view == "Run an incident":
         with left:
             st.subheader("Topology (faulty network, local model)")
             fig, _ = topo_figure(st.session_state["faulty"], highlight=[h.device for h in r.final_hypotheses[:1]])
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
             st.subheader("Tier 1 - anomaly digest")
             st.dataframe(pd.DataFrame([{k: a[k] for k in ("anomaly_id", "kind", "device", "interface", "peer_ip", "count", "detector")}
-                                       for a in r.digest["anomalies"]]), use_container_width=True)
+                                       for a in r.digest["anomalies"]]), width="stretch")
             st.caption(f"raw {run.raw_bytes} B -> digest {run.digest_bytes} B; missing data: {r.digest['missing_data'] or 'none'}")
             st.write("Ranked candidates:", [(c["device"], c["score"]) for c in r.candidates])
         with right:
@@ -153,23 +153,52 @@ if view == "Run an incident":
                             st.code(ce, language="text")
         if r.transaction:
             st.subheader(f"Tier 4 - transaction {r.transaction.tx_id} ({r.transaction.adapter_label}): {r.transaction.status}")
-            st.dataframe(pd.DataFrame([s.model_dump() for s in r.transaction.steps]), use_container_width=True)
+            st.dataframe(pd.DataFrame([s.model_dump() for s in r.transaction.steps]), width="stretch")
             if r.transaction.diff:
                 st.code(r.transaction.diff, language="diff")
         st.subheader("Skill call log (evidence)")
         st.dataframe(pd.DataFrame([{"call": c.call_id, "evidence": c.evidence_id, "skill": c.skill, "caller": c.caller,
                                     "ok": c.ok, "ms": c.duration_ms, "source": c.data_source} for c in r.tool_calls]),
-                     use_container_width=True, height=240)
+                     width="stretch", height=240)
 
 elif view == "Topology":
     st.title("Fabric topology and control-plane state (base configuration, local model)")
     fig, s = topo_figure(tb.network)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.dataframe(pd.DataFrame([{"device": x.device, "neighbor": x.neighbor_ip, "peer": x.peer_device, "state": x.state}
                                for x in s.sessions]))
     dev = st.selectbox("Running configuration", sorted(tb.network))
     from core.renderers.ios import render_ios
     st.code(render_ios(tb.network[dev]), language="text")
+
+elif view == "Training results":
+    st.title("Trained models and evaluation (from scripts/train_and_evaluate.py)")
+    res = ROOT / "results"
+    if not (res / "RESULTS.md").exists():
+        st.warning("No training results yet. Run: python scripts/train_and_evaluate.py")
+    else:
+        cls = json.loads((res / "classifier_results.json").read_text())
+        rk = json.loads((res / "ranker_results.json").read_text())
+        st.subheader("Edge syslog classifier")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("5-fold CV accuracy", cls["cv5_on_training_phrasings"]["accuracy_mean"])
+        c2.metric("Held-out phrasings", cls["test_heldout_phrasing"]["accuracy"])
+        c3.metric("Held-out, message only", cls["test_heldout_phrasing_message_only"]["accuracy"])
+        c4.metric("Held-out incident logs", cls["test_on_heldout_incident_telemetry"]["accuracy"])
+        st.image(str(res / "figures" / "classifier_confusion_matrix.png"), width=520)
+        st.subheader("Learned root-cause ranker vs topology heuristic")
+        rows = [{"split": sp, "ranker": r, **{k: v[r][k] for k in ("top1", "top3", "mrr", "recall_at_2", "n")}}
+                for sp, v in rk["splits"].items() for r in ("heuristic", "learned")]
+        st.dataframe(pd.DataFrame(rows), width="stretch")
+        st.caption("Top-1 difference 95% CI (learned - heuristic): "
+                   + ", ".join(f"{sp} {v['top1_difference_learned_minus_heuristic_ci95']}" for sp, v in rk["splits"].items())
+                   + " - not statistically significant if the interval contains 0.")
+        for f in ("ranker_heldout_comparison.png", "verification_gate_effect.png", "latency_breakdown.png",
+                  "causal_discovery_precision.png"):
+            if (res / "figures" / f).exists():
+                st.image(str(res / "figures" / f), caption=f)
+        with st.expander("Full RESULTS.md"):
+            st.markdown((res / "RESULTS.md").read_text(encoding="utf-8"))
 
 else:
     st.title("Benchmark results (generated from raw result files)")
@@ -187,7 +216,7 @@ else:
             rows.append({"condition/split": key, "runs": s["runs"], "top1": s["top1"]["mean"], "repaired": s["repaired"]["mean"],
                          "final intents OK": s["final_intents_satisfied"]["mean"], "unsafe deployed": s["unsafe_deployed"]["mean"],
                          "rolled back": s["rolled_back"]["mean"], "median ms": (s["total_ms"] or {}).get("median")})
-        st.dataframe(pd.DataFrame(rows), use_container_width=True)
+        st.dataframe(pd.DataFrame(rows), width="stretch")
     for name in ("differential_local_vs_batfish.json", "translation_validation.json", "causal_discovery_pc.json"):
         p = ROOT / "benchmark" / "results" / name
         if p.exists():
