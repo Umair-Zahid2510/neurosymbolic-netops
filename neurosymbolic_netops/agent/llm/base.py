@@ -134,7 +134,9 @@ def run_structured(provider: LLMProvider, system: str, user: str, schema: Type[B
                    max_tool_rounds: int = 10, max_invalid: int = 2) -> tuple[BaseModel, LLMUsage, List[dict]]:
     """Tool loop + validated structured output. Returns (parsed, usage, transcript)."""
     usage = LLMUsage(provider=provider.provider, model=provider.model, source=provider.source)
-    schema_txt = json.dumps(schema.model_json_schema())
+    schema_txt = json.dumps(schema.model_json_schema(), separators=(",", ":"))
+    max_tool_rounds = int(os.environ.get("NETOPS_LLM_MAX_TOOL_ROUNDS", max_tool_rounds))
+    result_chars = int(os.environ.get("NETOPS_LLM_TOOL_RESULT_CHARS", 12000))
     sys_full = (system + "\n\nWhen you are finished, reply with ONLY a JSON object that validates against this "
                 f"JSON Schema (no prose, no markdown):\n{schema_txt}")
     msgs: List[dict] = [{"role": "user", "content": user}]
@@ -148,7 +150,7 @@ def run_structured(provider: LLMProvider, system: str, user: str, schema: Type[B
             for tc in res.tool_calls:
                 out = execute_tool(tc["name"], tc.get("args") or {}) if execute_tool else {"error": "tools disabled"}
                 msgs.append({"role": "tool", "tool_call_id": tc.get("id"), "name": tc["name"],
-                             "content": json.dumps(out, default=str)[:12000]})
+                             "content": json.dumps(out, default=str, separators=(",", ":"))[:result_chars]})
             continue
         try:
             parsed = schema.model_validate(extract_json(res.text))
@@ -177,7 +179,8 @@ def provider_from_env(mode: Optional[str] = None) -> LLMProvider:
     common = dict(timeout_s=float(os.environ.get("NETOPS_LLM_TIMEOUT_S", 60)),
                   max_retries=int(os.environ.get("NETOPS_LLM_MAX_RETRIES", 4)),
                   temperature=float(os.environ["NETOPS_LLM_TEMPERATURE"]) if os.environ.get("NETOPS_LLM_TEMPERATURE") else 0.2)
-    model = os.environ.get("NETOPS_LLM_MODEL") or ("gemini-3.6-flash" if name == "gemini" else "gpt-4.1-mini")
+    default_model = {"gemini": "gemini-3.6-flash", "openai": "gpt-4.1-mini", "groq": "openai/gpt-oss-120b"}
+    model = os.environ.get("NETOPS_LLM_MODEL") or default_model.get(name, "")
     if (mode or os.environ.get("NETOPS_LLM_MODE")) == "offline":
         from agent.llm.replay import ReplayProvider
         return ReplayProvider(provider=name, model=model)
@@ -187,4 +190,7 @@ def provider_from_env(mode: Optional[str] = None) -> LLMProvider:
     if name == "openai":
         from agent.llm.openai_provider import OpenAIProvider
         return OpenAIProvider(model=model, **common)
+    if name == "groq":
+        from agent.llm.openai_provider import GroqProvider
+        return GroqProvider(model=model, **common)
     raise LLMError(f"unknown NETOPS_LLM_PROVIDER {name!r}")

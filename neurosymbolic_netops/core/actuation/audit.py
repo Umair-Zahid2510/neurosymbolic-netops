@@ -35,13 +35,11 @@ def redact(obj: Any) -> Any:
 class AuditLog:
     def __init__(self, path: Optional[Path] = None, key: Optional[bytes] = None):
         self.path = Path(path) if path else None
-        k = key or os.environ.get("NETOPS_AUDIT_HMAC_KEY", "").encode()
-        if not k:
-            k = b"netops-dev-only-key"  # documented: development default; set NETOPS_AUDIT_HMAC_KEY in production
-            self.dev_key = True
-        else:
-            self.dev_key = False
-        self._key = k
+        from core.settings import is_ephemeral, secret_key
+        self._key = key or secret_key("NETOPS_AUDIT_HMAC_KEY")
+        # no hardcoded fallback: without the variable a random per-process key is used, so a log
+        # written to disk can only be verified later if NETOPS_AUDIT_HMAC_KEY is set
+        self.ephemeral_key = key is None and is_ephemeral("NETOPS_AUDIT_HMAC_KEY")
         self._lock = threading.Lock()
         self.entries: List[Dict[str, Any]] = []
         if self.path and self.path.exists():

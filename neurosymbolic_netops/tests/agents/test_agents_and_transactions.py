@@ -125,7 +125,7 @@ def test_audit_tamper_detected(testbed, broken):
 
 # ------------------------------------------------------------------ end-to-end (rule based)
 def test_e2e_single_fault_repaired(testbed):
-    run = run_incident(testbed, "e2e-1", fault(testbed, "remote_as_mismatch", dev="Leaf-1", nbr="10.0.1.1"), SystemConfig())
+    run = run_incident(testbed, "e2e-1", fault(testbed, "remote_as_mismatch", dev="Leaf-1", nbr="10.0.1.1"), SystemConfig(approval="auto_verified_simulation"))
     r = run.record
     assert r.outcome == "repaired" and r.state == State.COMPLETED and run.audit_ok
     assert [t.to for t in r.transitions][-3:] == [State.EXECUTING, State.POST_CHECK, State.COMPLETED]
@@ -134,13 +134,13 @@ def test_e2e_single_fault_repaired(testbed):
 
 def test_e2e_unsafe_repair_is_blocked_by_gate_but_deployed_without_it(testbed):
     net = fault(testbed, "acl_block_bgp", dev="Leaf-2", intf="eth2")
-    gated = run_incident(testbed, "g", net, SystemConfig()).record
+    gated = run_incident(testbed, "g", net, SystemConfig(approval="auto_verified_simulation")).record
     # the unsafe first plan is rejected with an isolation counterexample; the revision restores the
     # perimeter ACL and only that verified plan is deployed
     assert [a.disposition for a in gated.attempts] == ["rejected", "accepted"]
     assert gated.attempts[0].new_violations == ["isolate-admin-lan20"]
     assert gated.outcome == "repaired" and gated.transaction.post_check_violations == []
-    ungated = run_incident(testbed, "u", net, SystemConfig(verifier="none")).record
+    ungated = run_incident(testbed, "u", net, SystemConfig(approval="auto_verified_simulation", verifier="none")).record
     assert ungated.transaction.applied_devices == ["Leaf-2"]           # the unsafe change reached the device
     assert ungated.outcome == "rolled_back" and "isolate-admin-lan20" in ungated.transaction.post_check_violations
 
@@ -166,7 +166,7 @@ def test_e2e_llm_strategy_reflection_on_counterexample(testbed):
                                          "acl": "PERIMETER_SECURITY_POLICY"}], "rationale": "restore perimeter ACL",
                                 "addresses_hypotheses": ["H1"]}})
     p = ScriptedLLM([diag, unsafe, safe])
-    r = run_incident(testbed, "llm", net, SystemConfig(reasoning="llm", llm_provider=p, llm_tools=False)).record
+    r = run_incident(testbed, "llm", net, SystemConfig(approval="auto_verified_simulation", reasoning="llm", llm_provider=p, llm_tools=False)).record
     assert [a.disposition for a in r.attempts] == ["rejected", "accepted"]
     assert r.attempts[0].new_violations == ["isolate-admin-lan20"]
     assert r.outcome == "repaired" and r.llm_usage.calls == 3 and r.modes["diagnosis"].startswith("llm:mock")
@@ -174,4 +174,25 @@ def test_e2e_llm_strategy_reflection_on_counterexample(testbed):
 
 def test_llm_mode_without_provider_fails_loudly(testbed):
     with pytest.raises(ValueError, match="no silent fallback"):
-        run_incident(testbed, "x", testbed.network, SystemConfig(reasoning="llm"))
+        run_incident(testbed, "x", testbed.network, SystemConfig(approval="auto_verified_simulation", reasoning="llm"))
+
+
+def test_default_approval_is_human_and_rejects_without_operator(testbed, monkeypatch):
+    def no_human(*_):
+        raise EOFError
+    monkeypatch.setattr("builtins.input", no_human)
+    r = run_incident(testbed, "h", fault(testbed, "remote_as_mismatch", dev="Leaf-1", nbr="10.0.1.1"), SystemConfig()).record
+    assert r.modes["approval"] == "human" and r.outcome == "approval_denied" and r.transaction is None
+
+
+def test_no_hardcoded_hmac_keys(monkeypatch):
+    from pathlib import Path
+    from core.actuation.approval import ApprovalAuthority
+    from core.actuation.audit import AuditLog
+    monkeypatch.delenv("NETOPS_APPROVAL_HMAC_KEY", raising=False)
+    monkeypatch.delenv("NETOPS_AUDIT_HMAC_KEY", raising=False)
+    assert ApprovalAuthority().ephemeral_key and AuditLog().ephemeral_key
+    root = Path(__file__).resolve().parents[2]
+    for f in (root / "core" / "actuation").glob("*.py"):
+        text = f.read_text(encoding="utf-8")
+        assert "dev-approval-key" not in text and "dev-only-key" not in text

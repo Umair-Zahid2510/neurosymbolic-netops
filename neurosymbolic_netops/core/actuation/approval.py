@@ -38,7 +38,9 @@ class ApprovalToken(BaseModel):
 
 class ApprovalAuthority:
     def __init__(self, key: Optional[bytes] = None):
-        self._key = key or (os.environ.get("NETOPS_APPROVAL_HMAC_KEY") or "netops-dev-approval-key").encode()
+        from core.settings import is_ephemeral, secret_key
+        self._key = key or secret_key("NETOPS_APPROVAL_HMAC_KEY")
+        self.ephemeral_key = key is None and is_ephemeral("NETOPS_APPROVAL_HMAC_KEY")
         self._used: Set[str] = set()
 
     def _mac(self, plan_hash: str, fp: str, approver: str, nonce: str) -> str:
@@ -67,6 +69,8 @@ class ApprovalAuthority:
 
 
 class AutoApproveVerifiedPolicy:
+    """Simulation-only policy: approves plans whose verification passed. ``build_supervisor``
+    refuses to combine it with any adapter that is not labelled SIMULATED."""
     name = "auto_policy"
 
     def decide(self, plan: PatchPlan, verification_passed: bool, summary: str) -> tuple[bool, str]:
@@ -83,13 +87,19 @@ class DenyAllPolicy:
 class HumanApprovalPolicy:
     name = "human"
 
-    def __init__(self, input_fn=input, print_fn=print):
+    def __init__(self, input_fn=None, print_fn=print):
         self.input_fn, self.print_fn = input_fn, print_fn
+
+    def _ask(self, prompt: str) -> str:
+        try:
+            return (self.input_fn or input)(prompt)
+        except EOFError:  # non-interactive session: no human present -> reject
+            return "n"
 
     def decide(self, plan: PatchPlan, verification_passed: bool, summary: str) -> tuple[bool, str]:
         self.print_fn("\n=== APPROVAL REQUIRED ===\n" + summary + "\nOperations:\n  " + "\n  ".join(plan.describe()))
         if not verification_passed:
             self.print_fn("Verification did NOT pass; approval is not possible.")
             return False, "verification failed"
-        ans = self.input_fn("Approve deployment? [y/N] ").strip().lower()
+        ans = self._ask("Approve deployment? [y/N] ").strip().lower()
         return (ans == "y"), ("approved by operator" if ans == "y" else "rejected by operator")

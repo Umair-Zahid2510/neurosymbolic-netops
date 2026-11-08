@@ -1,4 +1,50 @@
-# Implementation Audit — Neurosymbolic NetOps Framework
+# Implementation Audit
+
+> **Document status (updated after implementation).** Section A is the *current* re-audit of the
+> implemented system. Section B, from "Implementation Audit - Neurosymbolic NetOps Framework" onward,
+> is the **historical pre-implementation audit** of the original code (git commit `e649acf`). It is
+> kept unchanged as the baseline the work was measured against. Its findings describe the old code,
+> not the current one.
+
+## A. Re-audit of the current implementation
+
+### A.1 Status of every original finding
+
+| Original finding (Section B) | Current status | Where |
+|---|---|---|
+| No LLM call; rule cascade mislabelled as LLM | **Resolved.** Gemini, OpenAI and Groq providers with tool calling, validation, retries and provider-reported tokens. Gemini and Groq live-verified. The rule engine is a labelled `rule_based` baseline. | `agent/llm/`, `agent/llm_agents.py` |
+| Incident-ID-specific branches | **Resolved.** Removed; a test forbids incident-ID strings in `agent/` and `core/`. | `tests/agents/` |
+| Batfish never queried | **Resolved.** Real pybatfish backend, verified against `batfish/allinone`. | `core/verification/batfish_backend.py` |
+| Regex verifier with false acceptances; `loop_free = True` | **Resolved.** IR-based local model with computed loops. Both P4 false acceptances are now rejected (tests). | `core/network_model.py`, `tests/unit/test_local_verifier.py` |
+| Regex actuator bugs (`no no shutdown`, global ACL unbind) | **Resolved.** Typed, interface-scoped `PatchOp`s (regression tests). | `core/patch_ops.py` |
+| Rollback unreachable | **Resolved.** Post-check reads the adapter's observed state; 6 fault-injection tests; 98/98 benchmark rollbacks verified. | `core/actuation/` |
+| chars/4 token estimates | **Resolved.** Provider-reported tokens only. | `agent/contracts.py:LLMUsage` |
+| Engineered 72% → 100% benchmark | **Resolved.** Withdrawn to `legacy/`; new 151-scenario benchmark with dev/test/legacy splits. | `benchmark/` |
+| Vendor translator token check | **Resolved.** IR renderers, with behavioural equivalence checked in Batfish (10/10). | `core/vendor_translator.py` |
+| No tests | **Resolved.** 76 default tests plus Batfish- and live-marked suites. | `tests/` |
+| No MCP | **Resolved.** Role-scoped MCP server with token-gated writes. | `mcp_server/` |
+| No causal discovery | **Partially resolved.** PC algorithm on a synthetic SCM; not used for localisation. | `core/causal_discovery.py` |
+| No emulator | **Open.** FRR/Containerlab adapter not implemented. | `LIMITATIONS.md` |
+
+### A.2 Findings from the external review of the improved version, and their resolution
+
+| Finding | Severity | Resolution |
+|---|---|---|
+| A shared ZIP contained a `.env` with a live Gemini key | Critical | `.env` was never tracked by git. Added `scripts/make_release_zip.py`, which excludes `.env`/`runtime/` and aborts if any API-key pattern is found. **The exposed keys must be rotated by the owner.** |
+| Approval tokens fell back to a hardcoded key because `NETOPS_APPROVAL_HMAC_KEY` was undocumented and `.env` was not loaded centrally | Critical | **Fixed.** `core/settings.py` loads `.env` centrally; separate `NETOPS_APPROVAL_HMAC_KEY` and `NETOPS_AUDIT_HMAC_KEY` are documented in `.env.example`; there is no hardcoded fallback (a random per-process key is used and flagged). Test: `test_no_hardcoded_hmac_keys`. |
+| Auto-approval was the default supervisor policy | Critical | **Fixed.** `SystemConfig.approval` defaults to `human`, which rejects when no operator is present. `auto_verified_simulation` is an explicit opt-in, refused for any adapter not labelled SIMULATED, and recorded in every incident's `modes`. Test: `test_default_approval_is_human_and_rejects_without_operator`. |
+| The audit document described the old code | High | This Section A. |
+| LLM benchmark C2–C5 not run | High | Partially addressed: a Groq-hosted **pilot** (see `benchmark/results/REPORT.md`). The full evaluation still needs a paid quota. |
+| No real device / emulator adapter | High | Open. |
+| Causal discovery not integrated into localisation | High | Open. |
+| OpenAI provider not live-validated | Medium | Open (no OpenAI key). Groq uses the same OpenAI-compatible code path and *is* live-verified. |
+| The reviewer's environment lacked pinned dependencies | – | Not a code defect. The suite passes in a clean venv built from `requirements.txt` (`python run_full_system.py tests`). |
+
+---
+
+# B. Historical pre-implementation audit
+
+## Implementation Audit - Neurosymbolic NetOps Framework (historical)
 
 **Audit date:** 2026-11-08
 **Scope:** Every file under `Agentic_proj/` (≈2,000 lines of Python source, 4 device configs, 2 scenario datasets, stored results, Streamlit dashboard) and the literature review *Autonomous Fault Diagnosis and Closed-Loop Remediation in Telecommunication and Data Center Networks: A Critical Survey* (15 pages).

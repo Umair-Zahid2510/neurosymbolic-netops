@@ -151,6 +151,7 @@ def main() -> None:
     ap.add_argument("--splits", default="dev,test,legacy")
     ap.add_argument("--trials", type=int, default=1)
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--scenarios", default="", help="comma-separated scenario ids (pilot runs)")
     ap.add_argument("--oracle", choices=["local", "batfish"], default="local")
     ap.add_argument("--suite", default=str(SCENARIO_DIR / "suite_v1.json"))
     ap.add_argument("--out", default=str(ROOT / "benchmark" / "results"))
@@ -159,6 +160,9 @@ def main() -> None:
 
     tb = load_testbed()
     suite = [s for s in load_suite(Path(args.suite)) if s.split in args.splits.split(",")]
+    if args.scenarios:
+        wanted = args.scenarios.split(",")
+        suite = [s for s in suite if s.scenario_id in wanted]
     if args.limit:
         suite = suite[: args.limit]
     detector = EdgeDetector(load_or_train())
@@ -189,7 +193,7 @@ def main() -> None:
             trials = args.trials if spec["reasoning"] == "llm" else 1  # rule-based is deterministic
             for trial in range(trials):
                 for k, sc in enumerate(suite):
-                    cfg = SystemConfig(reasoning=spec["reasoning"], llm_tools=spec.get("llm_tools", True),
+                    cfg = SystemConfig(approval="auto_verified_simulation", reasoning=spec["reasoning"], llm_tools=spec.get("llm_tools", True),
                                        verifier=spec["verifier"], llm_provider=provider,
                                        adapter_faults=deploy_faults(sc, k) if spec.get("deploy_faults") else FaultInjection())
                     t = sc.telemetry
@@ -208,6 +212,7 @@ def main() -> None:
                            "metrics": m, "error": err,
                            "record": run.record.model_dump(mode="json") if run else None}
                     fh.write(json.dumps(row, default=str) + "\n")
+                    fh.flush()
                     if m:
                         rows.append(row)
                     print(f"[{cond} t{trial}] {sc.scenario_id:60s} {m['outcome'] if m else 'ERROR ' + err}", flush=True)

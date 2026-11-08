@@ -18,7 +18,7 @@ from agent.rule_based_diagnoser import RuleBasedDiagnoser, RuleBasedPlanner
 from agent.supervisor import Supervisor, SupervisorConfig
 from agent.workflow import IncidentRecord
 from core.actuation.adapters import FaultInjection, InMemoryAdapter
-from core.actuation.approval import ApprovalAuthority, AutoApproveVerifiedPolicy
+from core.actuation.approval import ApprovalAuthority, AutoApproveVerifiedPolicy, DenyAllPolicy, HumanApprovalPolicy
 from core.actuation.audit import AuditLog
 from core.actuation.transaction import TransactionEngine
 from core.config_ir import Network
@@ -41,6 +41,10 @@ class SystemConfig:
     adapter_faults: FaultInjection = field(default_factory=FaultInjection)
     llm_provider: Optional[object] = None  # an agent.llm.base.LLMProvider for reasoning in (llm, offline)
     audit_path: Optional[Path] = None
+    # Approval policy: "human" (default) asks on the console and rejects when no human is present;
+    # "auto_verified_simulation" auto-approves verified plans and is refused for non-SIMULATED
+    # adapters; "deny" = read-only advisor mode.
+    approval: str = "human"
 
 
 @dataclass
@@ -70,10 +74,20 @@ def build_supervisor(tb: Testbed, observed: Network, cfg: SystemConfig, audit: A
     verifier = make_verifier(cfg.verifier if gate else "local", tb.topology)
     post_verifier = make_verifier("local", tb.topology)  # evaluates the adapter's observed state
     authority = ApprovalAuthority()
-    engine = TransactionEngine(InMemoryAdapter(observed, cfg.adapter_faults), verifier if gate else None,
-                               post_verifier, tb.intents, authority, audit)
+    adapter = InMemoryAdapter(observed, cfg.adapter_faults)
+    if cfg.approval == "auto_verified_simulation":
+        if adapter.label != "SIMULATED":
+            raise ValueError("auto approval is only permitted with a SIMULATED adapter")
+        policy = AutoApproveVerifiedPolicy()
+    elif cfg.approval == "human":
+        policy = HumanApprovalPolicy()
+    elif cfg.approval == "deny":
+        policy = DenyAllPolicy()
+    else:
+        raise ValueError(f"unknown approval policy {cfg.approval!r}")
+    engine = TransactionEngine(adapter, verifier if gate else None, post_verifier, tb.intents, authority, audit)
     return Supervisor(tb.topology, DiagnosticAgent(dstrat), PlanningAgent(pstrat), VerificationAgent(verifier, tb.intents),
-                      ExecutionAgent(engine), AutoApproveVerifiedPolicy(), authority,
+                      ExecutionAgent(engine), policy, authority,
                       SupervisorConfig(max_attempts=cfg.max_attempts, allow_partial_progress=cfg.allow_partial_progress,
                                        execute=cfg.execute, use_verification_gate=gate))
 

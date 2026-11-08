@@ -24,7 +24,7 @@ if __name__ == "__main__":
     f2 = TEMPLATES["missing_network"](net, tb.topology, dev="Leaf-1")
     net = apply_plan(net, f2.inject)
     run = run_incident(tb, "DEMO2-MULTI", net,
-                       SystemConfig(reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
+                       SystemConfig(approval=args.approval, reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
                                     llm_provider=provider_for(args.reasoning, args.record)),
                        GeneratorOptions(seed=22, noise_rate=2.0))
     narrate(run, tb, [f1, f2])

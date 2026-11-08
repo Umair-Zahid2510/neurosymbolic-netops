@@ -65,3 +65,20 @@ class OpenAIProvider(LLMProvider):
         u = r.usage
         return ChatResult(text=msg.content or "", tool_calls=calls, prompt_tokens=u.prompt_tokens if u else 0,
                           completion_tokens=u.completion_tokens if u else 0, total_tokens=u.total_tokens if u else 0)
+
+
+@dataclass
+class GroqProvider(OpenAIProvider):
+    """Groq (OpenAI-compatible API at api.groq.com). Requires GROQ_API_KEY.
+    Free tier observed 2026-11-08: 1000 requests/day and 8000 tokens/minute per model."""
+    provider: str = "groq"
+    model: str = "openai/gpt-oss-120b"
+
+    def __post_init__(self):
+        if self.client is None:
+            key = self.api_key or os.environ.get("GROQ_API_KEY")
+            if not key:
+                raise LLMError("GROQ_API_KEY is not set; choose NETOPS_LLM_MODE=rule_based or offline explicitly")
+            import openai
+            self.client = openai.OpenAI(api_key=key, base_url="https://api.groq.com/openai/v1",
+                                        timeout=self.timeout_s, max_retries=0)

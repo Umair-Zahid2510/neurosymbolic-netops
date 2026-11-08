@@ -26,7 +26,7 @@ if __name__ == "__main__":
     audit_path = ROOT / "runtime" / "demo3_audit.jsonl"
     audit_path.unlink(missing_ok=True)
     run = run_incident(tb, "DEMO3-ROLLBACK", apply_plan(tb.network, f.inject),
-                       SystemConfig(reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
+                       SystemConfig(approval=args.approval, reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
                                     llm_provider=provider_for(args.reasoning, args.record),
                                     adapter_faults=FaultInjection(runtime_effect=effect,
                                                                   runtime_effect_note="link stays down after commit (SIMULATED)"),

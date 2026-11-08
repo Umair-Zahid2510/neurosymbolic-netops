@@ -19,6 +19,8 @@ def cli(description: str):
                     help="rule_based (default), llm (needs API key), offline (replay of recorded LLM calls)")
     ap.add_argument("--verifier", choices=["local", "batfish"], default="local",
                     help="local symbolic model (default) or a running Batfish service")
+    ap.add_argument("--approval", choices=["auto_verified_simulation", "human", "deny"], default="auto_verified_simulation",
+                    help="demos use the SIMULATED adapter; pass 'human' to approve interactively")
     ap.add_argument("--save", default=None, help="write the full incident record as JSON")
     ap.add_argument("--no-tools", action="store_true", help="LLM gets configs in the prompt instead of tool access (fewer calls)")
     ap.add_argument("--model", default=None, help="override NETOPS_LLM_MODEL")

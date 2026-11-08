@@ -15,7 +15,7 @@ if __name__ == "__main__":
     tb = load_testbed()
     f = TEMPLATES["remote_as_mismatch"](tb.network, tb.topology, dev="Leaf-1", nbr="10.0.1.1")
     run = run_incident(tb, "DEMO1-BGP", apply_plan(tb.network, f.inject),
-                       SystemConfig(reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
+                       SystemConfig(approval=args.approval, reasoning=args.reasoning, verifier=args.verifier, llm_tools=not args.no_tools,
                                     llm_provider=provider_for(args.reasoning, args.record)),
                        GeneratorOptions(seed=11, noise_rate=1.5, decoys=True))
     narrate(run, tb, [f])

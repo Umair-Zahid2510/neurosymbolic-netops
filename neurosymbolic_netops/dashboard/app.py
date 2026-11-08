@@ -106,7 +106,7 @@ if view == "Run an incident":
             if getattr(first, "interface", None):
                 faults = FaultInjection(runtime_effect=PatchPlan(ops=[SetInterfaceEnabled(device=first.device, interface=first.interface, enabled=False)]))
         with st.spinner("Running Tier 1 -> Tier 4 ..."):
-            run = run_incident(tb, f"UI-{template}", faulty, SystemConfig(reasoning=reasoning, verifier=verifier,
+            run = run_incident(tb, f"UI-{template}", faulty, SystemConfig(approval="auto_verified_simulation", reasoning=reasoning, verifier=verifier,
                                llm_provider=provider, adapter_faults=faults),
                                GeneratorOptions(seed=7, noise_rate=3.0 if noisy else 1.0, decoys=noisy))
         st.session_state["run"] = run

@@ -1,4 +1,27 @@
-# Implementation Plan — Neurosymbolic NetOps Framework
+# Implementation Plan
+
+> **Document status (updated after implementation).** This was the plan approved on 2026-11-08.
+> Execution status per phase:
+
+| Phase | Status | Notes |
+|---|---|---|
+| A - Audit | Done | `IMPLEMENTATION_AUDIT.md` (Section B historical, Section A current) |
+| A' - Safety net, honesty fixes | Done | git baseline `e649acf`; ID branches removed; legacy results withdrawn |
+| B - Core architecture (IR, telemetry, topology, skills, LLM, agents) | Done | B4 edge model is classical ML (TF-IDF+LR), not an SLM |
+| C - Verification (intents, local, Batfish, reflection) | Done | plus the `ir_static` invariants added after the Batfish differential |
+| D1-D2, D4-D6 - Transactions, fault injection, audit, MCP, translation | Done | translation equivalence checked behaviourally, not by SMT |
+| D3 - FRR emulator adapter | **Not done** | image pulled; adapter not implemented |
+| E1 - Testbed scripts | **Not done** | depends on D3 |
+| E2-E4 - Scenarios, runner, metrics, report | Done | rule-based conditions complete; LLM conditions: Groq pilot only |
+| E5 - Causal discovery | Partial | synthetic SCM; not used for localisation |
+| F - Demos, dashboard, docs | Done | three demos (rule-based and live LLM transcripts) |
+| Security hardening (post-review) | Done | approval key, human-approval default, release-archive secret scan |
+
+The original plan follows unchanged.
+
+---
+
+## Original plan - Neurosymbolic NetOps Framework
 
 **Status:** DRAFT. Awaiting approval. No code has been changed.
 **Input:** `IMPLEMENTATION_AUDIT.md` (read it first; this plan addresses the findings there by section number).
