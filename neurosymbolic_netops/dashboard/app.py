@@ -3,7 +3,7 @@
 Features:
 - View 1: Interactive Data Center Fabric Topology Map (Plotly/NetworkX)
 - View 2: Live Incident Telemetry & Causal Pruning Monitor
-- View 3: Neurosymbolic Reflection & Batfish Gate Inspector with Multi-Vendor Translation
+- View 3: Neurosymbolic Reflection & Verification Gate Inspector (legacy local regex checker, NOT Batfish) with Multi-Vendor Translation
 - View 4: Empirical Benchmark Analytics & Statistical Visualizations
 """
 
@@ -92,7 +92,7 @@ view_mode = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.caption("Architecture: 4-Tier SADE + Batfish Symbolic Safety Gate")
+st.sidebar.caption("Architecture: 4-Tier pipeline - legacy local regex verifier (no Batfish, no LLM)")
 
 # =========================================================================
 # VIEW 1: INTERACTIVE DATA CENTER FABRIC TOPOLOGY MAP
@@ -248,7 +248,7 @@ elif view_mode == "2. Live Incident & Causal Pruning":
 # VIEW 3: NEUROSYMBOLIC REFLECTION & BATFISH GATE INSPECTOR
 # =========================================================================
 elif view_mode == "3. Reflection & Formal Symbolic Gate":
-    st.markdown("<div class='main-title'>Tier-3 Batfish Safety Gate & Reflection Inspector</div>", unsafe_allow_html=True)
+    st.markdown("<div class='main-title'>Tier-3 Verification Gate & Reflection Inspector (legacy local regex checker)</div>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>Formal invariant verification, counterexample generation, and cognitive self-correction audit trail.</div>", unsafe_allow_html=True)
 
     selected_id = st.selectbox("Select Scenario for Step-by-Step Audit:", list(all_scenarios.keys()))
@@ -277,7 +277,7 @@ elif view_mode == "3. Reflection & Formal Symbolic Gate":
         sym_check = t.get("symbolic_check")
         passed = sym_check.get("passed") if isinstance(sym_check, dict) else (sym_check == "BYPASSED_BASELINE")
 
-        with st.expander(f"Turn {t_num}: Candidate Patch on '{patch['target_device']}' ({'PASSED' if passed else 'REJECTED BY BATFISH'})", expanded=(t_num <= 2)):
+        with st.expander(f"Turn {t_num}: Candidate Patch on '{patch['target_device']}' ({'PASSED' if passed else 'REJECTED BY LOCAL CHECKER'})", expanded=(t_num <= 2)):
             col_t1, col_t2 = st.columns([1, 1])
             with col_t1:
                 st.markdown(f"**Identified Culprit:** `{diag['identified_culprit_device']}` ({diag['failure_category']})")
@@ -289,10 +289,8 @@ elif view_mode == "3. Reflection & Formal Symbolic Gate":
 
             with col_t2:
                 if passed:
-                    st.success("✅ **Batfish Symbolic Gate: INVARIANTS VERIFIED**")
-                    st.markdown("- Reachability: **PASSED (100%)**")
-                    st.markdown("- Loop Freedom: **DETECT LOOPS = 0**")
-                    st.markdown("- BGP Sessions: **ALL ESTABLISHED**")
+                    st.success("✅ **Legacy local regex checker: no violations found**")
+                    st.markdown("- (checks are regex heuristics; see IMPLEMENTATION_AUDIT.md section 3.6)")
                 else:
                     st.error("❌ **Formal Safety Gate Rejection (Counterexample Trace):**")
                     for ce in sym_check.get("counterexamples", []):

@@ -1,0 +1,23 @@
+{
+  "train_lines": 800,
+  "train_seconds": 0.638,
+  "heldout_phrasing": {
+    "n": 800,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "latency_us_per_line": 98.27
+  },
+  "heldout_phrasing_message_only": {
+    "n": 800,
+    "accuracy": 0.75,
+    "macro_f1": 0.71,
+    "latency_us_per_line": 74.8
+  },
+  "seen_phrasing": {
+    "n": 200,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "latency_us_per_line": 120.89
+  },
+  "model_bytes": 26499
+}

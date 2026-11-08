@@ -7,3 +7,4 @@ __pycache__/
 .claude/settings.local.json
 neurosymbolic_netops/benchmark/results/_scratch/
 neurosymbolic_netops/runtime/
+neurosymbolic_netops/models/*.pkl

@@ -1,7 +1,8 @@
-"""Tier-2 LLM Interface and Cognitive Diagnostic Reasoning Engine.
+"""LEGACY deterministic rule cascade (formerly mislabelled as an LLM interface).
 
-Supports live Gemini / OpenAI APIs if configured, or a local high-fidelity SADE
-diagnostic reasoning engine producing validated Pydantic declarative intent outputs.
+This module never calls a language model. Incident-ID-specific branches were removed on
+2026-11-08 (see IMPLEMENTATION_AUDIT.md section 3.1). It is superseded by
+agent/llm/ (real providers) and agent/rule_based_diagnoser.py (deterministic baseline).
 """
 
 import os
@@ -232,59 +233,6 @@ class LLMDiagnosticInterface:
                     )
                     break
 
-        # Realistic modeling of LLM initial turn vs reflection on complex multi-tier incidents:
-        # On complex scenarios (FAULT_ACL_001, FAULT_BGP_003), an unguided LLM initially proposes
-        # a naive patch with side-effects (e.g. removing the security perimeter or partial route-map edit).
-        if incident_id == "FAULT_ACL_001" and turn_number == 1 and not reflection_feedback:
-            # Naive initial LLM hallucination: removes both deny rules, violating security invariant!
-            culprit = "Leaf-1"
-            category = "ACL"
-            root_cause = "Access-list blocking traffic; flushing all deny entries."
-            patch = ConfigurationPatch(
-                target_device="Leaf-1",
-                subsystem="ACL",
-                command_block="no deny ip 192.168.99.0 0.0.0.255 any\n no deny ip 10.1.20.0 0.0.0.255 any",
-                rollback_command_block="deny ip 192.168.99.0 0.0.0.255 any\n deny ip 10.1.20.0 0.0.0.255 any",
-                justification="Flush all filter deny rules on Leaf-1 to restore traffic."
-            )
-        elif incident_id == "FAULT_BGP_003" and turn_number == 1 and not reflection_feedback:
-            # Naive initial LLM patch: attempts to append permit 20 without removing deny 10
-            culprit = "Spine-1"
-            category = "BGP"
-            root_cause = "BGP prefix announcement filtered by route-map."
-            patch = ConfigurationPatch(
-                target_device="Spine-1",
-                subsystem="BGP",
-                command_block="route-map DROP_ALL permit 20",
-                rollback_command_block="no route-map DROP_ALL permit 20",
-                justification="Append permit stanza to route-map."
-            )
-
-        # Reflection handler: when Batfish returns counterexample, synthesize corrected surgical patch
-        if reflection_feedback:
-            if "Security invariant violation" in reflection_feedback or incident_id == "FAULT_ACL_001":
-                culprit = "Leaf-1"
-                category = "ACL"
-                root_cause = "Targeted removal of erroneous deny rule while preserving perimeter security invariant."
-                patch = ConfigurationPatch(
-                    target_device="Leaf-1",
-                    subsystem="ACL",
-                    command_block="no deny ip 10.1.20.0 0.0.0.255 any",
-                    rollback_command_block="deny ip 10.1.20.0 0.0.0.255 any",
-                    justification="Surgically remove only the erroneous 10.1.20.0/24 drop rule, keeping 192.168.99.0/24 security block intact."
-                )
-            elif "Route-map filter violation" in reflection_feedback or incident_id == "FAULT_BGP_003":
-                culprit = "Spine-1"
-                category = "BGP"
-                root_cause = "Disassociate drop route-map from BGP neighbor session."
-                patch = ConfigurationPatch(
-                    target_device="Spine-1",
-                    subsystem="BGP",
-                    command_block="no neighbor 10.0.2.2 route-map DROP_ALL out",
-                    rollback_command_block="neighbor 10.0.2.2 route-map DROP_ALL out",
-                    justification="Remove outbound route-map DROP_ALL completely from neighbor 10.0.2.2."
-                )
-
         # Default fallback if unresolved
         if not culprit:
             culprit = list(pruned_configs.keys())[0]
@@ -301,7 +249,7 @@ class LLMDiagnosticInterface:
             identified_culprit_device=culprit,
             failure_category=category,
             root_cause_analysis=root_cause,
-            confidence_score=0.96,
+            confidence_score=0.0,  # legacy rule engine has no calibrated confidence; 0.0 = not estimated
             proposed_patch=patch
         )
         return output

@@ -1,0 +1,70 @@
+# Declarative intent for the 2-spine / 2-leaf eBGP fabric.
+# Vendor-neutral: nothing here refers to CLI syntax. Evaluated by every verifier backend.
+name: dc-fabric-v1
+intents:
+  - id: bgp-all-sessions
+    kind: bgp_sessions
+    description: Every configured eBGP session is established and stable.
+
+  - id: reach-lan10-lan20
+    kind: reachability
+    description: Host LAN reaches Server LAN on every ECMP path.
+    flow: {src_prefix: 10.1.10.0/24, dst_prefix: 10.1.20.0/24}
+    source: {device: Leaf-1, interface: eth10}
+
+  - id: reach-lan20-lan10
+    kind: reachability
+    description: Server LAN reaches Host LAN on every ECMP path.
+    flow: {src_prefix: 10.1.20.0/24, dst_prefix: 10.1.10.0/24}
+    source: {device: Leaf-2, interface: eth20}
+
+  - id: svc-https-lan10-lan20
+    kind: reachability
+    description: HTTPS from Host LAN to Server LAN.
+    flow: {src_prefix: 10.1.10.0/24, dst_prefix: 10.1.20.0/24, protocol: tcp, dst_port: 443}
+    source: {device: Leaf-1, interface: eth10}
+
+  - id: svc-http-lan10-lan20
+    kind: reachability
+    description: HTTP from Host LAN to Server LAN.
+    flow: {src_prefix: 10.1.10.0/24, dst_prefix: 10.1.20.0/24, protocol: tcp, dst_port: 80}
+    source: {device: Leaf-1, interface: eth10}
+
+  - id: redundancy-lan10-lan20
+    kind: redundancy
+    description: Host LAN to Server LAN survives a single spine failure (2 disjoint spines).
+    flow: {src_prefix: 10.1.10.0/24, dst_prefix: 10.1.20.0/24}
+    source: {device: Leaf-1, interface: eth10}
+    min_paths: 2
+
+  - id: redundancy-lan20-lan10
+    kind: redundancy
+    description: Server LAN to Host LAN survives a single spine failure.
+    flow: {src_prefix: 10.1.20.0/24, dst_prefix: 10.1.10.0/24}
+    source: {device: Leaf-2, interface: eth20}
+    min_paths: 2
+
+  - id: isolate-admin-lan10
+    kind: isolation
+    description: Unauthorized admin subnet 192.168.99.0/24 arriving from the fabric never reaches the Host LAN.
+    flow: {src_prefix: 192.168.99.0/24, dst_prefix: 10.1.10.0/24}
+    ingress:
+      - {device: Spine-1}
+      - {device: Spine-2}
+
+  - id: isolate-admin-lan20
+    kind: isolation
+    description: Unauthorized admin subnet 192.168.99.0/24 arriving from the fabric never reaches the Server LAN.
+    flow: {src_prefix: 192.168.99.0/24, dst_prefix: 10.1.20.0/24}
+    ingress:
+      - {device: Spine-1}
+      - {device: Spine-2}
+
+  - id: no-loops
+    kind: no_forwarding_loops
+    description: No forwarding loops between fabric LANs.
+    prefixes: [10.1.10.0/24, 10.1.20.0/24]
+
+  - id: link-consistency
+    kind: link_consistency
+    description: MTU, speed and duplex agree on both ends of every fabric link.
