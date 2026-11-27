@@ -1,15 +1,23 @@
 {
+  "train_lines": 800,
+  "train_seconds": 0.073,
   "heldout_phrasing": {
-    "n": 1200,
+    "n": 800,
     "accuracy": 1.0,
     "macro_f1": 1.0,
-    "latency_us_per_line": 45.29
+    "latency_us_per_line": 66.33
   },
   "heldout_phrasing_message_only": {
-    "n": 1200,
+    "n": 800,
     "accuracy": 0.75,
     "macro_f1": 0.71,
-    "latency_us_per_line": 34.63
+    "latency_us_per_line": 51.51
   },
-  "model_bytes": 26388
+  "seen_phrasing": {
+    "n": 200,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "latency_us_per_line": 72.21
+  },
+  "model_bytes": 26499
 }
